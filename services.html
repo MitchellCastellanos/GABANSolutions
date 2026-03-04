@@ -42,12 +42,19 @@
   </div>
 </nav>
 
-<header class="section bg-light">
+<header class="py-5 bg-light">
   <div class="container">
-    <h1 class="fw-bold mb-2" data-i18n="svc_h1">Services</h1>
-    <p class="text-muted mb-0" data-i18n="svc_sub">
-      Practical digital solutions built for local businesses. Clear scope. Clean delivery.
-    </p>
+    <div class="row align-items-center g-3">
+      <div class="col-lg-8">
+        <h1 class="fw-bold mb-2" data-i18n="svc_h1">Services</h1>
+        <p class="text-muted mb-0" data-i18n="svc_sub">
+          Practical digital solutions built for local businesses—websites, automation, and custom tools.
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <a class="btn btn-dark" href="./contact.html" data-i18n="svc_header_btn">Get a Free Consultation</a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -99,9 +106,66 @@
     <div class="mt-5 p-4 bg-light border rounded-4">
       <h3 class="h5 fw-bold mb-2" data-i18n="svc_help_t">Not sure what you need?</h3>
       <p class="text-muted mb-3" data-i18n="svc_help_d">
-        Tell us your business type and your main problem. We’ll recommend the simplest solution that gets results.
+        Tell us your business type and your main problem. We'll recommend the simplest solution that gets results.
       </p>
       <a class="btn btn-dark" href="./contact.html" data-i18n="svc_help_btn">Request a Free Consultation</a>
+    </div>
+  </div>
+</section>
+
+<section class="py-5">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold" data-i18n="pkg_title">Popular Packages</h2>
+      <p class="text-muted mb-0" data-i18n="pkg_sub">Simple starting points. We can customize anything.</p>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h3 class="h5 fw-bold" data-i18n="pkg1_t">Starter Website</h3>
+            <p class="text-muted small" data-i18n="pkg1_d">Perfect for new businesses that need a clean and professional presence.</p>
+            <ul class="small mb-0">
+              <li data-i18n="pkg1_b1">Home + Services + Contact</li>
+              <li data-i18n="pkg1_b2">Mobile-first design</li>
+              <li data-i18n="pkg1_b3">Basic SEO setup</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card h-100 border-dark">
+          <div class="card-body">
+            <h3 class="h5 fw-bold" data-i18n="pkg2_t">Business Website + Leads</h3>
+            <p class="text-muted small" data-i18n="pkg2_d">Built to capture leads and turn visitors into customers.</p>
+            <ul class="small mb-0">
+              <li data-i18n="pkg2_b1">Forms + call-to-action</li>
+              <li data-i18n="pkg2_b2">Google Maps & reviews</li>
+              <li data-i18n="pkg2_b3">Contact workflow</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h3 class="h5 fw-bold" data-i18n="pkg3_t">Automation / Systems</h3>
+            <p class="text-muted small" data-i18n="pkg3_d">For businesses that want to save time and stay organized.</p>
+            <ul class="small mb-0">
+              <li data-i18n="pkg3_b1">Appointment booking</li>
+              <li data-i18n="pkg3_b2">Admin dashboard</li>
+              <li data-i18n="pkg3_b3">Reporting & tracking</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a class="btn btn-dark" href="./contact.html" data-i18n="pkg_btn">Request a Free Consultation</a>
     </div>
   </div>
 </section>
@@ -153,8 +217,29 @@
       svc3_b4: "Database-backed solutions",
 
       svc_help_t: "Not sure what you need?",
-      svc_help_d: "Tell us your business type and your main problem. We’ll recommend the simplest solution that gets results.",
-      svc_help_btn: "Request a Free Consultation"
+      svc_help_d: "Tell us your business type and your main problem. We'll recommend the simplest solution that gets results.",
+      svc_help_btn: "Request a Free Consultation",
+
+      svc_header_btn: "Get a Free Consultation",
+
+pkg_title: "Popular Packages",
+pkg_sub: "Simple starting points. We can customize anything.",
+pkg1_t: "Starter Website",
+pkg1_d: "Perfect for new businesses that need a clean and professional presence.",
+pkg1_b1: "Home + Services + Contact",
+pkg1_b2: "Mobile-first design",
+pkg1_b3: "Basic SEO setup",
+pkg2_t: "Business Website + Leads",
+pkg2_d: "Built to capture leads and turn visitors into customers.",
+pkg2_b1: "Forms + call-to-action",
+pkg2_b2: "Google Maps & reviews",
+pkg2_b3: "Contact workflow",
+pkg3_t: "Automation / Systems",
+pkg3_d: "For businesses that want to save time and stay organized.",
+pkg3_b1: "Appointment booking",
+pkg3_b2: "Admin dashboard",
+pkg3_b3: "Reporting & tracking",
+pkg_btn: "Request a Free Consultation"
     },
 
     fr: {
@@ -171,7 +256,7 @@
       svc1_title: "Sites web professionnels",
       svc1_desc: "Des sites modernes qui inspirent confiance et attirent des clients.",
       svc1_b1: "Pensé mobile, chargement rapide",
-      svc1_b2: "Appel à l’action clair (appels, formulaires, réservations)",
+      svc1_b2: "Appel à l'action clair (appels, formulaires, réservations)",
       svc1_b3: "Bases SEO (titres, structure, vitesse)",
       svc1_b4: "Intégration Google Maps & avis",
 
@@ -186,12 +271,32 @@
       svc3_desc: "Outils sur mesure pour le suivi et les rapports.",
       svc3_b1: "Tableaux de bord & rapports",
       svc3_b2: "Inventaire / suivi clients",
-      svc3_b3: "Panneaux d’administration (sécurisés)",
+      svc3_b3: "Panneaux d'administration (sécurisés)",
       svc3_b4: "Solutions avec base de données",
 
       svc_help_t: "Vous ne savez pas quoi choisir?",
-      svc_help_d: "Dites-nous votre type d’entreprise et votre problème principal. On vous proposera la solution la plus simple et efficace.",
-      svc_help_btn: "Demander une consultation gratuite"
+      svc_help_d: "Dites-nous votre type d'entreprise et votre problème principal. On vous proposera la solution la plus simple et efficace.",
+      svc_help_btn: "Demander une consultation gratuite",
+
+      svc_header_btn: "Consultation gratuite",
+pkg_title: "Forfaits populaires",
+pkg_sub: "Des points de départ simples. On peut tout personnaliser.",
+pkg1_t: "Site web de départ",
+pkg1_d: "Parfait pour une entreprise qui veut une présence propre et professionnelle.",
+pkg1_b1: "Accueil + Services + Contact",
+pkg1_b2: "Design mobile-first",
+pkg1_b3: "Configuration SEO de base",
+pkg2_t: "Site + Prospects",
+pkg2_d: "Conçu pour capturer des demandes et convertir les visiteurs en clients.",
+pkg2_b1: "Formulaires + appel à l'action",
+pkg2_b2: "Google Maps & avis",
+pkg2_b3: "Flux de contact",
+pkg3_t: "Automatisation / Systèmes",
+pkg3_d: "Pour gagner du temps et mieux s'organiser.",
+pkg3_b1: "Système de rendez-vous",
+pkg3_b2: "Tableau de bord admin",
+pkg3_b3: "Rapports & suivi",
+pkg_btn: "Demander une consultation gratuite"
     }
   };
 
