@@ -3,15 +3,11 @@ GLOBAL SPACING
 =============================== */
 
 .section{
-padding:4rem 0;
+  padding:4rem 0;
 }
 
-/* ===============================
-HERO
-=============================== */
-
 .hero{
-padding:5rem 0;
+  padding:5rem 0;
 }
 
 /* ===============================
@@ -19,12 +15,24 @@ ICONS
 =============================== */
 
 .icon-badge{
-width:44px;
-height:44px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:12px;
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+}
+
+.icon-circle{
+  width:64px;
+  height:64px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#111111;
+  color:#ffffff;
+  font-size:1.5rem;
 }
 
 /* ===============================
@@ -32,48 +40,61 @@ EXPRESS PAGE
 =============================== */
 
 .hero-dark{
-background:linear-gradient(135deg,#111111 0%,#1c1c1c 100%);
-}
-
-.icon-circle{
-width:64px;
-height:64px;
-border-radius:50%;
-display:inline-flex;
-align-items:center;
-justify-content:center;
-background:#111111;
-color:white;
-font-size:1.5rem;
+  background:linear-gradient(135deg,#111111 0%,#1c1c1c 100%);
 }
 
 .price-card{
-border:2px solid #111111;
+  border:2px solid #111111;
 }
 
 /* ===============================
-PORTFOLIO
-=============================== */
-
-.project-card{
-transition:transform .2s ease, box-shadow .2s ease;
-}
-
-.project-card:hover{
-transform:translateY(-4px);
-box-shadow:0 8px 20px rgba(0,0,0,.08);
-}
-
-/* ===============================
-CARDS
+CARDS / PROJECTS
 =============================== */
 
 .card{
-border-radius:14px;
+  border-radius:14px;
 }
 
 .rounded-4{
-border-radius:16px;
+  border-radius:16px;
+}
+
+.project-card{
+  border-radius:16px;
+  transition:transform .25s ease, box-shadow .25s ease;
+}
+
+.project-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 15px 35px rgba(0,0,0,0.12);
+}
+
+/* ===============================
+FEATURED WORK
+=============================== */
+
+.featured-project-img{
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+
+.featured-project-img:hover{
+  transform:scale(1.03);
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+}
+
+.featured-work-tag{
+  color:#c9a227;
+  letter-spacing:1px;
+}
+
+.featured-divider{
+  width:60px;
+  height:3px;
+  background:#c9a227;
+  margin:10px 0 20px 0;
+  border-radius:2px;
 }
 
 /* ===============================
@@ -81,13 +102,13 @@ BUTTONS
 =============================== */
 
 .btn-dark{
-background:#111111;
-border-color:#111111;
+  background:#111111;
+  border-color:#111111;
 }
 
 .btn-dark:hover{
-background:#000;
-border-color:#000;
+  background:#000000;
+  border-color:#000000;
 }
 
 /* ===============================
@@ -95,5 +116,5 @@ FOOTER
 =============================== */
 
 footer{
-font-size:.9rem;
+  font-size:.9rem;
 }

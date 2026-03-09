@@ -4,14 +4,15 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>GABAN Solutions Numériques</title>
-  <meta name="description" content="...">
+  <meta name="description" content="Websites, automation, and digital solutions for local businesses in Montréal.">
 
   <link rel="icon" href="./Images/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="./Images/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="./Images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./Images/favicon-16.png">
   <link rel="apple-touch-icon" href="./Images/apple-touch-icon.png">
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <link rel="stylesheet" href="./MyCSS.css">
 </head>
 <body>
@@ -264,29 +265,48 @@
 <!-- FEATURED WORK -->
 <section class="section">
   <div class="container">
-    <div class="row align-items-center g-4">
-      <div class="col-lg-6">
-        <h2 class="fw-bold" data-i18n="home_work_title">Featured project</h2>
-        <p class="text-muted" data-i18n="home_work_text">
-          A real example of what we can build for a local business: website + practical tools that drive reviews and bookings.
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 order-2 order-lg-1">
+        <div class="text-uppercase small fw-semibold featured-work-tag mb-2" data-i18n="home_work_tag">Featured Work</div>
+        <h2 class="fw-bold mb-2" data-i18n="home_work_title">RCR Barber Shop</h2>
+        <div class="featured-divider"></div>
+
+        <p class="text-muted mb-3" data-i18n="home_work_text">
+          A real client project built for a local barbershop brand: premium visual identity, service presentation, booking-ready flow, and trust-focused structure.
         </p>
 
-        <div class="card project-card">
+        <ul class="list-unstyled mb-4">
+          <li class="d-flex gap-2 mb-2">
+            <i class="bi bi-check-circle-fill text-dark"></i>
+            <span data-i18n="home_work_b1">Multi-page website with strong branding</span>
+          </li>
+          <li class="d-flex gap-2 mb-2">
+            <i class="bi bi-check-circle-fill text-dark"></i>
+            <span data-i18n="home_work_b2">Contact, services, hours and booking path</span>
+          </li>
+          <li class="d-flex gap-2 mb-2">
+            <i class="bi bi-check-circle-fill text-dark"></i>
+            <span data-i18n="home_work_b3">Designed to build trust and convert visits into clients</span>
+          </li>
+        </ul>
+
+        <div class="card project-card border-0 shadow-sm mb-4">
           <div class="card-body">
-            <div class="fw-semibold">RCR Barbería</div>
-            <div class="text-muted small mb-3" data-i18n="home_work_desc">
-              Website + appointment-ready structure + Google reviews integration.
+            <div class="fw-semibold mb-1" data-i18n="home_work_result_t">Project result</div>
+            <div class="text-muted small" data-i18n="home_work_result_d">
+              A more professional online presence that gives the business stronger credibility and a better customer first impression.
             </div>
-            <a class="btn btn-dark" href="./portfolio.html" data-i18n="home_work_btn">See more work</a>
           </div>
+        </div>
+
+        <div class="d-flex gap-2 flex-wrap">
+          <a class="btn btn-dark" href="./portfolio.html" data-i18n="home_work_btn">See case study</a>
+          <a class="btn btn-outline-dark" href="https://www.rcr-barberiasalon.com/" target="_blank" rel="noopener noreferrer" data-i18n="home_work_btn2">Visit website</a>
         </div>
       </div>
 
-      <div class="col-lg-6">
-        <div class="bg-light border rounded-4 p-4 text-muted text-center">
-          <span data-i18n="home_img_placeholder">Add screenshots here later (portfolio images)</span>
-          <div class="small mt-2">assets/img/...</div>
-        </div>
+      <div class="col-lg-6 order-1 order-lg-2">
+        <img src="./Images/portfolio/RCR_Servicios.png" class="img-fluid featured-project-img w-100" alt="RCR Barber Shop website preview">
       </div>
     </div>
   </div>
