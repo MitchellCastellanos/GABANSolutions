@@ -1,0 +1,99 @@
+/* ===============================
+GLOBAL SPACING
+=============================== */
+
+.section{
+padding:4rem 0;
+}
+
+/* ===============================
+HERO
+=============================== */
+
+.hero{
+padding:5rem 0;
+}
+
+/* ===============================
+ICONS
+=============================== */
+
+.icon-badge{
+width:44px;
+height:44px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:12px;
+}
+
+/* ===============================
+EXPRESS PAGE
+=============================== */
+
+.hero-dark{
+background:linear-gradient(135deg,#111111 0%,#1c1c1c 100%);
+}
+
+.icon-circle{
+width:64px;
+height:64px;
+border-radius:50%;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+background:#111111;
+color:white;
+font-size:1.5rem;
+}
+
+.price-card{
+border:2px solid #111111;
+}
+
+/* ===============================
+PORTFOLIO
+=============================== */
+
+.project-card{
+transition:transform .2s ease, box-shadow .2s ease;
+}
+
+.project-card:hover{
+transform:translateY(-4px);
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+/* ===============================
+CARDS
+=============================== */
+
+.card{
+border-radius:14px;
+}
+
+.rounded-4{
+border-radius:16px;
+}
+
+/* ===============================
+BUTTONS
+=============================== */
+
+.btn-dark{
+background:#111111;
+border-color:#111111;
+}
+
+.btn-dark:hover{
+background:#000;
+border-color:#000;
+}
+
+/* ===============================
+FOOTER
+=============================== */
+
+footer{
+font-size:.9rem;
+}
