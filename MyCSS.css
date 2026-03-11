@@ -61,12 +61,36 @@ CARDS / PROJECTS
 
 .project-card{
   border-radius:16px;
+  overflow:hidden;
   transition:transform .25s ease, box-shadow .25s ease;
 }
 
 .project-card:hover{
   transform:translateY(-4px);
   box-shadow:0 15px 35px rgba(0,0,0,0.12);
+}
+
+.project-card img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+
+.project-card .card-body{
+  position:relative;
+  z-index:2;
+}
+
+/* ===============================
+PORTFOLIO GRID
+=============================== */
+
+.project-card .img-fluid{
+  transition:transform .4s ease;
+}
+
+.project-card:hover .img-fluid{
+  transform:scale(1.02);
 }
 
 /* ===============================
@@ -98,6 +122,50 @@ FEATURED WORK
 }
 
 /* ===============================
+PORTFOLIO CASE STUDY IMAGES
+=============================== */
+
+#rcr img,
+#redwood img{
+  width:100%;
+  height:auto;
+  border-radius:18px;
+}
+
+#rcr img{
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+  transition:transform .35s ease, box-shadow .35s ease;
+}
+
+#rcr img:hover{
+  transform:scale(1.02);
+  box-shadow:0 18px 38px rgba(0,0,0,0.20);
+}
+
+/* Redwood intentionally without shadow */
+#redwood img{
+  box-shadow:none;
+  transition:transform .3s ease;
+}
+
+#redwood img:hover{
+  transform:scale(1.01);
+  box-shadow:none;
+}
+
+/* ===============================
+BADGES
+=============================== */
+
+.badge.text-bg-dark{
+  background:#111111 !important;
+  color:#ffffff !important;
+  font-weight:500;
+  padding:.55em .8em;
+  border-radius:999px;
+}
+
+/* ===============================
 BUTTONS
 =============================== */
 
@@ -111,10 +179,71 @@ BUTTONS
   border-color:#000000;
 }
 
+.btn-outline-dark:hover{
+  background:#111111;
+  color:#ffffff;
+}
+
+/* ===============================
+SECTIONS / BACKGROUNDS
+=============================== */
+
+.bg-light{
+  background-color:#f8f9fa !important;
+}
+
+/* ===============================
+PORTFOLIO TYPOGRAPHY DETAILS
+=============================== */
+
+.text-uppercase.small.fw-semibold{
+  letter-spacing:.08em;
+}
+
+.card .text-muted.small,
+section .text-muted.small{
+  line-height:1.6;
+}
+
 /* ===============================
 FOOTER
 =============================== */
 
 footer{
   font-size:.9rem;
+}
+
+/* ===============================
+RESPONSIVE
+=============================== */
+
+@media (max-width: 991.98px){
+  .section{
+    padding:3.25rem 0;
+  }
+
+  .hero{
+    padding:4rem 0;
+  }
+
+  #rcr img,
+  #redwood img{
+    margin-bottom:1rem;
+  }
+}
+
+@media (max-width: 767.98px){
+  .project-card:hover{
+    transform:none;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  }
+
+  .project-card:hover .img-fluid{
+    transform:none;
+  }
+
+  #rcr img:hover,
+  #redwood img:hover{
+    transform:none;
+  }
 }
