@@ -26,6 +26,15 @@ const globalI18n = {
     nav_about: "À propos",
     nav_contact: "Contact",
     nav_cta: "Consultation gratuite"
+  },
+  es: {
+    nav_home: "Inicio",
+    nav_services: "Servicios",
+    nav_express: "Launch 72H",
+    nav_work: "Trabajos",
+    nav_about: "Nosotros",
+    nav_contact: "Contacto",
+    nav_cta: "Consulta gratuita"
   }
 };
 
@@ -143,6 +152,63 @@ const pageI18n = {
       home_bottom_title: "Construisons quelque chose d’utile pour votre entreprise.",
       home_bottom_text: "Expliquez-nous votre besoin. On recommandera la solution la plus simple et efficace.",
       home_bottom_btn: "Nous contacter"
+    },
+
+    es: {
+      home_h1: "Soluciones digitales inteligentes para pequeños negocios",
+      home_lead: "Sitios web, automatización y software a la medida para ayudar a crecer tu negocio.",
+      home_cta1: "Obtén una consulta gratuita",
+      home_cta2: "Ver nuestros servicios",
+      home_trust: "Basados en Montréal • Entrega rápida • Comunicación clara",
+
+      home_expect_title: "Qué puedes esperar",
+      home_expect_1t: "Proceso simple",
+      home_expect_1d: "Consulta → Desarrollo → Lanzamiento y soporte.",
+      home_expect_2t: "Soluciones prácticas",
+      home_expect_2d: "Nos enfocamos en lo que realmente mejora tu negocio día a día.",
+      home_expect_3t: "Soporte local",
+      home_expect_3d: "Montréal, QC — disponibles por teléfono o correo.",
+
+      star_tag: "Servicio estrella",
+      star_h2: "Launch 72H",
+      star_lead: "¿Necesitas un sitio web profesional rápido? Launch 72H es nuestro servicio de desarrollo rápido diseñado para pequeños negocios que necesitan estar en línea pronto sin sacrificar calidad.",
+      star_b1: "Sitio web profesional entregado en 72 horas",
+      star_b2: "Adaptado a móvil y enfocado en conversión",
+      star_b3: "Ideal para negocios que necesitan resultados rápidos",
+      star_btn1: "Explorar Launch 72H",
+      star_btn2: "Iniciar tu proyecto",
+      star_card_1t: "Lanzamiento rápido",
+      star_card_1d: "En línea en 72 horas.",
+      star_card_2t: "Listo para móvil",
+      star_card_2d: "Pensado primero para teléfonos.",
+      star_card_3t: "SEO básico",
+      star_card_3d: "Estructura limpia para buscadores.",
+      star_card_4t: "Captación de leads",
+      star_card_4d: "Convierte visitas en contactos.",
+
+      home_services_title: "Nuestros servicios",
+      home_services_sub: "Soluciones digitales prácticas diseñadas para ayudar a crecer a pequeños negocios.",
+      svc_card_1t: "Desarrollo web",
+      svc_card_1d: "Sitios modernos optimizados para rendimiento, SEO y experiencia de usuario.",
+      svc_card_2t: "Automatización",
+      svc_card_2d: "Sistemas inteligentes que reducen trabajo repetitivo y ahorran tiempo.",
+      svc_card_3t: "Visibilidad digital",
+      svc_card_3d: "Mejor estructura, confianza y capacidad de encontrarte en línea.",
+      svc_card_4t: "Soluciones a medida",
+      svc_card_4d: "Herramientas digitales prácticas construidas alrededor de las necesidades reales de tu negocio.",
+      home_services_btn: "Explorar todos los servicios",
+
+      home_work_tag: "Proyecto destacado",
+      home_work_title: "Trabajo real para negocios locales reales",
+      home_work_text: "Construimos sitios limpios y prácticos que ayudan a los negocios locales a verse profesionales, generar confianza y conseguir más contactos.",
+      home_work_case_title: "RCR Barber Shop",
+      home_work_case_text: "Sitio multipágina con presentación de servicios, soporte para reservas y una presencia digital más fuerte para una marca local.",
+      home_work_btn: "Ver caso de estudio",
+      home_work_btn2: "Visitar sitio web",
+
+      home_bottom_title: "Construyamos algo que funcione para tu negocio.",
+      home_bottom_text: "Cuéntanos qué necesitas. Te recomendaremos la solución más simple que dé resultados.",
+      home_bottom_btn: "Contáctanos"
     }
   },
 
@@ -253,6 +319,60 @@ const pageI18n = {
       pkg3_b3: "Rapports & suivi",
 
       pkg_btn: "Demander une consultation gratuite"
+    },
+
+    es: {
+      svc_h1: "Servicios",
+      svc_sub: "Soluciones digitales prácticas creadas para negocios locales: sitios web, automatización y herramientas a medida.",
+      svc_header_btn: "Obtén una consulta gratuita",
+
+      svc1_title: "Sitios web profesionales",
+      svc1_desc: "Sitios modernos que generan confianza y atraen clientes.",
+      svc1_b1: "Pensados para móvil, carga rápida",
+      svc1_b2: "Llamado a la acción claro (llamadas, formularios, reservas)",
+      svc1_b3: "SEO básico (títulos, estructura, velocidad)",
+      svc1_b4: "Integración con Google Maps y reseñas",
+
+      svc2_title: "Automatización de negocio",
+      svc2_desc: "Reduce trabajo repetitivo y mantente organizado.",
+      svc2_b1: "Sistemas de citas y reservas",
+      svc2_b2: "Formularios en línea y captación de leads",
+      svc2_b3: "Confirmaciones y recordatorios automáticos",
+      svc2_b4: "Flujos simples (correo + herramientas)",
+
+      svc3_title: "Sistemas de gestión",
+      svc3_desc: "Herramientas personalizadas para seguimiento y reportes.",
+      svc3_b1: "Dashboards y reportes",
+      svc3_b2: "Inventario / seguimiento de clientes",
+      svc3_b3: "Paneles de administración simples (seguros)",
+      svc3_b4: "Soluciones con base de datos",
+
+      svc_help_t: "¿No sabes qué necesitas?",
+      svc_help_d: "Cuéntanos qué tipo de negocio tienes y cuál es tu problema principal. Te recomendaremos la solución más simple que dé resultados.",
+      svc_help_btn: "Solicitar consulta gratuita",
+
+      pkg_title: "Paquetes populares",
+      pkg_sub: "Puntos de partida simples. Podemos personalizar lo que necesites.",
+
+      pkg1_t: "Sitio web inicial",
+      pkg1_d: "Perfecto para nuevos negocios que necesitan una presencia limpia y profesional.",
+      pkg1_b1: "Inicio + Servicios + Contacto",
+      pkg1_b2: "Diseño mobile-first",
+      pkg1_b3: "Configuración SEO básica",
+
+      pkg2_t: "Sitio web de negocio + leads",
+      pkg2_d: "Creado para captar contactos y convertir visitantes en clientes.",
+      pkg2_b1: "Formularios + llamado a la acción",
+      pkg2_b2: "Google Maps y reseñas",
+      pkg2_b3: "Flujo de contacto",
+
+      pkg3_t: "Automatización / Sistemas",
+      pkg3_d: "Para negocios que quieren ahorrar tiempo y mantenerse organizados.",
+      pkg3_b1: "Sistema de citas",
+      pkg3_b2: "Dashboard administrativo",
+      pkg3_b3: "Reportes y seguimiento",
+
+      pkg_btn: "Solicitar consulta gratuita"
     }
   },
 
@@ -453,6 +573,105 @@ const pageI18n = {
       exp_final_title: "Prêt à lancer votre entreprise rapidement?",
       exp_final_sub: "Soyez en ligne rapidement avec un site professionnel conçu pour inspirer confiance et générer des résultats.",
       exp_final_btn: "Commencer"
+    },
+
+    es: {
+      exp_tag: "Rápido. Accesible. Hecho para lanzar.",
+      exp_h1: "Lanza el sitio web de tu negocio en 72 horas",
+      exp_lead: "Launch 72H ayuda a pequeños negocios a estar en línea rápidamente con un sitio limpio, moderno y adaptado a móvil, diseñado para verse profesional y captar contactos.",
+      exp_cta1: "Inicia tu lanzamiento",
+      exp_cta2: "Ver precio",
+      exp_trust: "Ideal para negocios que necesitan una presencia en línea fuerte y rápida, sin una gran inversión inicial.",
+
+      exp_for_title: "Para quién es Launch 72H",
+      exp_for_sub: "Diseñado para negocios que necesitan velocidad, credibilidad y una presencia real en línea.",
+      exp_for_1t: "Nuevos negocios",
+      exp_for_1d: "Ponte en línea rápido con una presencia realmente profesional.",
+      exp_for_2t: "Contratistas y servicios",
+      exp_for_2d: "Consigue más contactos con un sitio en el que la gente confíe.",
+      exp_for_3t: "Salones y barberías",
+      exp_for_3d: "Perfecto para marcas que necesitan páginas listas para servicios, contacto y reservas.",
+      exp_for_4t: "Consultores",
+      exp_for_4d: "Haz que tu negocio se vea establecido en línea sin esperar semanas.",
+
+      exp_inc_title: "Qué incluye",
+      exp_inc_sub: "Todo lo necesario para lanzar rápido y empezar a generar confianza en línea.",
+      exp_inc_1t: "Hasta 5 páginas",
+      exp_inc_1d: "Inicio, servicios, nosotros, contacto y una página extra si hace falta.",
+      exp_inc_2t: "Adaptado a móvil",
+      exp_inc_2d: "Una experiencia limpia en teléfonos y tabletas.",
+      exp_inc_3t: "Captación de leads",
+      exp_inc_3d: "Formularios y secciones CTA que ayudan a convertir visitantes en contactos.",
+      exp_inc_4t: "SEO básico",
+      exp_inc_4d: "Títulos, descripciones, estructura y bases para negocio local.",
+      exp_inc_5t: "SSL y configuración",
+      exp_inc_5d: "Conectamos el dominio y nos aseguramos de que todo salga en línea de forma segura.",
+      exp_inc_6t: "30 días de soporte",
+      exp_inc_6d: "Soporte menor después del lanzamiento para que no te quedes solo.",
+
+      exp_proc_title: "Cómo funciona",
+      exp_proc_sub: "Un proceso simple diseñado para avanzar rápido sin caos.",
+      exp_proc_1t: "Envía tu contenido",
+      exp_proc_1d: "Logo, textos, fotos, servicios e información básica del negocio.",
+      exp_proc_2t: "Nosotros construimos",
+      exp_proc_2d: "Diseñamos y desarrollamos tu sitio rápido y de forma limpia.",
+      exp_proc_3t: "Tú revisas",
+      exp_proc_3d: "Revisas y pides los últimos pequeños cambios.",
+      exp_proc_4t: "Lanzamiento",
+      exp_proc_4d: "Tu sitio sale en línea y empieza a trabajar para tu negocio.",
+
+      exp_price_tag: "Paquete Launch 72H",
+      exp_price: "$399 CAD",
+      exp_price_sub: "Sitio web profesional entregado en 72 horas.",
+      exp_price_b1: "Hasta 5 páginas personalizadas",
+      exp_price_b2: "Diseño responsive para móvil",
+      exp_price_b3: "Formularios de contacto y captación de leads",
+      exp_price_b4: "Optimización SEO básica",
+      exp_price_b5: "Seguridad SSL incluida",
+      exp_price_b6: "30 días de soporte incluidos",
+      exp_price_btn: "Comenzar",
+
+      exp_compare_title: "Por qué Launch 72H supera al DIY",
+      exp_compare_sub: "Los constructores de sitios parecen fáciles hasta que te quitan tiempo y aun así se ven promedio.",
+      exp_tbl_feature: "Característica",
+      exp_tbl_express: "Launch 72H",
+      exp_tbl_diy: "Constructor DIY",
+      exp_tbl_1f: "Tiempo para lanzar",
+      exp_tbl_1e: "72 horas",
+      exp_tbl_1d: "Semanas o meses",
+      exp_tbl_2f: "Calidad del diseño",
+      exp_tbl_2e: "Profesional",
+      exp_tbl_2d: "Basado en plantillas",
+      exp_tbl_3f: "Configuración técnica",
+      exp_tbl_3e: "Hecho por nosotros",
+      exp_tbl_3d: "Lo haces tú",
+      exp_tbl_4f: "Nivel de estrés",
+      exp_tbl_4e: "Bajo",
+      exp_tbl_4d: "Alto",
+      exp_tbl_5f: "Hecho para convertir",
+      exp_tbl_5e: "Sí",
+      exp_tbl_5d: "Normalmente no",
+
+      exp_test_title: "Lo que quieren los dueños de negocio",
+      exp_test_sub: "La meta es simple: estar en línea rápido y verse profesional.",
+      exp_test_1q: "“Solo necesito un sitio limpio que haga que mi negocio se vea real y profesional.”",
+      exp_test_1a: "— Dueño típico de negocio local",
+      exp_test_2q: "“No tengo tiempo para aprender a usar un constructor web. Necesito que se haga rápido.”",
+      exp_test_2a: "— Proveedor de servicios",
+      exp_test_3q: "“Si mis clientes me buscan en línea, necesito algo sólido en lo que puedan confiar.”",
+      exp_test_3a: "— Dueño de pequeño negocio",
+
+      exp_faq_title: "Preguntas frecuentes",
+      exp_faq_1q: "¿De verdad 72 horas son suficientes para un sitio de calidad?",
+      exp_faq_1a: "Sí, siempre que el proyecto sea enfocado, el contenido esté listo y el objetivo sea un sitio empresarial limpio, no una plataforma enorme y personalizada.",
+      exp_faq_2q: "¿Qué necesitas de mí para empezar?",
+      exp_faq_2a: "El nombre de tu negocio, tu logo si tienes uno, tus textos, servicios, fotos y tus datos de contacto.",
+      exp_faq_3q: "¿Puedo agregar más funciones después?",
+      exp_faq_3a: "Claro. Launch 72H es una base fuerte. Después se pueden agregar más páginas, SEO, automatización o funciones extra.",
+
+      exp_final_title: "¿Listo para lanzar tu negocio rápido?",
+      exp_final_sub: "Ponte en línea rápidamente con un sitio profesional diseñado para generar confianza y resultados.",
+      exp_final_btn: "Empezar"
     }
   },
 
@@ -505,6 +724,31 @@ const pageI18n = {
       form_message: "Message",
       form_send: "Envoyer",
       form_note: "On répond habituellement dans les 24 heures."
+    },
+
+    es: {
+      contact_h1: "Contacto",
+      contact_sub: "Cuéntanos qué necesitas. Te responderemos con un siguiente paso claro.",
+      contact_call_btn: "Llamar ahora",
+
+      contact_info_t: "Información de contacto",
+      contact_phone_t: "Teléfono",
+      contact_email_t: "Correo",
+      contact_web_t: "Sitio web",
+      contact_loc_t: "Ubicación",
+
+      contact_help_t: "Qué incluir en tu mensaje",
+      contact_help_b1: "Tu tipo de negocio",
+      contact_help_b2: "Qué quieres mejorar",
+      contact_help_b3: "Tu plazo o tiempo estimado (si tienes uno)",
+
+      contact_form_t: "Enviar un mensaje",
+      form_name: "Nombre",
+      form_email: "Correo",
+      form_business: "Negocio",
+      form_message: "Mensaje",
+      form_send: "Enviar mensaje",
+      form_note: "Normalmente respondemos dentro de 24 horas."
     }
   },
 
@@ -551,6 +795,28 @@ const pageI18n = {
       about_cta_t: "Construisons quelque chose d’utile pour votre entreprise.",
       about_cta_d: "Expliquez votre besoin et nous proposerons la solution la plus simple.",
       about_cta_btn: "Commencer"
+    },
+
+    es: {
+      about_h1: "Nosotros",
+      about_sub: "Ayudamos a pequeños negocios a lanzar herramientas digitales prácticas que realmente mejoran sus operaciones.",
+
+      about_story_t: "Nuestro enfoque",
+      about_story_p1: "Muchos pequeños negocios saben que necesitan un sitio web o mejores herramientas digitales, pero no quieren pasar meses gestionando un proyecto complejo.",
+      about_story_p2: "GABAN Solutions Numériques se enfoca en soluciones digitales simples y prácticas que ayudan a los negocios a verse profesionales en línea y operar con más eficiencia.",
+      about_story_p3: "Nuestro objetivo no es vender software complicado, sino construir herramientas que realmente ayuden a los negocios a crecer.",
+
+      about_values_t: "En qué nos enfocamos",
+      about_val_1t: "Velocidad",
+      about_val_1d: "Los proyectos avanzan rápido y evitan complejidad innecesaria.",
+      about_val_2t: "Herramientas prácticas",
+      about_val_2d: "Todo lo que construimos tiene un uso real para el negocio.",
+      about_val_3t: "Comunicación clara",
+      about_val_3d: "Los clientes siempre saben qué está pasando y cuál es el siguiente paso.",
+
+      about_cta_t: "Construyamos algo útil para tu negocio.",
+      about_cta_d: "Cuéntanos qué necesitas y te recomendaremos la solución más simple.",
+      about_cta_btn: "Iniciar conversación"
     }
   },
 
@@ -600,6 +866,18 @@ const pageI18n = {
       redwood_h6: "Consultation CTA",
       redwood_btn_live: "Visit Website",
       redwood_btn_services: "View Services",
+
+      redwood_stat_1t: "Lead flow clarity",
+      redwood_stat_1d: "Clear explanation of how leads move through the sales process.",
+
+      redwood_stat_2t: "Structured process",
+      redwood_stat_2d: "Organized service flow that makes the offer easier to understand.",
+
+      redwood_stat_3t: "Consultation-focused",
+      redwood_stat_3d: "Built to guide visitors toward booking a call or consultation.",
+
+      redwood_stat_4t: "Growth-oriented messaging",
+      redwood_stat_4d: "Content designed around follow-up, visibility, and sales improvement.",
 
       work_cta_t: "Want a similar result for your business?",
       work_cta_d: "Tell us what you do and what you need. We’ll propose a simple plan and a clear next step.",
@@ -652,9 +930,84 @@ const pageI18n = {
       redwood_btn_live: "Visiter le site",
       redwood_btn_services: "Voir les services",
 
+      redwood_stat_1t: "Clarté du parcours des leads",
+      redwood_stat_1d: "Explication claire de la façon dont les leads avancent dans le processus de vente.",
+
+      redwood_stat_2t: "Processus structuré",
+      redwood_stat_2d: "Parcours de service organisé qui rend l’offre plus facile à comprendre.",
+
+      redwood_stat_3t: "Axé sur la consultation",
+      redwood_stat_3d: "Conçu pour guider les visiteurs vers la prise d’appel ou de consultation.",
+
+      redwood_stat_4t: "Message orienté croissance",
+      redwood_stat_4d: "Contenu pensé autour du suivi, de la visibilité et de l’amélioration des ventes.",
+
       work_cta_t: "Vous voulez un résultat similaire pour votre entreprise?",
       work_cta_d: "Dites-nous ce que vous faites et ce dont vous avez besoin. On vous proposera un plan simple et une prochaine étape claire.",
       work_cta_btn: "Démarrer votre projet"
+    },
+
+    es: {
+      work_h1: "Nuestros trabajos",
+      work_sub: "Proyectos reales creados para negocios locales, enfocados en claridad, marca y resultados prácticos.",
+      work_header_btn: "Iniciar tu proyecto",
+
+      featured_tag: "Proyecto destacado",
+      rcr_intro: "Sitio multipágina para una barbería local con integración de reservas, presentación de servicios y una estructura enfocada en generar confianza.",
+      rcr_need_t: "Necesidad del cliente",
+      rcr_need_d: "RCR necesitaba una presencia profesional en línea que reflejara su identidad premium y facilitara a los clientes explorar servicios, ver horarios y reservar citas.",
+      rcr_build_t: "Lo que construimos",
+      rcr_build_d: "Un sitio multipágina con marca propia que incluye inicio, página de servicios, ubicación y horarios, integración de reservas, galería y secciones orientadas a reseñas.",
+      rcr_high_t: "Puntos destacados del proyecto",
+      rcr_h1: "Diseño mobile-first",
+      rcr_h2: "Integración de reservas",
+      rcr_h3: "Página de precios",
+      rcr_h4: "Sección de galería",
+      rcr_h5: "Google Maps integrado",
+      rcr_h6: "Embudo de reseñas",
+      rcr_btn_live: "Visitar sitio web",
+      rcr_btn_start: "Iniciar tu proyecto",
+
+      stat_1t: "Estructura multipágina",
+      stat_1d: "Inicio, servicios, ubicación y flujo listo para reservas.",
+      stat_2t: "Enfocado en móvil",
+      stat_2d: "Construido para verse fuerte en teléfonos y tabletas.",
+      stat_3t: "Listo para reservas",
+      stat_3d: "Ruta CTA clara hacia la reserva de citas.",
+      stat_4t: "Marca sólida",
+      stat_4d: "Identidad visual premium en negro y dorado.",
+
+      redwood_tag: "Proyecto de cliente",
+      redwood_intro: "Sitio estratégico para un negocio enfocado en la estructura del proceso de ventas, sistemas de seguimiento y mayor visibilidad de la actividad diaria.",
+      redwood_need_t: "Necesidad del cliente",
+      redwood_need_d: "Redwood necesitaba una forma más clara de explicar su oferta y mostrar cómo su sistema ayuda a las empresas a organizar leads, mejorar seguimiento, reducir oportunidades perdidas y entender qué pasa dentro del pipeline de ventas.",
+      redwood_build_t: "Lo que construimos",
+      redwood_build_d: "Un sitio limpio de servicios con una narrativa fuerte de problema / solución, pasos de implementación, testimonios, presentación de precios y llamados a la acción orientados a consulta.",
+      redwood_high_t: "Puntos destacados del proyecto",
+      redwood_h1: "Landing page de servicio",
+      redwood_h2: "Claridad de la oferta",
+      redwood_h3: "Flujo problema / solución",
+      redwood_h4: "Pasos de implementación",
+      redwood_h5: "Testimonios",
+      redwood_h6: "CTA de consulta",
+      redwood_btn_live: "Visitar sitio web",
+      redwood_btn_services: "Ver servicios",
+
+      redwood_stat_1t: "Claridad en el flujo de leads",
+      redwood_stat_1d: "Explicación clara de cómo avanzan los leads dentro del proceso de ventas.",
+
+      redwood_stat_2t: "Proceso estructurado",
+      redwood_stat_2d: "Flujo de servicio organizado que hace más fácil entender la oferta.",
+
+      redwood_stat_3t: "Enfocado en consulta",
+      redwood_stat_3d: "Construido para guiar a los visitantes a reservar una llamada o consulta.",
+
+      redwood_stat_4t: "Mensaje orientado al crecimiento",
+      redwood_stat_4d: "Contenido diseñado alrededor de seguimiento, visibilidad y mejora en ventas.",
+
+      work_cta_t: "¿Quieres un resultado similar para tu negocio?",
+      work_cta_d: "Cuéntanos a qué te dedicas y qué necesitas. Te propondremos un plan simple y un siguiente paso claro.",
+      work_cta_btn: "Iniciar tu proyecto"
     }
   }
 };
@@ -680,12 +1033,17 @@ function applyTranslations(pageName, lang) {
 
   const btnEN = document.getElementById("btnEN");
   const btnFR = document.getElementById("btnFR");
+  const btnES = document.getElementById("btnES");
 
-  if (btnEN && btnFR) {
+  if (btnEN && btnFR && btnES) {
     btnEN.classList.toggle("btn-dark", lang === "en");
     btnEN.classList.toggle("btn-outline-dark", lang !== "en");
+
     btnFR.classList.toggle("btn-dark", lang === "fr");
     btnFR.classList.toggle("btn-outline-dark", lang !== "fr");
+
+    btnES.classList.toggle("btn-dark", lang === "es");
+    btnES.classList.toggle("btn-outline-dark", lang !== "es");
 
     btnEN.onclick = () => {
       localStorage.setItem("lang", "en");
@@ -695,6 +1053,11 @@ function applyTranslations(pageName, lang) {
     btnFR.onclick = () => {
       localStorage.setItem("lang", "fr");
       applyTranslations(pageName, "fr");
+    };
+
+    btnES.onclick = () => {
+      localStorage.setItem("lang", "es");
+      applyTranslations(pageName, "es");
     };
   }
 }

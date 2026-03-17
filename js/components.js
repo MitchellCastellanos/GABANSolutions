@@ -25,6 +25,7 @@ function renderNavbar(activePage = "") {
         <div class="ms-lg-3 mt-3 mt-lg-0 d-flex align-items-center gap-2">
           <button class="btn btn-outline-dark btn-sm" id="btnEN" type="button">EN</button>
           <button class="btn btn-outline-dark btn-sm" id="btnFR" type="button">FR</button>
+          <button id="btnES" class="btn btn-sm btn-outline-dark" type="button">ES</button>
         </div>
       </div>
     </div>
