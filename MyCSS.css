@@ -126,31 +126,29 @@ PORTFOLIO CASE STUDY IMAGES
 =============================== */
 
 #rcr img,
+#aca img,
 #redwood img{
   width:100%;
   height:auto;
   border-radius:18px;
 }
 
-#rcr img{
+#rcr img,
+#aca img{
   box-shadow:0 10px 30px rgba(0,0,0,0.15);
   transition:transform .35s ease, box-shadow .35s ease;
 }
 
-#rcr img:hover{
+#rcr img:hover,
+#aca img:hover{
   transform:scale(1.02);
   box-shadow:0 18px 38px rgba(0,0,0,0.20);
 }
 
-/* Redwood intentionally without shadow */
-#redwood img{
-  box-shadow:none;
-  transition:transform .3s ease;
-}
-
-#redwood img:hover{
-  transform:scale(1.01);
-  box-shadow:none;
+#aca img{
+  border-radius:18px !important;
+  overflow:hidden;
+  display:block;
 }
 
 /* ===============================
@@ -227,6 +225,7 @@ RESPONSIVE
   }
 
   #rcr img,
+  #aca img,
   #redwood img{
     margin-bottom:1rem;
   }
