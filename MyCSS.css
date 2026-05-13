@@ -767,6 +767,17 @@ MI TARJETA PRO (Mexico division)
   border:1px solid #f0d98a;
 }
 
+/* ----- Premium websites upsell ----- */
+.mt-upsell-section{
+  background:linear-gradient(180deg, #ffffff 0%, #faf8f1 100%);
+  border-top:1px solid var(--gaban-border);
+}
+
+.mt-upsell-card-cta{
+  background:linear-gradient(135deg, #fff8e1 0%, #ffffff 100%);
+  border:1px solid #f0d98a !important;
+}
+
 /* ----- FAQ ----- */
 .mt-faq{
   max-width:780px;
