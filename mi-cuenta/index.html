@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es-MX">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Mi Cuenta | Mi Tarjeta Pro · GABAN Solutions</title>
+  <meta name="description" content="Panel de tu tarjeta digital Mi Tarjeta Pro.">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#111111">
+
+  <link rel="icon" href="../Images/favicon.ico">
+  <link rel="apple-touch-icon" href="../Images/apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://api.qrserver.com" crossorigin>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../MyCSS.css">
+
+  <style>
+    .mc-shell{ background:#fafafa; min-height:100vh; }
+    .mc-preview{
+      width:100%; max-width:340px; aspect-ratio:9/19;
+      border-radius:24px; border:8px solid #1a1a1a;
+      overflow:hidden; box-shadow:0 25px 60px rgba(0,0,0,0.25);
+      background:#0a0a0a;
+    }
+    .mc-preview iframe{ width:100%; height:100%; border:0; display:block; }
+    .mc-card{ border-radius:18px; }
+    .mc-qr-box{ background:#fff; border-radius:14px; padding:14px; display:inline-block; }
+    .mc-qr-box img{ width:200px; height:200px; }
+    .mc-locked{
+      min-height:100vh; display:grid; place-items:center; padding:20px; text-align:center;
+    }
+    .copy-btn-flash{ background:#198754 !important; color:#fff !important; border-color:#198754 !important; }
+  </style>
+</head>
+<body class="mc-shell">
+
+<div id="site-navbar"></div>
+
+<div id="mcApp">
+  <!-- loading state -->
+  <div class="container py-5 text-center">
+    <div class="spinner-border text-warning" role="status"></div>
+    <div class="mt-3 text-muted small">Cargando tu cuenta…</div>
+  </div>
+</div>
+
+<div id="site-footer"></div>
+
+<script src="../js/components.js"></script>
+<script src="../js/i18n.js"></script>
+<script src="../js/mi-cuenta.js"></script>
+<script>
+  mountSharedLayout("mi-tarjeta");
+  initI18n("home");
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

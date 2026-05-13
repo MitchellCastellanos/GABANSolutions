@@ -1,0 +1,174 @@
+// ============================================================
+// Mi Tarjeta Pro · Panel cliente (token-gated, sin backend)
+// URL: /mi-cuenta/?token=<token>&n=<slug>
+// ============================================================
+
+(function () {
+  const app = document.getElementById("mcApp");
+  if (!app) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const slug = (params.get("n") || "").trim().toLowerCase().replace(/[^a-z0-9-]/g, "");
+  const token = (params.get("token") || "").trim();
+
+  function escapeHtml(str) {
+    return String(str ?? "")
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+
+  function renderLocked(message) {
+    app.innerHTML = `
+      <div class="mc-locked">
+        <div>
+          <div class="display-1 mb-3">🔒</div>
+          <h1 class="h4 fw-bold">${escapeHtml(message || "Token inválido")}</h1>
+          <p class="text-muted">Si crees que es un error, contáctanos.</p>
+          <a href="../contact.html" class="btn btn-dark">Contactar a GABAN</a>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderDashboard(data) {
+    const publicUrl = `${window.location.origin}/negocio/?n=${encodeURIComponent(data.slug)}`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=8&color=111111&bgcolor=FFFFFF&data=${encodeURIComponent(publicUrl)}`;
+    const qrDownloadUrl = `https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&margin=20&format=png&color=111111&bgcolor=FFFFFF&data=${encodeURIComponent(publicUrl)}`;
+    const changeUrl = data.changeRequestUrl || "../contact.html";
+
+    app.innerHTML = `
+      <header class="hero hero-mt bg-dark text-white py-5">
+        <div class="container">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <span class="badge text-bg-warning fw-semibold">Mi Tarjeta Pro</span>
+            <span class="badge text-bg-success">En vivo</span>
+          </div>
+          <h1 class="display-6 fw-bold mb-1">Hola, ${escapeHtml(data.business?.name || "tu negocio")}</h1>
+          <p class="text-white-50 mb-0">Tu tarjeta digital está activa. Aquí puedes ver tu link, descargar tu QR y pedir cambios.</p>
+        </div>
+      </header>
+
+      <section class="section">
+        <div class="container">
+          <div class="row g-4">
+
+            <div class="col-lg-5 text-center">
+              <div class="mc-preview mx-auto">
+                <iframe src="../negocio/?n=${encodeURIComponent(data.slug)}" title="Preview de tu tarjeta"></iframe>
+              </div>
+              <a href="${escapeHtml(publicUrl)}" target="_blank" rel="noopener" class="btn btn-outline-dark mt-3">
+                <i class="bi bi-box-arrow-up-right me-1"></i> Abrir en nueva pestaña
+              </a>
+            </div>
+
+            <div class="col-lg-7">
+              <div class="row g-3">
+
+                <div class="col-md-12">
+                  <div class="card mc-card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                      <h2 class="h6 fw-bold text-uppercase mb-3"><i class="bi bi-link-45deg me-1"></i>Tu link público</h2>
+                      <div class="input-group">
+                        <input id="mcLinkInput" type="text" class="form-control" readonly value="${escapeHtml(publicUrl)}">
+                        <button id="mcCopyBtn" class="btn btn-dark" type="button"><i class="bi bi-clipboard me-1"></i>Copiar</button>
+                      </div>
+                      <div class="form-text small mt-2">Comparte este link en bio de Instagram, WhatsApp Business, recibos, etc.</div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="card mc-card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 text-center">
+                      <h2 class="h6 fw-bold text-uppercase mb-3"><i class="bi bi-qr-code me-1"></i>Tu QR</h2>
+                      <div class="mc-qr-box">
+                        <img src="${qrUrl}" alt="QR de tu tarjeta digital">
+                      </div>
+                      <div class="mt-3 d-flex flex-column gap-2">
+                        <a href="${qrDownloadUrl}" download="qr-${escapeHtml(data.slug)}.png" class="btn btn-dark btn-sm">
+                          <i class="bi bi-download me-1"></i> Descargar PNG
+                        </a>
+                        <a href="${qrDownloadUrl}" target="_blank" rel="noopener" class="btn btn-outline-dark btn-sm">
+                          <i class="bi bi-printer me-1"></i> Versión imprimible
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="card mc-card border-0 shadow-sm h-100" style="background:linear-gradient(135deg,#fff8e1 0%,#fff 100%);border:1px solid #f0d98a !important;">
+                    <div class="card-body p-4">
+                      <h2 class="h6 fw-bold text-uppercase mb-2"><i class="bi bi-pencil-square me-1"></i>Pedir cambios</h2>
+                      <p class="small text-muted mb-3">Cambios chiquitos (texto, links, colores de la paleta) por solo <strong>$25 MXN</strong> por orden. <a href="../mi-tarjeta.html#politica">Ver qué entra</a>.</p>
+                      <a href="${escapeHtml(changeUrl)}" target="_blank" rel="noopener" class="btn btn-warning w-100 mb-2">
+                        <i class="bi bi-credit-card me-1"></i> Pagar $25 MXN
+                      </a>
+                      <a href="https://wa.me/15142580648?text=Hola%2C%20quiero%20pedir%20cambios%20en%20${encodeURIComponent(data.slug)}" target="_blank" rel="noopener" class="btn btn-outline-dark w-100 btn-sm">
+                        <i class="bi bi-whatsapp me-1"></i> Mandar lista por WhatsApp
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <div class="card mc-card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                      <h2 class="h6 fw-bold text-uppercase mb-2"><i class="bi bi-graph-up-arrow me-1"></i>Estadísticas</h2>
+                      <p class="small text-muted mb-2">Próximamente: ve cuántas personas escanearon tu QR y entraron a tu tarjeta.</p>
+                      <span class="badge text-bg-light border">Coming soon</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+          <div class="text-center mt-5">
+            <div class="text-muted small">¿Algo raro o necesitas ayuda?</div>
+            <a href="https://wa.me/15142580648" target="_blank" rel="noopener" class="btn btn-outline-dark mt-2">
+              <i class="bi bi-whatsapp me-1"></i> Soporte WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+    `;
+
+    // copy-to-clipboard
+    const btn = document.getElementById("mcCopyBtn");
+    const input = document.getElementById("mcLinkInput");
+    btn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(input.value);
+      } catch {
+        input.select();
+        document.execCommand("copy");
+      }
+      const orig = btn.innerHTML;
+      btn.innerHTML = '<i class="bi bi-check-lg me-1"></i>¡Copiado!';
+      btn.classList.add("copy-btn-flash");
+      setTimeout(() => { btn.innerHTML = orig; btn.classList.remove("copy-btn-flash"); }, 1500);
+    });
+  }
+
+  if (!slug || !token) {
+    renderLocked("Falta token o tarjeta en el link");
+    return;
+  }
+
+  fetch(`../negocio/_data/${slug}.json`, { cache: "no-cache" })
+    .then(r => {
+      if (!r.ok) throw new Error("not found");
+      return r.json();
+    })
+    .then(data => {
+      if (!data.ownerToken || data.ownerToken !== token) {
+        renderLocked("Token inválido");
+        return;
+      }
+      renderDashboard(data);
+    })
+    .catch(() => renderLocked("Esta tarjeta no existe"));
+})();

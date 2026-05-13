@@ -1,0 +1,89 @@
+{
+  "slug": "lulu",
+  "theme": "pastel-pink",
+  "language": "es-MX",
+
+  "business": {
+    "name": "Lulú Nail Bar",
+    "subname": "NAIL STUDIO",
+    "verified": true,
+    "tagline": "Tu mejor versión, una uña a la vez",
+    "rating": 4.9,
+    "established": 2024,
+    "logoUrl": "",
+    "city": "Querétaro, México"
+  },
+
+  "status": {
+    "type": "open-hours",
+    "hours": {
+      "mon": "10:00-19:00",
+      "tue": "10:00-19:00",
+      "wed": "10:00-19:00",
+      "thu": "10:00-20:00",
+      "fri": "10:00-20:00",
+      "sat": "10:00-18:00",
+      "sun": "closed"
+    }
+  },
+
+  "primaryCta": {
+    "label": "Reservar cita",
+    "subtitle": "Respuesta por WhatsApp en minutos",
+    "icon": "calendar2-check",
+    "url": "https://wa.me/5214421234567?text=Hola%20Lul%C3%BA%2C%20quiero%20reservar%20cita"
+  },
+
+  "links": [
+    {
+      "label": "Instagram",
+      "subtitle": "@lulu_nailbar",
+      "icon": "instagram",
+      "style": "ig",
+      "url": "https://instagram.com/lulu_nailbar",
+      "popular": true
+    },
+    {
+      "label": "TikTok",
+      "subtitle": "@lulunails",
+      "icon": "tiktok",
+      "style": "tt",
+      "url": "https://tiktok.com/@lulunails"
+    },
+    {
+      "label": "Ubicación",
+      "subtitle": "Plaza del Parque · Querétaro",
+      "icon": "geo-alt-fill",
+      "style": "map",
+      "url": "https://maps.app.goo.gl/example"
+    },
+    {
+      "label": "Deja tu reseña",
+      "subtitle": "Tu opinión nos ayuda mucho",
+      "icon": "star",
+      "style": "menu",
+      "url": "https://g.page/r/example/review"
+    }
+  ],
+
+  "servicesTitle": "SERVICIOS Y PRECIOS",
+  "services": [
+    { "name": "Manicure clásica", "desc": "Limado, cutícula y esmalte", "price": "$180" },
+    { "name": "Manicure semipermanente", "desc": "Dura hasta 3 semanas", "price": "$280" },
+    { "name": "Acrílicas naturales", "desc": "Esculpido + acabado natural", "price": "$450" },
+    { "name": "Acrílicas con diseño", "desc": "Diseño personalizado a mano", "price": "$580" },
+    { "name": "Pedicure spa", "desc": "Exfoliación, masaje y esmalte", "price": "$320" },
+    { "name": "Retiro de gel/acrílico", "desc": "Retiro seguro sin dañar la uña", "price": "$120" }
+  ],
+  "servicesDisclaimer": "Los precios pueden variar según diseño y largo. Consulta por WhatsApp para cotización exacta.",
+
+  "gallery": [
+    "", "", "", "", "", "", "", "", ""
+  ],
+
+  "brandCardCopy": "Donde tus uñas son arte, no rutina.",
+  "copyright": "© 2025 Lulú Nail Bar · Querétaro, México",
+
+  "changeRequestUrl": "https://gabansolutions.lemonsqueezy.com/buy/REPLACE-CHANGES-25MXN",
+  "ownerToken": "lulu-x7a9k2"
+}
