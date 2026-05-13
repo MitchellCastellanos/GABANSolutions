@@ -237,6 +237,26 @@ body{
 }
 .biz-cta-primary:hover{ transform: translateY(-2px); }
 .biz-cta-primary .row-cta{ display:flex; align-items:center; gap:14px; }
+
+/* ----- vCard download ----- */
+.biz-vcard-btn{
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  width:100%; margin:10px 0 18px; padding:12px 16px;
+  background:var(--bg-2);
+  border:1px dashed var(--line-strong);
+  border-radius:14px;
+  color:var(--text);
+  font-size:.95rem; font-weight:600;
+  cursor:pointer;
+  transition: border-color .2s ease, background .2s ease, transform .15s ease;
+}
+.biz-vcard-btn:hover{
+  background:var(--bg-3);
+  border-style:solid;
+  transform: translateY(-1px);
+}
+.biz-vcard-ico{ font-size:1.1rem; line-height:1; }
+
 .biz-cta-primary .ico{ width:46px; height:46px; background: rgba(0,0,0,0.18); border-radius:12px; display:grid; place-items:center; font-size:1.2rem; }
 .biz-cta-primary .t1{ font-family:'Cormorant Garamond', serif; font-size:1.55rem; font-weight:700; letter-spacing:.12em; line-height:1; }
 .biz-cta-primary .t2{ font-size:.82rem; opacity:.85; margin-top:4px; }

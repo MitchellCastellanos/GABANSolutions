@@ -332,33 +332,15 @@ Cuando tomes el form de Tally y construyas el `<slug>.json`:
 
 ---
 
-## 7) Flujo de "una venta" — paso a paso (tú, manual, ~15 min)
+## 7) Onboarding por cliente (operación recurrente)
 
-1. **Notif de Make.com:** "Nueva venta + lista de info recibida".
-2. Abre el row en Notion. Lee el JSON de la columna `notes`.
-3. Descarga los archivos de Drive (logo, fotos).
-4. Optimízalos: logo a 400×400 PNG, fotos a 800px lado largo, JPEG calidad 80. Guárdalos en `/Images/clients/<slug>/`.
-5. Copia `negocio/_data/_example.json` → `negocio/_data/<slug>.json`.
-6. Rellena los campos con la info del cliente. Genera el `ownerToken`.
-7. Commit + push.
-8. (Opcional) Crea `negocio/<slug>.html` con `<meta refresh>` para pretty URL.
-9. Espera ~30 segundos a que GitHub Pages despliegue.
-10. Make.com Scenario C dispara solo y emaila al cliente.
-
-**Total: 10–15 min por cliente** una vez agarras el ritmo.
+El paso a paso de **cada venta** y **cada orden de cambios** vive en **[`docs/CLIENT_ONBOARDING.md`](./docs/CLIENT_ONBOARDING.md)** para no duplicar aquí. Resume: duplicar `_example.json` → `<slug>.json`, assets en `/Images/clients/<slug>/`, token, commit, push; los stubs `negocio/<slug>.html` los genera el GitHub Action si faltan.
 
 ---
 
-## 8) Flujo de "una orden de cambios" — paso a paso (~3 min)
+## 8) Orden de cambios (cliente existente)
 
-1. Cliente paga $25 MXN en Lemon Squeezy o entra a `/mi-cuenta/?token=...`.
-2. Cliente manda lista por Tally embed o WhatsApp.
-3. Abres `negocio/_data/<slug>.json`, editas los campos.
-4. Incrementas `change_orders_this_month` en Notion (manual o vía Make.com).
-5. Commit + push.
-6. Notificas al cliente.
-
-Si es la 2da orden del mes → cobras $50. Si es la 3ra → $75. Si es rediseño completo → manda cotización aparte.
+Ver **sección 2** de [`docs/CLIENT_ONBOARDING.md`](./docs/CLIENT_ONBOARDING.md).
 
 ---
 
@@ -374,10 +356,10 @@ Si es la 2da orden del mes → cobras $50. Si es la 3ra → $75. Si es rediseño
 ## 10) Roadmap V2 (cuando crezca)
 
 - [ ] Mover storage de logos/fotos a Cloudinary (transformaciones gratis, mejor CDN).
-- [ ] GitHub Action que regenere `negocio/<slug>.html` (pretty URL) automáticamente al detectar `_data/<slug>.json` nuevo.
-- [ ] Plausible Analytics ($9/mes) o Umami self-hosted para mostrar al cliente cuántas visitas/escaneos.
+- [x] GitHub Action que genere stubs `negocio/<slug>.html` al agregar `_data/<slug>.json` (no sobrescribe archivos existentes).
+- [ ] Plausible Analytics ($9/mes) o Umami self-hosted (hooks en `negocio/index.html` y `mi-cuenta/index.html`; ver `docs/CLIENT_ONBOARDING.md` §4).
 - [ ] WhatsApp Business API (Twilio) para notificaciones automáticas.
-- [ ] Soporte para tarjetas en EN y FR (clientes outside MX).
+- [x] Soporte básico EN/FR en tarjetas (`language` en JSON; ver `docs/CLIENT_ONBOARDING.md` §3).
 - [ ] Modo NFC: imprimimos tarjetas físicas con chip NFC apuntando al link del cliente.
 
 ---
@@ -390,11 +372,14 @@ Ejecuta esto para verlos todos:
 grep -rn "REPLACE-" --include="*.html" --include="*.json" --include="*.md"
 ```
 
-Debe mostrar:
+Debe mostrar (y tú reemplazas antes de lanzar):
 - `REPLACE-LANZAMIENTO` · `REPLACE-PERSONALIZADO` · `REPLACE-PREMIUM` (Lemon Squeezy)
 - `REPLACE-CHANGES-25MXN` (Lemon Squeezy)
 - `REPLACE-PAYPAL-HANDLE` (PayPal.Me)
 - `REPLACE-FORM-ID` (Tally)
+- `REPLACE-UMAMI_SHARE_STATS_URL` (Umami: URL JSON de *share* para el panel `/mi-cuenta/`)
+
+**Umami (sin secretos en el repo):** en `negocio/index.html` el meta `mitp-umami-config` debe ser JSON `{"src":"https://…/script.js","websiteId":"…"}`. Déjalo vacío (`content=""`) hasta tener instancia. Detalle en `docs/CLIENT_ONBOARDING.md` §4.
 
 Reemplaza todos antes de lanzar.
 

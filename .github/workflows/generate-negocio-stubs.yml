@@ -1,0 +1,83 @@
+name: Generate negocio pretty-url stubs
+
+on:
+  push:
+    branches:
+      - main
+      - 'claude/**'
+    paths:
+      - 'negocio/_data/*.json'
+
+permissions:
+  contents: write
+
+jobs:
+  stubs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate stub HTML when missing
+        run: |
+          python3 <<'PY'
+          import json
+          import pathlib
+
+          root = pathlib.Path("negocio")
+          data_dir = root / "_data"
+          touched = []
+          if not data_dir.is_dir():
+              print("No negocio/_data; skip")
+              pathlib.Path("/tmp/stub_files.txt").write_text("", encoding="utf-8")
+              raise SystemExit(0)
+
+          for path in sorted(data_dir.glob("*.json")):
+              if path.name.startswith("_"):
+                  continue
+              slug = path.stem
+              try:
+                  json.loads(path.read_text(encoding="utf-8"))
+              except json.JSONDecodeError as e:
+                  print("Skip malformed", path, e)
+                  continue
+
+              stub_root = (
+                  "<!DOCTYPE html>\n"
+                  '<html lang="es-MX"><head><meta charset="utf-8">\n'
+                  f'<meta http-equiv="refresh" content="0;url=./?n={slug}">\n'
+                  "<title>Redirigiendo…</title></head>\n"
+                  f'<body><p><a href="./?n={slug}">Seguir a la tarjeta</a></p></body></html>\n'
+              )
+              stub_sub = stub_root.replace("./?n=", "../?n=")
+
+              p1 = root / f"{slug}.html"
+              if not p1.exists():
+                  p1.write_text(stub_root, encoding="utf-8")
+                  touched.append(str(p1))
+
+              sub = root / slug
+              p2 = sub / "index.html"
+              if not p2.exists():
+                  sub.mkdir(parents=True, exist_ok=True)
+                  p2.write_text(stub_sub, encoding="utf-8")
+                  touched.append(str(p2))
+
+          pathlib.Path("/tmp/stub_files.txt").write_text(
+              "\n".join(touched) + ("\n" if touched else ""),
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Commit stubs if any
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -s /tmp/stub_files.txt ]; then
+            git add --pathspec-from-file=/tmp/stub_files.txt
+          fi
+          if git diff --cached --quiet; then
+            echo "No new stubs"
+          else
+            git commit -m "[Mi Tarjeta Pro] Auto-generate negocio/*.html stubs for new _data JSON"
+            git push
+          fi

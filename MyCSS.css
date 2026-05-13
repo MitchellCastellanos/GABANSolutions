@@ -895,3 +895,60 @@ RESPONSIVE
     width:100%;
   }
 }
+
+/* ===============================
+MI CUENTA (client dashboard)
+=============================== */
+
+.mc-shell{
+  background:#fafafa;
+  min-height:100vh;
+}
+
+.mc-preview{
+  width:100%;
+  max-width:340px;
+  aspect-ratio:9/19;
+  border-radius:24px;
+  border:8px solid #1a1a1a;
+  overflow:hidden;
+  box-shadow:0 25px 60px rgba(0,0,0,0.25);
+  background:#0a0a0a;
+}
+
+.mc-preview iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+}
+
+.mc-card{
+  border-radius:18px;
+}
+
+.mc-qr-box{
+  background:#fff;
+  border-radius:14px;
+  padding:14px;
+  display:inline-block;
+}
+
+.mc-qr-box img{
+  width:200px;
+  height:200px;
+}
+
+.mc-locked{
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+  padding:20px;
+  text-align:center;
+}
+
+.copy-btn-flash{
+  background:#198754 !important;
+  color:#fff !important;
+  border-color:#198754 !important;
+}
