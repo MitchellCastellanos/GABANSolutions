@@ -30,6 +30,7 @@
   const elResultTagline = $("mtResultTagline");
   const elResultSlug    = $("mtResultSlug");
   const elResultQR      = $("mtResultQR");
+  const elResultQRLayer = $("mtResultQRLayer");
   const elResultCTA     = $("mtResultCTA");
 
   if (!elGenerate) return; // not on this page
@@ -148,6 +149,10 @@
     }, 800);
   }
 
+  function qrServerUrl(target, px, margin) {
+    return `https://api.qrserver.com/v1/create-qr-code/?size=${px}x${px}&margin=${margin}&ecc=H&color=111111&bgcolor=FFFFFF&data=${encodeURIComponent(target)}`;
+  }
+
   // ----- render result -----
   function renderResult() {
     const slug = elSlug.value || slugify(elName.value) || "mi-negocio";
@@ -176,9 +181,13 @@
       elResultLogo.style.display = "block";
     }
 
-    // dynamic QR pointing to landing with the slug as ref (demo)
+    // QR con logo centrado (ECC H + capa; logo = mismo preview que arriba)
     const qrTarget = `https://gabansolutions.ca/mi-tarjeta.html?demo=${encodeURIComponent(slug)}`;
-    elResultQR.src = `https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=6&color=111111&bgcolor=FFFFFF&data=${encodeURIComponent(qrTarget)}`;
+    elResultQR.src = qrServerUrl(qrTarget, 480, 4);
+    if (elResultQRLayer) {
+      elResultQRLayer.src = elResultLogo.src;
+      elResultQRLayer.style.display = elResultLogo.style.display === "none" ? "none" : "block";
+    }
 
     elPhoneLoading.classList.add("d-none");
     elPhoneResult.classList.remove("d-none");

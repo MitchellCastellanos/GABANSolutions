@@ -56,12 +56,19 @@
     `;
   }
 
+  function qrServerUrl(target, px, margin, format) {
+    const fmt = format === 'svg' ? '&format=svg' : '';
+    return `https://api.qrserver.com/v1/create-qr-code/?size=${px}x${px}&margin=${margin}&ecc=H&color=111111&bgcolor=FFFFFF${fmt}&data=${encodeURIComponent(target)}`;
+  }
+
   function renderDashboard(data) {
     const publicUrl = `${window.location.origin}/negocio/?n=${encodeURIComponent(data.slug)}`;
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=400x400&margin=8&color=111111&bgcolor=FFFFFF&data=${encodeURIComponent(publicUrl)}`;
-    const qrDownloadPng = `https://api.qrserver.com/v1/create-qr-code/?size=2000x2000&margin=24&format=png&color=111111&bgcolor=FFFFFF&data=${encodeURIComponent(publicUrl)}`;
-    const qrDownloadSvg = `https://api.qrserver.com/v1/create-qr-code/?size=2000x2000&margin=24&format=svg&color=111111&bgcolor=FFFFFF&data=${encodeURIComponent(publicUrl)}`;
+    const qrUrl = qrServerUrl(publicUrl, 440, 6);
+    const qrDownloadPng = qrServerUrl(publicUrl, 2000, 24);
+    const qrDownloadSvg = qrServerUrl(publicUrl, 2000, 24, 'svg');
     const changeUrl = data.changeRequestUrl || '../contact.html';
+    const logoUrl = (data.business && data.business.logoUrl) ? escapeHtml(data.business.logoUrl) : '';
+    const logoLayerClass = logoUrl ? 'mt-qr-center-logo' : 'mt-qr-center-logo d-none';
 
     app.innerHTML = `
       <header class="hero hero-mt bg-dark text-white py-5">
@@ -114,7 +121,10 @@
                     <div class="card-body p-4 text-center">
                       <h2 class="h6 fw-bold text-uppercase mb-3"><i class="bi bi-qr-code me-1"></i>Tu QR</h2>
                       <div class="mc-qr-box">
-                        <img src="${qrUrl}" alt="QR de tu tarjeta digital">
+                        <div class="mt-qr-logo-wrap" style="--mt-qr-display:200px">
+                          <img id="mcQrBase" class="mt-qr-base" src="${qrUrl}" alt="QR de tu tarjeta digital">
+                          <img id="mcQrLogoLayer" class="${logoLayerClass}" src="${logoUrl}" alt="" aria-hidden="true" width="1" height="1">
+                        </div>
                       </div>
                       <div class="mt-3 d-flex flex-column gap-2">
                         <a href="${qrDownloadPng}" download="qr-${escapeHtml(data.slug)}.png" class="btn btn-dark btn-sm">

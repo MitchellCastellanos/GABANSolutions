@@ -67,6 +67,8 @@
     email: 'bi-envelope-fill',
     phone: 'bi-telephone-fill',
     shop: 'bi-shop',
+    'link-45deg': 'bi-link-45deg',
+    link: 'bi-link-45deg',
   };
 
   function escapeHtml(str) {
@@ -84,7 +86,7 @@
 
   function withUtm(url) {
     if (!url) return '#';
-    if (/^(wa\.me|https?:\/\/wa\.me|https?:\/\/(www\.)?google\.com\/maps|https?:\/\/maps\.app\.goo\.gl)/.test(url)) return url;
+    if (/^(wa\.me|https?:\/\/wa\.me|https?:\/\/(www\.)?google\.com\/maps|https?:\/\/maps\.google\.com|https?:\/\/maps\.app\.goo\.gl)/.test(url)) return url;
     if (url.startsWith('mailto:') || url.startsWith('tel:')) return url;
     try {
       const u = new URL(url);

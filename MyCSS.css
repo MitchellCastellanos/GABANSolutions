@@ -528,6 +528,48 @@ MI TARJETA PRO (Mexico division)
   border-radius:18px;
 }
 
+/* QR + logo centrado (ECC H en la URL del QR; logo ~30% para que siga escaneando) */
+.mt-qr-logo-wrap{
+  position:relative;
+  display:inline-block;
+  line-height:0;
+}
+
+.mt-qr-logo-wrap .mt-qr-base{
+  display:block;
+  width:var(--mt-qr-display, 220px);
+  max-width:100%;
+  height:auto;
+}
+
+.mt-qr-logo-wrap .mt-qr-center-logo{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%, -50%);
+  width:30%;
+  max-width:30%;
+  height:auto;
+  aspect-ratio:1;
+  object-fit:contain;
+  background:#fff;
+  border-radius:22%;
+  padding:min(2.8vw, 10px);
+  box-sizing:border-box;
+  box-shadow:0 2px 14px rgba(0, 0, 0, 0.14);
+  pointer-events:none;
+}
+
+.mt-qr-logo-wrap--hero{
+  --mt-qr-display:300px;
+}
+
+@media (max-width:575.98px){
+  .mt-qr-logo-wrap--hero{
+    --mt-qr-display:min(86vw, 280px);
+  }
+}
+
 .mt-mockup-card{
   border-radius:18px;
   overflow:hidden;
@@ -735,12 +777,11 @@ MI TARJETA PRO (Mexico division)
   padding:10px 10px 6px;
   border-radius:14px;
   text-align:center;
-  width:160px;
+  display:inline-block;
 }
 
-.mt-result-qr img{
-  width:140px; height:140px;
-  display:block;
+.mt-result-qr .mt-qr-logo-wrap{
+  --mt-qr-display:220px;
 }
 
 /* ----- pricing cards ----- */
@@ -934,9 +975,8 @@ MI CUENTA (client dashboard)
   display:inline-block;
 }
 
-.mc-qr-box img{
-  width:200px;
-  height:200px;
+.mc-qr-box .mt-qr-logo-wrap{
+  --mt-qr-display:200px;
 }
 
 .mc-locked{

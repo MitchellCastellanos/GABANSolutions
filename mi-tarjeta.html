@@ -138,14 +138,18 @@
           <div class="card-body p-4 text-center">
             <div class="text-uppercase small fw-semibold text-muted mb-2">Escanea para conocer</div>
             <h2 class="h6 fw-bold mb-3">Mi Tarjeta Pro</h2>
-            <img
-              src="https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=8&data=https%3A%2F%2Fgabansolutions.ca%2Fmi-tarjeta.html&color=111111&bgcolor=FFFFFF"
-              alt="Código QR que lleva al landing de Mi Tarjeta Pro"
-              class="img-fluid rounded-3 mb-3"
-              width="220" height="220"
-              loading="eager"
-              decoding="async">
-            <div class="small text-muted">gabansolutions.ca/mi-tarjeta</div>
+            <div class="mt-qr-logo-wrap mt-qr-logo-wrap--hero mx-auto">
+              <img
+                class="mt-qr-base rounded-3"
+                src="https://api.qrserver.com/v1/create-qr-code/?size=640x640&margin=4&ecc=H&color=111111&bgcolor=FFFFFF&data=https%3A%2F%2Fgabansolutions.ca%2Fmi-tarjeta.html"
+                alt="Código QR que lleva al landing de Mi Tarjeta Pro"
+                width="300"
+                height="300"
+                loading="eager"
+                decoding="async">
+              <img class="mt-qr-center-logo" src="./Images/apple-touch-icon.png" alt="" aria-hidden="true" width="1" height="1">
+            </div>
+            <div class="small text-muted mt-3">gabansolutions.ca/mi-tarjeta</div>
           </div>
         </div>
       </div>
@@ -464,7 +468,10 @@
               </div>
 
               <div class="mt-result-qr">
-                <img id="mtResultQR" alt="QR de tu tarjeta digital (demo)" src="">
+                <div class="mt-qr-logo-wrap mx-auto" style="--mt-qr-display:220px">
+                  <img id="mtResultQR" class="mt-qr-base rounded-2" alt="QR de tu tarjeta digital (demo)" src="">
+                  <img id="mtResultQRLayer" class="mt-qr-center-logo" alt="" aria-hidden="true" width="1" height="1">
+                </div>
                 <div class="small text-muted mt-2">QR de demo · Escanéalo para ver el flujo real</div>
               </div>
             </div>
