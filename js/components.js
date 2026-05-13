@@ -25,6 +25,12 @@ function renderNavbar(activePage = "") {
             <a class="nav-link ${activePage === "express" ? "active" : ""}" href="./express.html" data-i18n="nav_express">Launch 72H</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link nav-link-mt ${activePage === "mi-tarjeta" ? "active" : ""}" href="./mi-tarjeta.html" data-i18n="nav_mitarjeta">
+              Mi Tarjeta Pro
+              <span class="badge text-bg-warning ms-1 align-middle small">MX</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link ${activePage === "work" ? "active" : ""}" href="./portfolio.html" data-i18n="nav_work">Work</a>
           </li>
           <li class="nav-item">
@@ -57,6 +63,7 @@ function renderFooter() {
         <a class="text-decoration-none me-3" href="./services.html" data-i18n="nav_services">Services</a>
         <a class="text-decoration-none me-3" href="./grow-package.html" data-i18n="nav_grow">Grow Package</a>
         <a class="text-decoration-none me-3" href="./express.html" data-i18n="nav_express">Launch 72H</a>
+        <a class="text-decoration-none me-3" href="./mi-tarjeta.html" data-i18n="nav_mitarjeta">Mi Tarjeta Pro</a>
         <a class="text-decoration-none me-3" href="./portfolio.html" data-i18n="nav_work">Work</a>
         <a class="text-decoration-none me-3" href="./about.html" data-i18n="nav_about">About</a>
         <a class="text-decoration-none" href="./contact.html" data-i18n="nav_contact">Contact</a>
