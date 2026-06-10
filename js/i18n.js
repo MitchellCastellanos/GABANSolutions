@@ -4,21 +4,25 @@
 const globalI18n = {
   en: {
     nav_home: "Home",
+    nav_digital: "Digital",
+    nav_software: "Software",
+    nav_digital: "Digital",
+    nav_software: "Software",
     nav_services: "Services",
     nav_grow: "Grow Package",
     nav_express: "Launch 72H",
-    nav_mitarjeta: "Mi Tarjeta Pro",
+    nav_mitarjeta: "MiMarca.me",
     nav_work: "Work",
     nav_about: "About",
     nav_contact: "Contact",
-    nav_cta: "Free Consultation"
+    nav_cta: "Book a Free Consultation"
   },
   fr: {
     nav_home: "Accueil",
     nav_services: "Services",
     nav_grow: "Grow Package",
     nav_express: "Lancement 72H",
-    nav_mitarjeta: "Mi Tarjeta Pro",
+    nav_mitarjeta: "MiMarca.me",
     nav_work: "Réalisations",
     nav_about: "À propos",
     nav_contact: "Contact",
@@ -26,10 +30,12 @@ const globalI18n = {
   },
   es: {
     nav_home: "Inicio",
+    nav_digital: "Digital",
+    nav_software: "Software",
     nav_services: "Servicios",
     nav_grow: "Grow Package",
     nav_express: "Lanzamiento 72H",
-    nav_mitarjeta: "Mi Tarjeta Pro",
+    nav_mitarjeta: "MiMarca.me",
     nav_work: "Portafolio",
     nav_about: "Nosotros",
     nav_contact: "Contacto",

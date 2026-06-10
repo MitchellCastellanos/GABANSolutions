@@ -9,51 +9,51 @@
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/services.html</loc>
+    <loc>https://digital.gabansolutions.ca/</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
+  </url>
+
+  <url>
+    <loc>https://software.gabansolutions.ca/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <url>
+    <loc>https://gabansolutions.ca/contact.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://gabansolutions.ca/grow-package.html</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.95</priority>
+    <priority>0.85</priority>
   </url>
 
   <url>
     <loc>https://gabansolutions.ca/express.html</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://gabansolutions.ca/mi-tarjeta.html</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-
-  <url>
-    <loc>https://gabansolutions.ca/negocio/demo.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://gabansolutions.ca/onboarding.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <url>
-    <loc>https://gabansolutions.ca/gracias.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
+    <priority>0.85</priority>
   </url>
 
   <url>
     <loc>https://gabansolutions.ca/portfolio.html</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://gabansolutions.ca/work.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
 
   <url>
@@ -63,9 +63,27 @@
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/contact.html</loc>
+    <loc>https://gabansolutions.ca/services.html</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://gabansolutions.ca/negocio/demo.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+  <url>
+    <loc>https://gabansolutions.ca/onboarding.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+  </url>
+
+  <url>
+    <loc>https://gabansolutions.ca/gracias.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
   </url>
 
   <url>
