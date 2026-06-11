@@ -1,0 +1,24 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "digital.gabansolutions.ca"
+        }
+      ],
+      "destination": "/digital.html"
+    },
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "software.gabansolutions.ca"
+        }
+      ],
+      "destination": "/software.html"
+    }
+  ]
+}
