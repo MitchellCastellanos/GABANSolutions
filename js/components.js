@@ -50,7 +50,7 @@ const NAV_LINKS = {
   software: [
     { id: "home", href: "/", i18n: "nav_home", label: "Home" },
     { id: "products", href: "/#products", i18n: "nav_products", label: "Products" },
-    { id: "mitarjeta", href: "/mi-tarjeta.html", i18n: "nav_mitarjeta", label: "MiMarca.me" },
+    { id: "pricing", href: "/pricing.html", i18n: "nav_pricing", label: "Pricing" },
     { id: "program", href: "/#founder-client-program", i18n: "nav_program", label: "Founder Program" },
     { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" }
   ]
@@ -145,10 +145,10 @@ function footerDigital() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_services">Services</h2>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="/#websites" data-i18n="foot_websites">Websites</a></li>
-            <li><a class="text-decoration-none" href="/#seo" data-i18n="foot_seo">Local SEO</a></li>
-            <li><a class="text-decoration-none" href="/#landing-pages" data-i18n="foot_landing">Landing pages</a></li>
-            <li><a class="text-decoration-none" href="/#automations" data-i18n="foot_automations">Automations</a></li>
+            <li><a class="text-decoration-none" href="/websites.html" data-i18n="foot_websites">Websites</a></li>
+            <li><a class="text-decoration-none" href="/seo.html" data-i18n="foot_seo">Local SEO</a></li>
+            <li><a class="text-decoration-none" href="/landing-pages.html" data-i18n="foot_landing">Landing pages</a></li>
+            <li><a class="text-decoration-none" href="/automations.html" data-i18n="foot_automations">Automations</a></li>
           </ul>
         </div>
 
@@ -187,6 +187,7 @@ function footerSoftware() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_program">Program</h2>
           <ul class="list-unstyled small mb-0">
+            <li><a class="text-decoration-none" href="/pricing.html" data-i18n="nav_pricing">Pricing</a></li>
             <li><a class="text-decoration-none" href="/#founder-client-program" data-i18n="nav_program">Founder Program</a></li>
             <li><a class="text-decoration-none" href="/contact.html" data-i18n="nav_contact">Contact</a></li>
           </ul>

@@ -10,6 +10,7 @@ const globalI18n = {
     nav_services: "Services",
     nav_packages: "Packages",
     nav_products: "Products",
+    nav_pricing: "Pricing",
     nav_program: "Founder Program",
     nav_grow: "Grow Package",
     nav_express: "Launch 72H",
@@ -47,6 +48,7 @@ const globalI18n = {
     nav_services: "Services",
     nav_packages: "Forfaits",
     nav_products: "Produits",
+    nav_pricing: "Tarification",
     nav_program: "Programme fondateur",
     nav_grow: "Grow Package",
     nav_express: "Lancement 72H",
@@ -84,6 +86,7 @@ const globalI18n = {
     nav_services: "Servicios",
     nav_packages: "Paquetes",
     nav_products: "Productos",
+    nav_pricing: "Precios",
     nav_program: "Programa fundador",
     nav_grow: "Grow Package",
     nav_express: "Lanzamiento 72H",
@@ -1920,6 +1923,15 @@ const pageI18n = {
 // =========================
 // ENGINE
 // =========================
+
+// Pages can register their own translation dictionary inline (before calling
+// initI18n) instead of bloating this file. Useful for brand/landing pages.
+//   registerPageI18n("garageos", { en:{...}, fr:{...}, es:{...} });
+function registerPageI18n(page, dict) {
+  pageI18n[page] = Object.assign({}, pageI18n[page], dict);
+}
+if (typeof window !== "undefined") window.registerPageI18n = registerPageI18n;
+
 function applyTranslations(lang, page) {
   const globalDict = globalI18n[lang] || globalI18n.en;
   const pageDict = pageI18n[page]?.[lang] || pageI18n[page]?.en || {};
