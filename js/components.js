@@ -179,8 +179,8 @@ function footerSoftware() {
           <h2 class="h6 fw-bold" data-i18n="foot_products">Products</h2>
           <ul class="list-unstyled small mb-0">
             <li><a class="text-decoration-none" href="/mi-tarjeta.html">MiMarca.me</a></li>
-            <li><a class="text-decoration-none" href="/#products">GarageOS</a></li>
-            <li><a class="text-decoration-none" href="/#products">FieldOS</a></li>
+            <li><a class="text-decoration-none" href="/garageos.html">GarageOS</a></li>
+            <li><a class="text-decoration-none" href="/fieldos.html">FieldOS</a></li>
           </ul>
         </div>
 
@@ -219,6 +219,37 @@ function renderFooter(context = "home") {
   `;
 }
 
+// Shared pages (contact, about) serve all three brands from one file.
+// Elements that carry a `data-i18n-digital` / `data-i18n-software` variant
+// get their `data-i18n` key swapped for the active brand BEFORE initI18n
+// runs, so the right copy is translated. A few brand-specific links/values
+// are adjusted directly.
+function applyContextOverrides(context) {
+  if (context === "digital" || context === "software") {
+    document.querySelectorAll(`[data-i18n-${context}]`).forEach(el => {
+      el.setAttribute("data-i18n", el.getAttribute(`data-i18n-${context}`));
+    });
+    document.querySelectorAll(`[data-href-${context}]`).forEach(el => {
+      el.setAttribute("href", el.getAttribute(`data-href-${context}`));
+    });
+    document.querySelectorAll(`[data-value-${context}]`).forEach(el => {
+      el.setAttribute("value", el.getAttribute(`data-value-${context}`));
+    });
+  }
+
+  // Brand-aware "website" reference: always point at the current brand.
+  const webLink = document.getElementById("brand-web-link");
+  if (webLink) {
+    const labels = {
+      home: "gabansolutions.ca",
+      digital: "digital.gabansolutions.ca",
+      software: "software.gabansolutions.ca"
+    };
+    webLink.textContent = labels[context] || labels.home;
+    webLink.setAttribute("href", "/");
+  }
+}
+
 function mountSharedLayout(activePage = "", context) {
   const ctx = context || detectContext();
   const navbarHost = document.getElementById("site-navbar");
@@ -231,4 +262,6 @@ function mountSharedLayout(activePage = "", context) {
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
+
+  applyContextOverrides(ctx);
 }
