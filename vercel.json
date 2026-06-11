@@ -4,7 +4,8 @@
       "source": "/",
       "has": [
         {
-          "type": "host",
+          "type": "header",
+          "key": "host",
           "value": "digital.gabansolutions.ca"
         }
       ],
@@ -14,7 +15,8 @@
       "source": "/",
       "has": [
         {
-          "type": "host",
+          "type": "header",
+          "key": "host",
           "value": "software.gabansolutions.ca"
         }
       ],
