@@ -3,43 +3,118 @@
 // =========================
 const globalI18n = {
   en: {
+    // Navbar
     nav_home: "Home",
     nav_digital: "Digital",
     nav_software: "Software",
-    nav_digital: "Digital",
-    nav_software: "Software",
     nav_services: "Services",
+    nav_packages: "Packages",
+    nav_products: "Products",
+    nav_pricing: "Pricing",
+    nav_program: "Founder Program",
     nav_grow: "Grow Package",
     nav_express: "Launch 72H",
     nav_mitarjeta: "MiMarca.me",
     nav_work: "Work",
     nav_about: "About",
     nav_contact: "Contact",
-    nav_cta: "Book a Free Consultation"
+    nav_cta: "Book a Free Consultation",
+    nav_cta_demo: "Request a Demo",
+    // Footer
+    foot_tagline_home: "Digital presence and business software for local businesses.",
+    foot_tagline_digital: "Websites, local SEO and automation for businesses that want to be found and trusted.",
+    foot_tagline_software: "Ready-to-use software platforms for small businesses that want better operations.",
+    foot_divisions: "Divisions",
+    foot_company: "Company",
+    foot_services: "Services",
+    foot_packages: "Packages",
+    foot_products: "Products",
+    foot_program: "Program",
+    foot_websites: "Websites",
+    foot_seo: "Local SEO",
+    foot_landing: "Landing pages",
+    foot_automations: "Automations",
+    foot_cta_title: "Ready to talk?",
+    foot_cta_title_demo: "Want a demo?",
+    foot_cta_text: "Start with a clear conversation about what your business needs next.",
+    foot_cta_text_digital: "Tell us about your business and we will point you to the right next step.",
+    foot_cta_text_software: "Tell us how your business runs today and we will show you the platform that fits."
   },
   fr: {
+    // Navbar
     nav_home: "Accueil",
+    nav_digital: "Digital",
+    nav_software: "Logiciels",
     nav_services: "Services",
+    nav_packages: "Forfaits",
+    nav_products: "Produits",
+    nav_pricing: "Tarification",
+    nav_program: "Programme fondateur",
     nav_grow: "Grow Package",
     nav_express: "Lancement 72H",
     nav_mitarjeta: "MiMarca.me",
     nav_work: "Réalisations",
     nav_about: "À propos",
     nav_contact: "Contact",
-    nav_cta: "Consultation gratuite"
+    nav_cta: "Consultation gratuite",
+    nav_cta_demo: "Demander une démo",
+    // Footer
+    foot_tagline_home: "Présence numérique et logiciels d’affaires pour les entreprises locales.",
+    foot_tagline_digital: "Sites web, SEO local et automatisation pour les entreprises qui veulent être trouvées et inspirer confiance.",
+    foot_tagline_software: "Logiciels prêts à l’emploi pour les petites entreprises qui veulent de meilleures opérations.",
+    foot_divisions: "Divisions",
+    foot_company: "Entreprise",
+    foot_services: "Services",
+    foot_packages: "Forfaits",
+    foot_products: "Produits",
+    foot_program: "Programme",
+    foot_websites: "Sites web",
+    foot_seo: "SEO local",
+    foot_landing: "Pages d’atterrissage",
+    foot_automations: "Automatisations",
+    foot_cta_title: "Prêt à discuter ?",
+    foot_cta_title_demo: "Vous voulez une démo ?",
+    foot_cta_text: "Commencez par une conversation claire sur ce dont votre entreprise a besoin ensuite.",
+    foot_cta_text_digital: "Parlez-nous de votre entreprise et nous vous indiquerons la bonne prochaine étape.",
+    foot_cta_text_software: "Dites-nous comment fonctionne votre entreprise aujourd’hui et nous vous montrerons la plateforme adaptée."
   },
   es: {
+    // Navbar
     nav_home: "Inicio",
     nav_digital: "Digital",
     nav_software: "Software",
     nav_services: "Servicios",
+    nav_packages: "Paquetes",
+    nav_products: "Productos",
+    nav_pricing: "Precios",
+    nav_program: "Programa fundador",
     nav_grow: "Grow Package",
     nav_express: "Lanzamiento 72H",
     nav_mitarjeta: "MiMarca.me",
     nav_work: "Portafolio",
     nav_about: "Nosotros",
     nav_contact: "Contacto",
-    nav_cta: "Consulta gratis"
+    nav_cta: "Consulta gratis",
+    nav_cta_demo: "Solicitar demo",
+    // Footer
+    foot_tagline_home: "Presencia digital y software de negocio para negocios locales.",
+    foot_tagline_digital: "Sitios web, SEO local y automatización para negocios que quieren ser encontrados y generar confianza.",
+    foot_tagline_software: "Plataformas de software listas para usar para negocios que quieren mejores operaciones.",
+    foot_divisions: "Divisiones",
+    foot_company: "Empresa",
+    foot_services: "Servicios",
+    foot_packages: "Paquetes",
+    foot_products: "Productos",
+    foot_program: "Programa",
+    foot_websites: "Sitios web",
+    foot_seo: "SEO local",
+    foot_landing: "Landing pages",
+    foot_automations: "Automatizaciones",
+    foot_cta_title: "¿Listo para hablar?",
+    foot_cta_title_demo: "¿Quieres una demo?",
+    foot_cta_text: "Empieza con una conversación clara sobre lo que tu negocio necesita ahora.",
+    foot_cta_text_digital: "Cuéntanos sobre tu negocio y te indicaremos el siguiente paso correcto.",
+    foot_cta_text_software: "Cuéntanos cómo opera tu negocio hoy y te mostramos la plataforma que encaja."
   }
 };
 
@@ -1022,7 +1097,20 @@ const pageI18n = {
 
       contact_bottom_t: "Need help choosing the right package?",
       contact_bottom_d: "No problem. Send us your business info and we’ll tell you whether Grow Package, Launch 72H or another option makes the most sense.",
-      contact_bottom_btn: "View Grow Package"
+      contact_bottom_btn: "View Grow Package",
+
+      // Software-context variants (swapped in on software.gabansolutions.ca)
+      contact_sw_req1: "GarageOS — auto repair shop",
+      contact_sw_req2: "FieldOS — field service",
+      contact_sw_req3: "MiMarca.me — digital presence",
+      contact_sw_req4: "Not sure yet — need guidance",
+      contact_sw_opt1: "GarageOS",
+      contact_sw_opt2: "FieldOS",
+      contact_sw_opt3: "MiMarca.me",
+      contact_sw_opt4: "Not sure yet",
+      contact_sw_bottom_t: "Want to see a product in action?",
+      contact_sw_bottom_d: "Tell us how your business runs today and we’ll show you the platform that fits and book a demo.",
+      contact_sw_bottom_btn: "Explore Products"
     },
 
     fr: {
@@ -1072,7 +1160,20 @@ const pageI18n = {
 
       contact_bottom_t: "Besoin d’aide pour choisir le bon forfait ?",
       contact_bottom_d: "Aucun problème. Envoyez-nous les infos de votre entreprise et nous vous dirons si Grow Package, Launch 72H ou une autre option est la meilleure.",
-      contact_bottom_btn: "Voir le Grow Package"
+      contact_bottom_btn: "Voir le Grow Package",
+
+      // Variantes contexte logiciel (software.gabansolutions.ca)
+      contact_sw_req1: "GarageOS — atelier de réparation auto",
+      contact_sw_req2: "FieldOS — service sur le terrain",
+      contact_sw_req3: "MiMarca.me — présence numérique",
+      contact_sw_req4: "Pas certain — besoin d’accompagnement",
+      contact_sw_opt1: "GarageOS",
+      contact_sw_opt2: "FieldOS",
+      contact_sw_opt3: "MiMarca.me",
+      contact_sw_opt4: "Pas certain pour l’instant",
+      contact_sw_bottom_t: "Vous voulez voir un produit en action ?",
+      contact_sw_bottom_d: "Dites-nous comment fonctionne votre entreprise aujourd’hui et nous vous montrerons la plateforme adaptée et planifierons une démo.",
+      contact_sw_bottom_btn: "Voir les produits"
     },
 
     es: {
@@ -1122,7 +1223,20 @@ const pageI18n = {
 
       contact_bottom_t: "¿Necesitas ayuda para elegir el paquete correcto?",
       contact_bottom_d: "No pasa nada. Envíanos la información de tu negocio y te diremos si Grow Package, Launch 72H u otra opción tiene más sentido.",
-      contact_bottom_btn: "Ver Grow Package"
+      contact_bottom_btn: "Ver Grow Package",
+
+      // Variantes de contexto Software (software.gabansolutions.ca)
+      contact_sw_req1: "GarageOS — taller mecánico",
+      contact_sw_req2: "FieldOS — servicio en campo",
+      contact_sw_req3: "MiMarca.me — presencia digital",
+      contact_sw_req4: "Aún no sé — necesito guía",
+      contact_sw_opt1: "GarageOS",
+      contact_sw_opt2: "FieldOS",
+      contact_sw_opt3: "MiMarca.me",
+      contact_sw_opt4: "Aún no estoy seguro",
+      contact_sw_bottom_t: "¿Quieres ver un producto en acción?",
+      contact_sw_bottom_d: "Cuéntanos cómo opera tu negocio hoy y te mostramos la plataforma que encaja y agendamos una demo.",
+      contact_sw_bottom_btn: "Ver productos"
     }
   },
 
@@ -1423,6 +1537,10 @@ const pageI18n = {
     en: {
       about_h1: "About",
       about_sub: "We help small businesses launch practical digital tools that actually improve operations.",
+      about_sub_digital: "We help local businesses get found online and turn visitors into clients with practical websites, SEO and automation.",
+      about_sub_software: "We build ready-to-use software platforms that help small businesses run better operations.",
+      about_p2_digital: "GABAN Digital focuses on simple, practical web and visibility work that helps businesses look professional online and attract more clients.",
+      about_p2_software: "GABAN Software focuses on ready-to-use platforms with optional setup, so businesses get better operations without a long custom project.",
       about_story_t: "Our approach",
       about_story_p1: "Many small businesses know they need a website or better digital tools, but they don’t want to spend months managing a complex project.",
       about_story_p2: "GABAN Solutions Numériques focuses on simple, practical digital solutions that help businesses look professional online and operate more efficiently.",
@@ -1441,6 +1559,10 @@ const pageI18n = {
     fr: {
       about_h1: "À propos",
       about_sub: "Nous aidons les petites entreprises à lancer des outils numériques pratiques qui améliorent réellement leurs opérations.",
+      about_sub_digital: "Nous aidons les entreprises locales à être trouvées en ligne et à transformer les visiteurs en clients grâce à des sites web, du SEO et de l’automatisation.",
+      about_sub_software: "Nous créons des plateformes logicielles prêtes à l’emploi qui aident les petites entreprises à mieux fonctionner.",
+      about_p2_digital: "GABAN Digital se concentre sur un travail web et de visibilité simple et pratique qui aide les entreprises à paraître professionnelles en ligne et à attirer plus de clients.",
+      about_p2_software: "GABAN Software se concentre sur des plateformes prêtes à l’emploi avec configuration optionnelle, pour de meilleures opérations sans long projet sur mesure.",
       about_story_t: "Notre approche",
       about_story_p1: "Beaucoup de petites entreprises savent qu’elles ont besoin d’un site web ou de meilleurs outils numériques, mais elles ne veulent pas passer des mois à gérer un projet complexe.",
       about_story_p2: "GABAN Solutions Numériques se concentre sur des solutions numériques simples et pratiques qui aident les entreprises à paraître professionnelles en ligne et à fonctionner plus efficacement.",
@@ -1459,6 +1581,10 @@ const pageI18n = {
     es: {
       about_h1: "Nosotros",
       about_sub: "Ayudamos a pequeños negocios a lanzar herramientas digitales prácticas que realmente mejoran sus operaciones.",
+      about_sub_digital: "Ayudamos a negocios locales a ser encontrados en línea y a convertir visitantes en clientes con sitios web, SEO y automatización prácticos.",
+      about_sub_software: "Creamos plataformas de software listas para usar que ayudan a pequeños negocios a operar mejor.",
+      about_p2_digital: "GABAN Digital se enfoca en trabajo web y de visibilidad simple y práctico que ayuda a los negocios a verse profesionales en línea y atraer más clientes.",
+      about_p2_software: "GABAN Software se enfoca en plataformas listas para usar con configuración opcional, para mejores operaciones sin un proyecto largo a medida.",
       about_story_t: "Nuestro enfoque",
       about_story_p1: "Muchos pequeños negocios saben que necesitan un sitio web o mejores herramientas digitales, pero no quieren pasar meses gestionando un proyecto complejo.",
       about_story_p2: "GABAN Solutions Numériques se enfoca en soluciones digitales simples y prácticas que ayudan a los negocios a verse profesionales en línea y operar con más eficiencia.",
@@ -1797,6 +1923,15 @@ const pageI18n = {
 // =========================
 // ENGINE
 // =========================
+
+// Pages can register their own translation dictionary inline (before calling
+// initI18n) instead of bloating this file. Useful for brand/landing pages.
+//   registerPageI18n("garageos", { en:{...}, fr:{...}, es:{...} });
+function registerPageI18n(page, dict) {
+  pageI18n[page] = Object.assign({}, pageI18n[page], dict);
+}
+if (typeof window !== "undefined") window.registerPageI18n = registerPageI18n;
+
 function applyTranslations(lang, page) {
   const globalDict = globalI18n[lang] || globalI18n.en;
   const pageDict = pageI18n[page]?.[lang] || pageI18n[page]?.en || {};

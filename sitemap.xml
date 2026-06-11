@@ -15,9 +15,51 @@
   </url>
 
   <url>
+    <loc>https://digital.gabansolutions.ca/websites.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://digital.gabansolutions.ca/seo.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://digital.gabansolutions.ca/landing-pages.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://digital.gabansolutions.ca/automations.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://software.gabansolutions.ca/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
+  </url>
+
+  <url>
+    <loc>https://software.gabansolutions.ca/garageos.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://software.gabansolutions.ca/fieldos.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://software.gabansolutions.ca/pricing.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
 
   <url>
