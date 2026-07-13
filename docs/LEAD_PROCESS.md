@@ -4,8 +4,6 @@
 > lead that comes in through `contact.html` or `mockup.html`. This is the
 > process that was missing: previously a lead landed in a Formspree email
 > and nothing defined what happened next. This doc is that definition.
->
-> Mi Tarjeta Pro (Mexico) has its own separate pipeline — see `AUTOMATION.md`.
 
 ---
 
@@ -21,7 +19,6 @@ warmer than a cold `contact-page-direct` lead.
 | `mockup-website` | Clicked "Request my real website" after generating a free preview on `/mockup.html` |
 | `mockup-final-cta` | Clicked the bottom CTA on `/mockup.html` without generating a preview |
 | `contact-page-direct` | Came straight to `/contact.html` (nav, footer, or another page's "Start Your Project" button) |
-| `upsell-premium`, `mimarca-*` | Came from the Mi Tarjeta Pro page — a Mexico-market website upsell |
 
 The lead payload (see `api/lead.js`) always includes: `name`, `contact`
 (phone or email, visitor's choice), `need`, and optionally `business`,
@@ -46,7 +43,7 @@ moment it arrives (manually today; automatable later via `LEAD_WEBHOOK_URL`
 2. **Contacted** — first reply sent (SLA: within 2 business hours of arrival).
 3. **Qualifying** — back-and-forth to confirm scope, budget fit, timeline.
 4. **Proposal Sent** — quote/package recommendation sent, awaiting decision.
-5. **Won** — paid / contract confirmed → move to `docs/CLIENT_ONBOARDING.md`-style delivery process.
+5. **Won** — paid / contract confirmed → move to delivery.
 6. **Lost / Not a fit** — log why (price, timing, scope mismatch) — this list is worth reviewing monthly to see if the offer or the funnel needs to change.
 
 Card fields to capture: name, contact, need, ref (source), package interest,
@@ -82,9 +79,7 @@ current online presence if any, rough timeline) and move the card to
 If set, every lead is also POSTed (fire-and-forget, non-blocking) to that
 URL as JSON — point it at a Make.com/Zapier scenario to auto-create the
 Notion card and send yourself a push notification the moment a lead lands,
-instead of relying on checking email. This mirrors the Make.com pattern
-already documented for Mi Tarjeta Pro in `AUTOMATION.md`, applied to the
-main business.
+instead of relying on checking email.
 
 Until that's wired up, the manual version of this process (check email/
 Formspree, log the card yourself) is the process. The point of writing it

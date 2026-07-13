@@ -178,7 +178,6 @@ function footerSoftware() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_products">Products</h2>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="/mi-tarjeta.html">MiMarca.me</a></li>
             <li><a class="text-decoration-none" href="/garageos.html">GarageOS</a></li>
             <li><a class="text-decoration-none" href="/fieldos.html">FieldOS</a></li>
           </ul>
