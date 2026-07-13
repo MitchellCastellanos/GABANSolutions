@@ -992,3 +992,192 @@ MI CUENTA (client dashboard)
   color:#fff !important;
   border-color:#198754 !important;
 }
+
+/* ===============================
+WEBSITE MOCKUP BUILDER (main business, /mockup.html)
+=============================== */
+
+.wm-builder-section{
+  background:
+    radial-gradient(800px 400px at 80% 10%, rgba(201,162,39,0.12), transparent 60%),
+    linear-gradient(135deg, var(--gaban-dark) 0%, #1b1b1b 100%) !important;
+}
+
+.wm-browser-wrap{
+  display:flex;
+  justify-content:center;
+}
+
+.wm-browser{
+  width:100%;
+  max-width:560px;
+  min-height:420px;
+  border-radius:16px;
+  background:#0a0a0a;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 30px 80px rgba(0,0,0,0.6);
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+}
+
+.wm-browser-empty,
+.wm-browser-loading{
+  flex:1;
+  min-height:420px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:2rem;
+  color:#bbb;
+}
+
+.wm-browser-empty .text-muted,
+.wm-browser-loading .text-muted{
+  color:#777 !important;
+}
+
+.wm-browser-result{
+  position:relative;
+}
+
+.wm-browser-bar{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:10px 14px;
+  background:#1c1c1c;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+
+.wm-dot{
+  width:9px; height:9px;
+  border-radius:50%;
+  background:#444;
+  display:inline-block;
+}
+
+.wm-url-fake{
+  margin-left:10px;
+  background:#111;
+  border-radius:6px;
+  padding:3px 12px;
+  font-size:.72rem;
+  color:#999;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.wm-watermark{
+  position:absolute;
+  top:44px;
+  right:-30px;
+  transform:rotate(35deg);
+  background:rgba(255,193,7,0.95);
+  color:#111;
+  font-weight:800;
+  font-size:.65rem;
+  letter-spacing:.1em;
+  padding:3px 34px;
+  z-index:3;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+.wm-site{
+  --wm-accent:#c9a227;
+  color:#f3f3f3;
+  padding:0 0 20px;
+}
+
+.wm-site-nav{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:14px 18px;
+  border-bottom:1px solid rgba(255,255,255,0.08);
+}
+
+.wm-site-brand{
+  font-weight:700;
+  margin-right:auto;
+}
+
+.wm-nav-link{
+  font-size:.82rem;
+  color:rgba(255,255,255,0.65);
+}
+
+.wm-nav-cta{
+  background:var(--wm-accent);
+  color:#0c0a05;
+  font-weight:700;
+  font-size:.75rem;
+  padding:6px 14px;
+  border-radius:20px;
+}
+
+.wm-site-hero{
+  text-align:center;
+  padding:34px 20px 26px;
+}
+
+.wm-site-hero-name{
+  font-weight:800;
+  font-size:1.5rem;
+  margin-bottom:8px;
+  color:var(--wm-accent);
+}
+
+.wm-site-hero-tagline{
+  font-size:.9rem;
+  opacity:.8;
+  margin-bottom:18px;
+}
+
+.wm-site-hero-cta{
+  display:inline-block;
+  background:var(--wm-accent);
+  color:#0c0a05;
+  font-weight:700;
+  font-size:.85rem;
+  padding:10px 22px;
+  border-radius:8px;
+}
+
+.wm-site-features{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+  padding:0 18px 20px;
+}
+
+.wm-feature{
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:10px;
+  padding:14px 8px;
+  text-align:center;
+  font-size:.72rem;
+}
+
+.wm-feature i{
+  display:block;
+  color:var(--wm-accent);
+  font-size:1.1rem;
+  margin-bottom:6px;
+}
+
+.wm-site-footer{
+  text-align:center;
+  font-size:.65rem;
+  color:rgba(255,255,255,0.4);
+  padding-top:6px;
+}
+
+@media (max-width:575.98px){
+  .wm-site-features{
+    grid-template-columns:1fr;
+  }
+}

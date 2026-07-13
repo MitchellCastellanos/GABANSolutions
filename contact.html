@@ -141,7 +141,10 @@
         </div>
 
         <div id="form-success-alert" class="alert alert-success d-none" role="status">
-          Thanks — your message was sent successfully. We usually reply within 24 hours.
+          Thanks — we've got it. We usually reply within a few hours, often sooner. Want to skip the wait? <a href="https://wa.me/15142580648?text=Hi%2C%20I%20just%20sent%20a%20request%20on%20gabansolutions.ca" target="_blank" rel="noopener" class="alert-link">Message us on WhatsApp</a>.
+        </div>
+        <div id="form-error-alert" class="alert alert-danger d-none" role="alert">
+          Something went wrong sending your message. Please try again, or reach us directly on <a href="https://wa.me/15142580648" target="_blank" rel="noopener" class="alert-link">WhatsApp</a> or <a href="mailto:hello@gabansolutions.ca" class="alert-link">email</a>.
         </div>
 
         <div class="row g-3 mb-4">
@@ -205,26 +208,23 @@
         </div>
 
         <div class="p-4 bg-light border rounded-4 reveal-up">
-          <h3 class="h6 fw-bold mb-2" data-i18n="contact_help_t">What to include in your message</h3>
-          <ul class="small mb-0">
-            <li data-i18n="contact_help_b1">What your business does</li>
-            <li data-i18n="contact_help_b2">What you want to improve</li>
-            <li data-i18n="contact_help_b3">Which package interests you</li>
-            <li data-i18n="contact_help_b4">Your timeline or urgency</li>
-          </ul>
+          <h3 class="h6 fw-bold mb-2" data-i18n="contact_help_t">Prefer to skip the form?</h3>
+          <p class="small mb-0" data-i18n="contact_help_b1">
+            Message us directly on WhatsApp and we'll pick it up from there — no form required.
+          </p>
+          <a class="btn btn-outline-dark btn-sm mt-3" href="https://wa.me/15142580648?text=Hi%2C%20I%27d%20like%20to%20talk%20about%20a%20project" target="_blank" rel="noopener" data-i18n="contact_help_wa_btn">
+            <i class="bi bi-whatsapp me-1"></i>Chat on WhatsApp
+          </a>
         </div>
       </div>
 
       <div class="col-lg-7">
         <div class="reveal-right">
-          <h2 class="h5 fw-bold mb-3" data-i18n="contact_form_t">Send a message</h2>
+          <h2 class="h5 fw-bold mb-1" data-i18n="contact_form_t">Send a message</h2>
+          <p class="text-muted small mb-3" data-i18n="contact_form_sub">Three quick fields — that's it. We'll ask for anything else when we reply.</p>
         </div>
 
-        <form
-          action="https://formspree.io/f/mwvrpnnk"
-          method="POST"
-          class="card border-0 shadow-sm reveal-right"
-        >
+        <form id="leadForm" class="card border-0 shadow-sm reveal-right" novalidate>
           <div class="card-body p-4">
 
             <div class="row g-3">
@@ -234,62 +234,84 @@
               </div>
 
               <div class="col-md-6">
-                <label class="form-label" for="email" data-i18n="form_email">Email</label>
-                <input id="email" name="email" type="email" class="form-control" autocomplete="email" required>
+                <label class="form-label" for="contact" data-i18n="form_contact">WhatsApp or email</label>
+                <input id="contact" name="contact" type="text" class="form-control" autocomplete="email" placeholder="514-258-0648 or you@business.com" required>
               </div>
-
-              <div class="col-md-6">
-                <label class="form-label" for="business" data-i18n="form_business">Business</label>
-                <input id="business" name="business" type="text" class="form-control" autocomplete="organization">
-              </div>
-
-              <div class="col-md-6">
-                <label class="form-label" for="businessType" data-i18n="form_business_type">Business type</label>
-                <input id="businessType" name="business_type" type="text" class="form-control" placeholder="Barbershop, restaurant, contractor...">
-              </div>
-
-<div class="col-md-6">
-  <label class="form-label" for="package" data-i18n="form_package">Interested in</label>
-  <select id="package" name="package" class="form-select">
-    <option value="" data-i18n="form_package_opt0">Select an option</option>
-    <option value="Grow Package - One Page" data-value-software="GarageOS" data-i18n="form_package_opt1" data-i18n-software="contact_sw_opt1">Grow Package — One Page</option>
-    <option value="Grow Package - Multi Page" data-value-software="FieldOS" data-i18n="form_package_opt2" data-i18n-software="contact_sw_opt2">Grow Package — Multi Page</option>
-    <option value="Launch 72H" data-value-software="MiMarca.me" data-i18n="form_package_opt3" data-i18n-software="contact_sw_opt3">Launch 72H</option>
-    <option value="Not sure yet" data-i18n="form_package_opt4" data-i18n-software="contact_sw_opt4">Not sure yet</option>
-  </select>
-</div>
-
-<div class="col-md-6">
-  <label class="form-label" for="timeline" data-i18n="form_timeline">Timeline</label>
-  <select id="timeline" name="timeline" class="form-select">
-    <option value="" data-i18n="form_timeline_opt0">Select a timeline</option>
-    <option value="As soon as possible" data-i18n="form_timeline_opt1">As soon as possible</option>
-    <option value="Within 1-2 weeks" data-i18n="form_timeline_opt2">Within 1–2 weeks</option>
-    <option value="This month" data-i18n="form_timeline_opt3">This month</option>
-    <option value="Just exploring" data-i18n="form_timeline_opt4">Just exploring</option>
-  </select>
-</div>
 
               <div class="col-12">
-                <label class="form-label" for="message" data-i18n="form_message">Message</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  class="form-control"
-                  rows="6"
-                  required
-                  placeholder="Tell us what your business does, what you want to improve, and what kind of help you need."
-                ></textarea>
+                <label class="form-label" for="need" data-i18n="form_need">What do you need?</label>
+                <select id="need" name="need" class="form-select" required>
+                  <option value="" data-i18n="form_need_opt0">Select an option</option>
+                  <option value="New website" data-i18n="form_need_opt1">A new website</option>
+                  <option value="Improve existing website" data-i18n="form_need_opt2">Improve my current website</option>
+                  <option value="Business software / operations" data-i18n="form_need_opt3">Business software (GarageOS / FieldOS)</option>
+                  <option value="Not sure yet" data-i18n="form_need_opt4">Not sure yet — point me in the right direction</option>
+                </select>
+              </div>
+
+              <div class="col-12">
+                <button class="btn btn-link p-0 small text-decoration-none" type="button" data-bs-toggle="collapse" data-bs-target="#moreDetails" aria-expanded="false" aria-controls="moreDetails" data-i18n="form_more_toggle">
+                  <i class="bi bi-plus-circle me-1"></i>Add more details (optional)
+                </button>
+              </div>
+
+              <div class="col-12 collapse" id="moreDetails">
+                <div class="row g-3 pt-2 border-top mt-1">
+                  <div class="col-md-6">
+                    <label class="form-label" for="business" data-i18n="form_business">Business name</label>
+                    <input id="business" name="business" type="text" class="form-control" autocomplete="organization">
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label" for="timeline" data-i18n="form_timeline">Timeline</label>
+                    <select id="timeline" name="timeline" class="form-select">
+                      <option value="" data-i18n="form_timeline_opt0">Select a timeline</option>
+                      <option value="As soon as possible" data-i18n="form_timeline_opt1">As soon as possible</option>
+                      <option value="Within 1-2 weeks" data-i18n="form_timeline_opt2">Within 1–2 weeks</option>
+                      <option value="This month" data-i18n="form_timeline_opt3">This month</option>
+                      <option value="Just exploring" data-i18n="form_timeline_opt4">Just exploring</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label" for="package" data-i18n="form_package">Interested in</label>
+                    <select id="package" name="package" class="form-select">
+                      <option value="" data-i18n="form_package_opt0">Select an option</option>
+                      <option value="Grow Package - One Page" data-value-software="GarageOS" data-i18n="form_package_opt1" data-i18n-software="contact_sw_opt1">Grow Package — One Page</option>
+                      <option value="Grow Package - Multi Page" data-value-software="FieldOS" data-i18n="form_package_opt2" data-i18n-software="contact_sw_opt2">Grow Package — Multi Page</option>
+                      <option value="Launch 72H" data-value-software="MiMarca.me" data-i18n="form_package_opt3" data-i18n-software="contact_sw_opt3">Launch 72H</option>
+                      <option value="Not sure yet" data-i18n="form_package_opt4" data-i18n-software="contact_sw_opt4">Not sure yet</option>
+                    </select>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label" for="message" data-i18n="form_message">Message</label>
+                    <textarea
+                      id="message"
+                      name="message"
+                      class="form-control"
+                      rows="4"
+                      placeholder="Tell us what your business does, what you want to improve, and what kind of help you need."
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Honeypot: hidden from real visitors, catches basic bots -->
+              <div class="d-none" aria-hidden="true">
+                <label for="companyWebsite">Leave this field empty</label>
+                <input id="companyWebsite" name="company_website" type="text" tabindex="-1" autocomplete="off">
               </div>
             </div>
 
-            <input type="hidden" name="_subject" value="New GABAN Grow Package / Website Inquiry" data-value-software="New GABAN Software demo request" data-value-digital="New GABAN Digital project inquiry">
-            <input type="hidden" name="_next" value="https://gabansolutions.ca/contact.html?sent=1">
+            <input type="hidden" id="refField" name="ref" value="">
 
-            <button class="btn btn-dark w-100 mt-4" type="submit" data-i18n="form_send">Send Message</button>
+            <button class="btn btn-dark w-100 mt-4" type="submit" id="leadFormSubmit" data-i18n="form_send">
+              Send Message
+            </button>
 
             <div class="small text-muted mt-3" data-i18n="form_note">
-              We usually reply within 24 hours with a clear next step.
+              We usually reply within a few hours with a clear next step.
             </div>
           </div>
         </form>
@@ -325,11 +347,101 @@
   initI18n("contact");
 
   const params = new URLSearchParams(window.location.search);
+  const refField = document.getElementById("refField");
+  if (refField) refField.value = params.get("ref") || "";
+
+  // Pre-fill from upstream CTAs (e.g. the free mockup preview) so a
+  // visitor who already told us what they need doesn't repeat themselves.
+  const needParam = params.get("need");
+  const needField = document.getElementById("need");
+  if (needParam && needField && [...needField.options].some(o => o.value === needParam)) {
+    needField.value = needParam;
+  }
+  const businessParam = params.get("business");
+  const businessField = document.getElementById("business");
+  if (businessParam && businessField) {
+    businessField.value = businessParam;
+    document.getElementById("moreDetails")?.classList.add("show");
+  }
+
   if (params.get("sent") === "1") {
     const alertBox = document.getElementById("form-success-alert");
-    if (alertBox) {
-      alertBox.classList.remove("d-none");
-    }
+    if (alertBox) alertBox.classList.remove("d-none");
+  }
+
+  const FORMSPREE_FALLBACK = "https://formspree.io/f/mwvrpnnk";
+  const leadForm = document.getElementById("leadForm");
+
+  if (leadForm) {
+    leadForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const successBox = document.getElementById("form-success-alert");
+      const errorBox = document.getElementById("form-error-alert");
+      const submitBtn = document.getElementById("leadFormSubmit");
+      errorBox?.classList.add("d-none");
+
+      const data = Object.fromEntries(new FormData(leadForm).entries());
+      if (!data.name?.trim() || !data.contact?.trim() || !data.need) {
+        leadForm.reportValidity();
+        return;
+      }
+
+      data.source_path = window.location.pathname;
+      data.lang = localStorage.getItem("siteLang") || "en";
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+
+      let delivered = false;
+      try {
+        const res = await fetch("/api/lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(data)
+        });
+        delivered = res.ok;
+      } catch (err) {
+        delivered = false;
+      }
+
+      // Fallback for environments where /api/lead isn't served
+      // (e.g. a static-only host) — post straight to Formspree.
+      if (!delivered) {
+        try {
+          const fsRes = await fetch(FORMSPREE_FALLBACK, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Accept: "application/json" },
+            body: JSON.stringify({
+              name: data.name,
+              contact: data.contact,
+              need: data.need,
+              business: data.business || "-",
+              package: data.package || "-",
+              timeline: data.timeline || "-",
+              message: data.message || "(No additional details provided)",
+              ref: data.ref || "contact-page-direct",
+              _subject: `New GABAN lead — ${data.need || "general inquiry"} (${data.ref || "direct"})`
+            })
+          });
+          delivered = fsRes.ok;
+        } catch (err) {
+          delivered = false;
+        }
+      }
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Send Message";
+
+      if (delivered) {
+        leadForm.reset();
+        successBox?.classList.remove("d-none");
+        successBox?.scrollIntoView({ behavior: "smooth", block: "center" });
+      } else {
+        errorBox?.classList.remove("d-none");
+        errorBox?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    });
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
