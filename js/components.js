@@ -43,7 +43,7 @@ const NAV_LINKS = {
   digital: [
     { id: "home", href: "/", i18n: "nav_home", label: "Home" },
     { id: "services", href: "/#services", i18n: "nav_services", label: "Services" },
-    { id: "packages", href: "/#packages", i18n: "nav_packages", label: "Packages" },
+    { id: "pricing", href: "/digital-pricing.html", i18n: "nav_pricing", label: "Pricing" },
     { id: "work", href: "/work.html", i18n: "nav_work", label: "Work" },
     { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" }
   ],
@@ -155,6 +155,7 @@ function footerDigital() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_packages">Packages</h2>
           <ul class="list-unstyled small mb-0">
+            <li><a class="text-decoration-none" href="/digital-pricing.html" data-i18n="nav_pricing">Pricing</a></li>
             <li><a class="text-decoration-none" href="/express.html" data-i18n="nav_express">Launch 72H</a></li>
             <li><a class="text-decoration-none" href="/grow-package.html" data-i18n="nav_grow">Grow Package</a></li>
             <li><a class="text-decoration-none" href="/work.html" data-i18n="nav_work">Work</a></li>
@@ -178,7 +179,6 @@ function footerSoftware() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_products">Products</h2>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="/mi-tarjeta.html">MiMarca.me</a></li>
             <li><a class="text-decoration-none" href="/garageos.html">GarageOS</a></li>
             <li><a class="text-decoration-none" href="/fieldos.html">FieldOS</a></li>
           </ul>

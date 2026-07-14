@@ -1,9 +1,7 @@
 // ============================================================
 // FREE WEBSITE MOCKUP BUILDER (main GABAN business)
-// Same "instant fake preview -> strong CTA" pattern as
-// js/mi-tarjeta.js, adapted for a website-style browser-frame
-// preview instead of a phone card, and trilingual (EN/FR/ES)
-// to match the main site instead of being Spanish-only.
+// Instant fake preview -> strong CTA, trilingual (EN/FR/ES)
+// to match the main site.
 // ============================================================
 
 (function () {

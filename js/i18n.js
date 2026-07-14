@@ -14,7 +14,6 @@ const globalI18n = {
     nav_program: "Founder Program",
     nav_grow: "Grow Package",
     nav_express: "Launch 72H",
-    nav_mitarjeta: "MiMarca.me",
     nav_work: "Work",
     nav_about: "About",
     nav_contact: "Contact",
@@ -52,7 +51,6 @@ const globalI18n = {
     nav_program: "Programme fondateur",
     nav_grow: "Grow Package",
     nav_express: "Lancement 72H",
-    nav_mitarjeta: "MiMarca.me",
     nav_work: "Réalisations",
     nav_about: "À propos",
     nav_contact: "Contact",
@@ -90,7 +88,6 @@ const globalI18n = {
     nav_program: "Programa fundador",
     nav_grow: "Grow Package",
     nav_express: "Lanzamiento 72H",
-    nav_mitarjeta: "MiMarca.me",
     nav_work: "Portafolio",
     nav_about: "Nosotros",
     nav_contact: "Contacto",
@@ -1110,11 +1107,11 @@ const pageI18n = {
       // Software-context variants (swapped in on software.gabansolutions.ca)
       contact_sw_req1: "GarageOS — auto repair shop",
       contact_sw_req2: "FieldOS — field service",
-      contact_sw_req3: "MiMarca.me — digital presence",
+      contact_sw_req3: "Custom platform — built for your workflow",
       contact_sw_req4: "Not sure yet — need guidance",
       contact_sw_opt1: "GarageOS",
       contact_sw_opt2: "FieldOS",
-      contact_sw_opt3: "MiMarca.me",
+      contact_sw_opt3: "Custom platform",
       contact_sw_opt4: "Not sure yet",
       contact_sw_bottom_t: "Want to see a product in action?",
       contact_sw_bottom_d: "Tell us how your business runs today and we’ll show you the platform that fits and book a demo.",
@@ -1178,11 +1175,11 @@ const pageI18n = {
       // Variantes contexte logiciel (software.gabansolutions.ca)
       contact_sw_req1: "GarageOS — atelier de réparation auto",
       contact_sw_req2: "FieldOS — service sur le terrain",
-      contact_sw_req3: "MiMarca.me — présence numérique",
+      contact_sw_req3: "Plateforme personnalisée — adaptée à votre flux de travail",
       contact_sw_req4: "Pas certain — besoin d’accompagnement",
       contact_sw_opt1: "GarageOS",
       contact_sw_opt2: "FieldOS",
-      contact_sw_opt3: "MiMarca.me",
+      contact_sw_opt3: "Plateforme personnalisée",
       contact_sw_opt4: "Pas certain pour l’instant",
       contact_sw_bottom_t: "Vous voulez voir un produit en action ?",
       contact_sw_bottom_d: "Dites-nous comment fonctionne votre entreprise aujourd’hui et nous vous montrerons la plateforme adaptée et planifierons une démo.",
@@ -1246,11 +1243,11 @@ const pageI18n = {
       // Variantes de contexto Software (software.gabansolutions.ca)
       contact_sw_req1: "GarageOS — taller mecánico",
       contact_sw_req2: "FieldOS — servicio en campo",
-      contact_sw_req3: "MiMarca.me — presencia digital",
+      contact_sw_req3: "Plataforma personalizada — hecha para tu flujo de trabajo",
       contact_sw_req4: "Aún no sé — necesito guía",
       contact_sw_opt1: "GarageOS",
       contact_sw_opt2: "FieldOS",
-      contact_sw_opt3: "MiMarca.me",
+      contact_sw_opt3: "Plataforma personalizada",
       contact_sw_opt4: "Aún no estoy seguro",
       contact_sw_bottom_t: "¿Quieres ver un producto en acción?",
       contact_sw_bottom_d: "Cuéntanos cómo opera tu negocio hoy y te mostramos la plataforma que encaja y agendamos una demo.",
@@ -1964,8 +1961,39 @@ function applyTranslations(lang, page) {
   localStorage.setItem("siteLang", lang);
 }
 
+// First-visit only (no stored preference yet): guess EN/FR/ES from the
+// visitor's browser language and timezone instead of always defaulting
+// to English. Once a language is picked — here or via the nav buttons —
+// applyTranslations() persists it to localStorage and this is skipped
+// on every later visit.
+function detectDefaultLang() {
+  try {
+    const browserLangs = (navigator.languages && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language || "en"]).map(l => l.toLowerCase());
+
+    const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || "").toLowerCase();
+    const mexicoTimezones = [
+      "america/mexico_city", "america/tijuana", "america/cancun", "america/monterrey",
+      "america/merida", "america/hermosillo", "america/chihuahua", "america/mazatlan",
+      "america/bahia_banderas", "america/matamoros", "america/ciudad_juarez"
+    ];
+    if (mexicoTimezones.includes(tz)) return "es";
+
+    for (const l of browserLangs) {
+      if (l.startsWith("es")) return "es";
+      if (l.startsWith("fr")) return "fr";
+      if (l.startsWith("en")) return "en";
+    }
+  } catch (e) {
+    // Ignore and fall through to the default below.
+  }
+  return "en";
+}
+
 function initI18n(page) {
-  const lang = localStorage.getItem("siteLang") || "en";
+  const stored = localStorage.getItem("siteLang");
+  const lang = stored || detectDefaultLang();
 
   applyTranslations(lang, page);
 
