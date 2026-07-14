@@ -1961,8 +1961,39 @@ function applyTranslations(lang, page) {
   localStorage.setItem("siteLang", lang);
 }
 
+// First-visit only (no stored preference yet): guess EN/FR/ES from the
+// visitor's browser language and timezone instead of always defaulting
+// to English. Once a language is picked — here or via the nav buttons —
+// applyTranslations() persists it to localStorage and this is skipped
+// on every later visit.
+function detectDefaultLang() {
+  try {
+    const browserLangs = (navigator.languages && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language || "en"]).map(l => l.toLowerCase());
+
+    const tz = (Intl.DateTimeFormat().resolvedOptions().timeZone || "").toLowerCase();
+    const mexicoTimezones = [
+      "america/mexico_city", "america/tijuana", "america/cancun", "america/monterrey",
+      "america/merida", "america/hermosillo", "america/chihuahua", "america/mazatlan",
+      "america/bahia_banderas", "america/matamoros", "america/ciudad_juarez"
+    ];
+    if (mexicoTimezones.includes(tz)) return "es";
+
+    for (const l of browserLangs) {
+      if (l.startsWith("es")) return "es";
+      if (l.startsWith("fr")) return "fr";
+      if (l.startsWith("en")) return "en";
+    }
+  } catch (e) {
+    // Ignore and fall through to the default below.
+  }
+  return "en";
+}
+
 function initI18n(page) {
-  const lang = localStorage.getItem("siteLang") || "en";
+  const stored = localStorage.getItem("siteLang");
+  const lang = stored || detectDefaultLang();
 
   applyTranslations(lang, page);
 
