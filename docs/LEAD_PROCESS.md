@@ -7,6 +7,23 @@
 
 ---
 
+## 0) Outbound leads (new — see `leadgen/README.md`)
+
+Not every lead is inbound anymore. The **Lead Radar** system in
+`leadgen/` finds local businesses on Google Maps, scores how much they'd
+benefit from a new site, and runs its own outreach + follow-up sequence
+by email — all tracked in a separate Airtable pipeline, not this board.
+
+The two systems meet at one point: when an outbound prospect **replies**,
+move their Airtable record to "Respondió" and bring them into this
+document's process starting at §3 "Contacted" — same SLA, same board,
+same script, just with `ref = outbound-proposal` instead of a `mockup-*`
+or `contact-page-direct` value. Everything below this point (§1-§6)
+applies unchanged to inbound leads; outbound leads join it once they've
+responded.
+
+---
+
 ## 1) Where leads come from and what we know about them
 
 Every lead now arrives with a `ref` value showing which CTA sent them, and
@@ -19,6 +36,7 @@ warmer than a cold `contact-page-direct` lead.
 | `mockup-website` | Clicked "Request my real website" after generating a free preview on `/mockup.html` |
 | `mockup-final-cta` | Clicked the bottom CTA on `/mockup.html` without generating a preview |
 | `contact-page-direct` | Came straight to `/contact.html` (nav, footer, or another page's "Start Your Project" button) |
+| `outbound-proposal` | Clicked "Let's talk 15 min" on an outbound Lead Radar proposal page (`/api/preview/:slug`) — see §0 and `leadgen/README.md` |
 
 The lead payload (see `api/lead.js`) always includes: `name`, `contact`
 (phone or email, visitor's choice), `need`, and optionally `business`,

@@ -2,5 +2,11 @@
   "type": "module",
   "dependencies": {
     "@vercel/functions": "latest"
+  },
+  "scripts": {
+    "leadgen:prospect": "node leadgen/scripts/prospect.mjs",
+    "leadgen:enrich": "node leadgen/scripts/enrich.mjs",
+    "leadgen:score": "node leadgen/scripts/score.mjs",
+    "leadgen:send": "node leadgen/scripts/send-proposal.mjs"
   }
 }
