@@ -53,6 +53,10 @@
 
   <label for="slug">Prospect slug (from the Airtable "Slug" column)</label>
   <input id="slug" type="text" placeholder="garage-lachine-auto-abcd1234">
+  <button class="btn-secondary" id="loadBtn">Load existing content</button>
+  <p class="hint">Reopening this page (or switching to a different slug)? Tap this
+  to pull in whatever's already saved for that prospect instead of starting blank.</p>
+  <div class="output" id="loadOutput"></div>
 
   <h2>1. Generate the draft</h2>
   <button class="btn-primary" id="generateBtn">Generate preview</button>
@@ -94,13 +98,17 @@
 
   <details>
     <summary>How this works</summary>
-    <p>"Generate" builds a draft from what's already in Airtable and is
-    safe to run again later. "Save content" merges whatever you fill in
-    (ChatGPT's reply, logo, colors, photos) into the existing preview —
-    it never overwrites fields you leave blank. "Validate &amp; approve"
-    checks for placeholder text, dead links, fake numbers, etc. and only
-    approves (unlocking sending) when there are zero errors. Everything
-    written here also shows up in the matching Airtable row.</p>
+    <p>"Load existing content" pulls in whatever's already saved for a
+    slug (this also runs automatically when you reopen the page with
+    the same token+slug still remembered) — nothing is ever lost by
+    closing the tab. "Generate" builds a draft from what's already in
+    Airtable and is safe to run again later. "Save content" merges
+    whatever you fill in (ChatGPT's reply, logo, colors, photos) into
+    the existing preview — it never overwrites fields you leave blank.
+    "Validate &amp; approve" checks for placeholder text, dead links,
+    fake numbers, page-links pasted instead of direct image URLs, etc.
+    and only approves (unlocking sending) when there are zero errors.
+    Everything written here also shows up in the matching Airtable row.</p>
   </details>
 
   <script>
@@ -196,6 +204,60 @@ SERVICES: (3 a 5 servicios tipicos separados por " | ")`;
         const [url, caption] = line.split("|").map((s) => (s || "").trim());
         return caption ? { url, caption } : { url };
       });
+    }
+
+    function photosToTextarea(photos) {
+      return (photos || []).map((p) => (p.caption ? `${p.url} | ${p.caption}` : p.url)).join("\n");
+    }
+
+    async function loadExistingContent({ silent = false } = {}) {
+      if (!silent) {
+        $("loadBtn").disabled = true;
+        showOutput("loadOutput", "Loading...", false);
+      }
+      try {
+        const data = await callJson("/api/cron/preview-content");
+        if (!data.ok) {
+          if (!silent) showOutput("loadOutput", `Error: ${escapeHtml(data.error)}`, true);
+          return;
+        }
+        const r = data.result;
+        if (!r.hasConfig) {
+          if (!silent) showOutput("loadOutput", `No preview generated yet for ${escapeHtml(r.businessName)} — start with "Generate preview" below.`, false);
+          return;
+        }
+
+        logoUrlEl.value = r.logo || "";
+        primaryColorEl.value = r.primaryColor || "";
+        secondaryColorEl.value = r.secondaryColor || "";
+        photosEl.value = photosToTextarea(r.photos);
+
+        const servicesLine = (r.services || []).length ? r.services.join(", ") : "(none yet)";
+        showOutput(
+          "loadOutput",
+          `<strong>Loaded</strong> ${escapeHtml(r.businessName)} · status: ${escapeHtml(r.status || "-")}<br>` +
+          `<strong>Headline:</strong> ${escapeHtml(r.headline) || "(none yet)"}<br>` +
+          `<strong>Subheadline:</strong> ${escapeHtml(r.subheadline) || "(none yet)"}<br>` +
+          `<strong>About:</strong> ${escapeHtml(r.about) || "(none yet)"}<br>` +
+          `<strong>Services:</strong> ${escapeHtml(servicesLine)}<br>` +
+          `<span class="hint">Logo/colors/photos below are pre-filled. To change the headline/subheadline/about/services, redo step 2 (ChatGPT) and Save content again.</span><br>` +
+          `<a href="${r.previewUrl}" target="_blank" rel="noopener">Open preview →</a>`,
+          false
+        );
+      } catch (err) {
+        if (!silent) showOutput("loadOutput", escapeHtml(err.message), true);
+      } finally {
+        $("loadBtn").disabled = false;
+      }
+    }
+
+    $("loadBtn").addEventListener("click", () => loadExistingContent());
+
+    // Reopening the page with a token+slug already saved from last time?
+    // Load quietly so the form isn't blank, but don't show an error if
+    // there's nothing to load yet or the token's gone stale.
+    if (tokenEl.value && slugEl.value) {
+      loadExistingContent({ silent: true });
     }
 
     $("generateBtn").addEventListener("click", async () => {

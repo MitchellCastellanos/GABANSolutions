@@ -158,6 +158,27 @@ paste the URL into `business.photos` in the JSON. A server-side photo
 proxy that fetches Places photos without exposing the key is future
 work, not built yet.
 
+**Common mistake: page links instead of direct image links.** Imgur
+album/gallery pages (`imgur.com/a/...`, `imgur.com/gallery/...`),
+Google Photos/Drive share links, and Facebook/Instagram links all show
+an HTML page around the image, not the raw file — pasted into
+`business.photos`/`business.logo` they render as a broken image.
+`validate-preview.mjs` catches these and blocks approval with a clear
+error before you find out visually. The fix: open the image on its
+own (in Imgur, click the photo, right-click → "Copy image address"),
+you want a URL starting with `i.imgur.com` and ending in
+`.jpg`/`.jpeg`/`.png`/`.gif` — no surrounding page UI when you open it
+directly.
+
+**Reopening `leadgen-admin.html` after closing it / switching
+prospects**: your token and last-used slug are remembered
+(`localStorage`), and the page automatically re-loads whatever's
+already saved for that slug (headline/subheadline/about/services
+summary, plus pre-filling Logo URL/Primary Color/Secondary
+Color/photo fields) — nothing is lost by closing the tab. Use the
+"Load existing content" button to do the same for a different slug,
+or any time you want to double-check what's currently saved.
+
 **Legacy previews**: any prospect with a `Mockup Link` image but no
 `Preview Config JSON` still renders the old single-image proposal page
 — nothing already in the pipeline breaks.
