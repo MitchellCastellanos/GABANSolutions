@@ -11,8 +11,9 @@
 
 Not every lead is inbound anymore. The **Lead Radar** system in
 `leadgen/` finds local businesses on Google Maps, scores how much they'd
-benefit from a new site, and once a mockup is ready, a human **cold
-calls** them to say "I already made you one, go take a look" — that call
+benefit from a new site, and once a real, navigable website preview is
+generated and approved, a human **cold calls** them to say "I already
+made you one, go take a look" — that call
 is the real first touch, not an email. Only after the call is logged as
 interested does an automated email + follow-up sequence take over,
 delivering the link and nudging if they go quiet. All of this is tracked

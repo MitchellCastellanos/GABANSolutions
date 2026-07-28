@@ -1,13 +1,13 @@
 name: Lead Radar weekly prospecting
 
-# Runs prospect -> enrich -> score every Monday. Kept outside Vercel
-# Cron on purpose: PageSpeed audits in enrich.mjs can take several
-# seconds per site, and looping through ~25 category/area searches in
-# prospect.mjs adds up too — comfortably over Vercel Hobby's function
-# timeout if chained into one serverless request. GitHub Actions has
-# no such limit, so the three steps run here as plain Node scripts.
-# send-proposal.mjs stays on Vercel Cron (api/cron/send-proposal.js)
-# since its daily workload is much lighter.
+# Runs prospect -> enrich -> score -> archive-previews every Monday.
+# Kept outside Vercel Cron on purpose: PageSpeed audits in enrich.mjs
+# can take several seconds per site, and looping through ~25
+# category/area searches in prospect.mjs adds up too — comfortably
+# over Vercel Hobby's function timeout if chained into one serverless
+# request. GitHub Actions has no such limit, so the steps run here as
+# plain Node scripts. send-proposal.mjs stays on Vercel Cron
+# (api/cron/send-proposal.js) since its daily workload is much lighter.
 
 on:
   schedule:
@@ -32,3 +32,4 @@ jobs:
       - run: npm run leadgen:prospect
       - run: npm run leadgen:enrich
       - run: npm run leadgen:score
+      - run: npm run leadgen:archive-previews

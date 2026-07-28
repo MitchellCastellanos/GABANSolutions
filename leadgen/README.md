@@ -48,6 +48,102 @@ Log the result immediately in Airtable (`Call Date`, `Call Outcome`,
 optionally `Call Notes`) before moving to the next call — that's what
 drives everything downstream.
 
+## Generating a real, navigable preview (not a static image)
+
+`https://gabansolutions.ca/preview/:slug` renders a real multi-section
+website built from data already in Airtable — not a screenshot or an
+uploaded image. It's driven by a JSON config (`Preview Config JSON`)
+and a small library of category templates in `leadgen/templates/`.
+
+```
+1. npm run leadgen:generate-preview -- --slug=<slug>
+     -> reads Name/Phone/Address/City/Category/Rating/Review Count/Signals
+        from Airtable, guesses a template category (leadgen/templates/registry.mjs),
+        writes a draft "Preview Config JSON" + Preview Status = "draft"
+        (auditContext.personalizationNotes in the JSON lists what's still missing)
+
+2. Open https://gabansolutions.ca/preview/<slug> — draft previews render
+   with a yellow "INTERNAL REVIEW" banner so nobody confuses them for
+   something already sent.
+
+3. Fill in the gaps by hand: edit the "Preview Config JSON" long-text
+   field directly in Airtable (v1 editor — see "Files to create" in the
+   original design doc for the v2 admin-panel plan). Typically needed:
+   content.services (2-3 real ones), business.photos (paste a hosted
+   image URL — see "Photos" below), content.reviews if you want to
+   quote a real Google review.
+
+4. npm run leadgen:validate-preview -- --slug=<slug>
+     -> prints errors (lorem ipsum, dead CTA links, fake phone numbers,
+        missing headline, etc. — these block approval) and warnings
+        (few services, no photos — reviewer's judgment call)
+
+5. npm run leadgen:validate-preview -- --slug=<slug> --approve
+     -> only works with zero errors; sets Preview Status = "approved"
+        and stamps meta.approvedAt in the JSON
+
+6. Only now set Pipeline Status = "Mockup Ready" — that's still your
+   call queue exactly as before. send-proposal.mjs refuses to email
+   anything that isn't Preview Status "approved" (or, for prospects
+   from before this system existed, that doesn't at least have the
+   old-style Mockup Link image set).
+```
+
+**Templates today**: all 9 categories in `leadgen/config/targets.json`
+have a dedicated template (`dentist`, `lawyer`, `general-contractor`,
+`spa`, `restaurant`, `real-estate`, `gym`, `veterinary`, `car-repair`),
+falling back to a neutral `generic` template for anything else —
+`leadgen/templates/registry.mjs`. Category resolution prefers the
+`Category Key` field (written by `prospect.mjs` from
+`targets.json`'s `templateCategory`, exact match) and only falls back
+to fuzzy-matching the French `Category` label
+(`guessCategoryKey()`) for older records prospected before that field
+existed.
+
+**Visual variety**: each template also has 2 palette variants and 2
+section-order variants, plus a shared split/centered hero choice —
+`generate-preview.mjs` picks between them **deterministically** from
+a hash of the slug (same business always renders the same way, but
+two dentists don't look identical just because they share a
+template). This is on top of, not instead of, using each business's
+real data — that's still what does the most work to avoid looking
+generic.
+
+**Logo & brand colors — the easy way to personalize without touching
+the JSON**: fill in the flat `Logo URL`, `Primary Color`, `Secondary
+Color` fields on the prospect's Airtable row (hex codes, e.g.
+`#0b3d63`), then run `generate-preview.mjs` again. A good way to get
+those values without any design work: screenshot the business's
+Facebook/Instagram page or website and ask ChatGPT (or any
+vision-capable model) *"what are the 2 main brand colors here, as hex
+codes, and is there a clean logo image I could grab?"* — paste the hex
+codes into those 2 fields and a hosted image URL into `Logo URL`.
+**Re-running `generate-preview.mjs` after a config already exists is
+safe** — it only refreshes `business.logo`/`branding.primaryColor`/
+`branding.secondaryColor` from those 3 fields and leaves any
+hand-edited services/photos/reviews/copy completely alone.
+
+**Photos**: deliberately manual for now. Google Places *does* return
+photo references, but turning one into an image URL requires putting
+the Google API key in the URL — which would leak into the page's HTML
+if used directly, so `generate-preview.mjs` doesn't do it. Host photos
+yourself (Imgur, etc., same as the old `Mockup Link` workflow) and
+paste the URL into `business.photos` in the JSON. A server-side photo
+proxy that fetches Places photos without exposing the key is future
+work, not built yet.
+
+**Legacy previews**: any prospect with a `Mockup Link` image but no
+`Preview Config JSON` still renders the old single-image proposal page
+— nothing already in the pipeline breaks.
+
+**Archiving**: once a prospect's `Pipeline Status` lands on `No
+Response`, `Not Interested`, `Discarded`, or `Do Not Contact`, the
+weekly run (`archive-previews.mjs`) flips their `Preview Status` to
+`archived` automatically — the deal's dead, no point leaving it
+"approved" forever. The page keeps rendering at the same URL (with the
+same "internal review" banner draft previews get, just saying `status:
+archived`) — nothing gets deleted, it just stops looking live.
+
 ## Required Airtable fields (table name: `Prospects`, or set `AIRTABLE_TABLE`)
 
 | Field | Type | Written by |
@@ -57,6 +153,7 @@ drives everything downstream.
 | Email | Email | **manual** — Places API doesn't return emails, see below |
 | Website | URL | prospect.mjs |
 | Category | Single line text | prospect.mjs |
+| Category Key | Single line text | prospect.mjs — canonical template key from `targets.json`'s `templateCategory` |
 | City | Single line text | prospect.mjs |
 | Address | Single line text | prospect.mjs |
 | Rating | Number | prospect.mjs |
@@ -78,6 +175,14 @@ drives everything downstream.
 | Call Date | Date | **manual** — log right after each cold call |
 | Call Outcome | Single select | **manual** |
 | Call Notes | Long text (optional) | **manual** |
+| Preview Config JSON | Long text | generate-preview.mjs (creates), **manual** (edits) |
+| Preview Status | Single select | generate-preview.mjs, validate-preview.mjs |
+| Preview Template | Single line text | generate-preview.mjs |
+| Preview Views | Number | api/preview/[slug].js |
+| Preview Last Viewed | Date | api/preview/[slug].js |
+| Logo URL | URL | **manual** — see "Logo & brand colors" below |
+| Primary Color | Single line text (hex) | **manual** |
+| Secondary Color | Single line text (hex) | **manual** |
 
 **Pipeline Status options** (single select — add every value exactly):
 
@@ -89,6 +194,10 @@ drives everything downstream.
 
 `Interested`, `Not interested`, `No answer`, `Voicemail`,
 `Asked to call back`
+
+**Preview Status options** (single select — add every value exactly):
+
+`draft`, `in_review`, `approved`, `archived`
 
 **Known gap: no email address.** Google Places doesn't return business
 emails, only phone/website. Until an email-finder step is added, someone
@@ -115,6 +224,9 @@ npm run leadgen:prospect -- --dry-run   # then without --dry-run
 npm run leadgen:enrich
 npm run leadgen:score
 npm run leadgen:send -- --dry-run       # then without --dry-run
+npm run leadgen:generate-preview -- --slug=<slug>
+npm run leadgen:validate-preview -- --slug=<slug> [--approve]
+npm run leadgen:archive-previews -- --dry-run   # then without --dry-run
 ```
 
 Edit `leadgen/config/targets.json` to change categories/areas without
@@ -131,8 +243,9 @@ score run is too slow for that (PageSpeed audits alone can take several
 seconds per site).
 
 - **Weekly (GitHub Actions, `.github/workflows/leadgen-weekly.yml`)**:
-  prospect → enrich → score, every Monday, run as plain `node` scripts
-  with no timeout ceiling. Needs these set as **GitHub repo secrets**
+  prospect → enrich → score → archive-previews, every Monday, run as
+  plain `node` scripts with no timeout ceiling. Needs these set as
+  **GitHub repo secrets**
   (Settings → Secrets and variables → Actions) — same values as the
   Vercel env vars: `AIRTABLE_API_KEY`, `AIRTABLE_BASE_ID`,
   `AIRTABLE_TABLE`, `GOOGLE_PLACES_API_KEY`, `GOOGLE_PAGESPEED_API_KEY`.
@@ -144,10 +257,11 @@ seconds per site).
   3/7/14 follow-up checks for everything "Proposal Sent". Never touches
   "Mockup Ready" — that stage waits for a human to call.
 
-`api/cron/prospect.js`, `api/cron/enrich.js`, `api/cron/score.js` still
-exist and work (same `CRON_SECRET` bearer-token auth) if you'd rather
-trigger a single step over HTTP instead of from GitHub Actions — they're
-just not wired into `vercel.json`'s `crons` list anymore.
+`api/cron/prospect.js`, `api/cron/enrich.js`, `api/cron/score.js`,
+`api/cron/archive-previews.js` still exist and work (same
+`CRON_SECRET` bearer-token auth) if you'd rather trigger a single step
+over HTTP instead of from GitHub Actions — they're just not wired into
+`vercel.json`'s `crons` list anymore.
 
 If the project ever moves to Vercel Pro, the weekly steps can move back
 into `vercel.json` crons the same way `send-proposal` is wired now.

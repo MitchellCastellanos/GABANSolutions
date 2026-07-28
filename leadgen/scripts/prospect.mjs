@@ -92,6 +92,7 @@ function toProspectFields(place, category, area) {
     [F.PHONE]: place.internationalPhoneNumber || "",
     [F.WEBSITE]: place.websiteUri || "",
     [F.CATEGORY]: category.label,
+    [F.CATEGORY_KEY]: category.templateCategory || "",
     [F.CITY]: area.label,
     [F.ADDRESS]: place.formattedAddress || "",
     [F.RATING]: typeof place.rating === "number" ? place.rating : null,

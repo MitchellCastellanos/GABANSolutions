@@ -9,6 +9,7 @@ export const F = {
   EMAIL: "Email",
   WEBSITE: "Website",
   CATEGORY: "Category",
+  CATEGORY_KEY: "Category Key",
   CITY: "City",
   ADDRESS: "Address",
   RATING: "Rating",
@@ -29,7 +30,15 @@ export const F = {
   FOLLOWUPS_SENT: "Follow-ups Sent",
   CALL_DATE: "Call Date",
   CALL_OUTCOME: "Call Outcome",
-  CALL_NOTES: "Call Notes"
+  CALL_NOTES: "Call Notes",
+  PREVIEW_CONFIG_JSON: "Preview Config JSON",
+  PREVIEW_STATUS: "Preview Status",
+  PREVIEW_TEMPLATE: "Preview Template",
+  PREVIEW_VIEWS: "Preview Views",
+  PREVIEW_LAST_VIEWED: "Preview Last Viewed",
+  LOGO_URL: "Logo URL",
+  PRIMARY_COLOR: "Primary Color",
+  SECONDARY_COLOR: "Secondary Color"
 };
 
 export const STATUS = {
@@ -56,4 +65,16 @@ export const CALL_OUTCOME = {
   NO_ANSWER: "No answer",
   VOICEMAIL: "Voicemail",
   CALL_BACK: "Asked to call back"
+};
+
+// Values for the "Preview Status" single select — independent from
+// STATUS (Pipeline Status) on purpose: a preview can be a "draft"
+// while the prospect's pipeline stage is still "Qualified", and
+// send-proposal.mjs only emails once this is "approved" regardless
+// of what Pipeline Status says.
+export const PREVIEW_STATUS = {
+  DRAFT: "draft",
+  IN_REVIEW: "in_review",
+  APPROVED: "approved",
+  ARCHIVED: "archived"
 };

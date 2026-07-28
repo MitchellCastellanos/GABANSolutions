@@ -40,7 +40,7 @@
 import { fileURLToPath } from "node:url";
 import { listRecords, updateRecord } from "../lib/airtable.mjs";
 import { initialEmail, followUpOne, followUpTwo, followUpThree, sendEmail } from "../lib/email.mjs";
-import { F, STATUS } from "../lib/fields.mjs";
+import { F, STATUS, PREVIEW_STATUS } from "../lib/fields.mjs";
 
 const DRY_RUN = process.argv.includes("--dry-run");
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -72,8 +72,15 @@ async function sendAndRecord({ record, template, fields, statusUpdate }) {
 }
 
 async function processInitialSends(siteUrl) {
+  // A preview only goes out once it's either an approved rich preview
+  // (Preview Status) or, for prospects that predate that system, has
+  // the old-style Mockup Link image already set.
   const records = await listRecords({
-    filterByFormula: `AND({${F.PIPELINE_STATUS}} = "${STATUS.CALLED_INTERESTED}", {${F.PROPOSAL_LINK}} = "")`
+    filterByFormula: `AND(
+      {${F.PIPELINE_STATUS}} = "${STATUS.CALLED_INTERESTED}",
+      {${F.PROPOSAL_LINK}} = "",
+      OR({${F.PREVIEW_STATUS}} = "${PREVIEW_STATUS.APPROVED}", {${F.MOCKUP_LINK}} != "")
+    )`
   });
   console.log(`Envíos iniciales pendientes: ${records.length}`);
 
@@ -85,7 +92,7 @@ async function processInitialSends(siteUrl) {
       continue;
     }
     const slug = f[F.SLUG];
-    const previewUrl = `${siteUrl}/api/preview/${slug}`;
+    const previewUrl = `${siteUrl}/preview/${slug}`;
     const unsubscribeUrl = `${siteUrl}/api/unsubscribe?slug=${slug}`;
     const template = initialEmail({ businessName: f[F.NAME], previewUrl, unsubscribeUrl });
     const now = new Date().toISOString();
@@ -120,7 +127,7 @@ async function processFollowUps(siteUrl) {
     const daysSinceFirst = daysSince(f[F.FIRST_EMAIL_DATE]);
     const daysSinceLast = daysSince(f[F.LAST_FOLLOWUP_DATE]);
     const slug = f[F.SLUG];
-    const previewUrl = f[F.PROPOSAL_LINK] || `${siteUrl}/api/preview/${slug}`;
+    const previewUrl = f[F.PROPOSAL_LINK] || `${siteUrl}/preview/${slug}`;
     const unsubscribeUrl = `${siteUrl}/api/unsubscribe?slug=${slug}`;
     const businessName = f[F.NAME];
     const now = new Date().toISOString();
