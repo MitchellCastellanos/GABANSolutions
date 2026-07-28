@@ -58,48 +58,58 @@ and a small library of category templates in `leadgen/templates/`.
 **From a phone, no terminal**: open `https://gabansolutions.ca/leadgen-admin.html`
 — paste your access token once (it's the same value as the `CRON_SECRET`
 env var in Vercel; get it from whoever set up the project, it's saved on
-the device after the first time), paste the prospect's `Slug`, tap
-**Generate preview**, then **Validate & approve**. That's steps 1, 4 and
-5 below done from a browser. Steps 3 (filling in services/photos/
-reviews) and 6 (setting `Pipeline Status`) still happen in the Airtable
-mobile app — no code editor needed there either, just the app.
+the device after the first time), paste the prospect's `Slug`, and work
+through its 3 steps. Setting `Pipeline Status` (step 6 below) still
+happens in the Airtable mobile app — no code editor needed there either.
 
 ```
-1. npm run leadgen:generate-preview -- --slug=<slug>   (or the "Generate preview" button on leadgen-admin.html)
+1. Generate the draft
+     npm run leadgen:generate-preview -- --slug=<slug>
+     (or the "Generate preview" button on leadgen-admin.html)
      -> reads Name/Phone/Address/City/Category/Rating/Review Count/Signals
         from Airtable, guesses a template category (leadgen/templates/registry.mjs),
         writes a draft "Preview Config JSON" + Preview Status = "draft"
-        (auditContext.personalizationNotes in the JSON lists what's still missing)
 
-2. Open https://gabansolutions.ca/preview/<slug> — draft previews render
-   with a yellow "INTERNAL REVIEW" banner so nobody confuses them for
-   something already sent.
+2. Write the content — the fast way (no design/writing work):
+     leadgen-admin.html builds a prompt pre-filled with the business's
+     real data (name, category, city, rating, detected site problems)
+     and asks for the output in a simple line-by-line format
+     (HEADLINE / SUBHEADLINE / ABOUT / SERVICES). Copy that prompt into
+     ChatGPT (or any chat model), paste the reply back into the page,
+     add a Logo URL / Primary Color / Secondary Color (see "Logo &
+     brand colors" below) and photo URLs (one per line), tap "Save
+     content" — it merges everything into the same Preview Config JSON
+     and also writes Logo URL/Primary Color/Secondary Color as their
+     own Airtable columns, so it's all visible from the Airtable row
+     too, not just inside the JSON.
+     -> the same thing works from the CLI/Airtable directly: edit the
+        "Preview Config JSON" field by hand if you'd rather not use
+        ChatGPT for a given prospect.
 
-3. Fill in the gaps by hand: edit the "Preview Config JSON" long-text
-   field directly in Airtable — works fine from the Airtable mobile
-   app (that's the editor for now — see "Future ideas" at the bottom
-   of this file for a possible full in-browser editor later, not
-   built). Typically needed: content.services (2-3 real ones),
-   business.photos (paste a hosted image URL — see "Photos" below),
-   content.reviews if you want to quote a real Google review.
+3. Open https://gabansolutions.ca/preview/<slug> any time to check —
+   draft previews render with a yellow "INTERNAL REVIEW" banner so
+   nobody confuses them for something already sent.
 
-4. npm run leadgen:validate-preview -- --slug=<slug>
+4. Validate & approve
+     npm run leadgen:validate-preview -- --slug=<slug> --approve
+     (or the "Validate & approve" button on leadgen-admin.html)
      -> prints errors (lorem ipsum, dead CTA links, fake phone numbers,
-        missing headline, etc. — these block approval) and warnings
-        (few services, no photos — reviewer's judgment call)
+        missing headline, etc.) and warnings (few services, no photos);
+        only approves — sets Preview Status = "approved" — with zero errors
 
-5. npm run leadgen:validate-preview -- --slug=<slug> --approve
-     -> only works with zero errors; sets Preview Status = "approved"
-        and stamps meta.approvedAt in the JSON
-     -> (steps 4+5 together = the "Validate & approve" button on
-        leadgen-admin.html)
-
-6. Only now set Pipeline Status = "Mockup Ready" — that's still your
+5. Only now set Pipeline Status = "Mockup Ready" — that's still your
    call queue exactly as before. send-proposal.mjs refuses to email
    anything that isn't Preview Status "approved" (or, for prospects
    from before this system existed, that doesn't at least have the
    old-style Mockup Link image set).
 ```
+
+A note on step 2: ChatGPT is drafting plausible, category-typical copy
+grounded in the business's real name/city/category — it's not
+verifying facts about that specific business. The prompt tells it not
+to invent certifications, awards, or specific claims, but you're still
+the one who reads the output before approving (step 4 exists
+specifically so nothing gets sent unreviewed).
 
 **Templates today**: all 9 categories in `leadgen/config/targets.json`
 have a dedicated template (`dentist`, `lawyer`, `general-contractor`,
@@ -112,14 +122,18 @@ to fuzzy-matching the French `Category` label
 (`guessCategoryKey()`) for older records prospected before that field
 existed.
 
-**Visual variety**: each template also has 2 palette variants and 2
-section-order variants, plus a shared split/centered hero choice —
+**Visual variety**: each template has 2 palette variants and 2
+section-order variants, plus a shared split/centered/overlap hero
+choice (3 layouts, `templates/shared/blocks/hero.mjs`) —
 `generate-preview.mjs` picks between them **deterministically** from
 a hash of the slug (same business always renders the same way, but
 two dentists don't look identical just because they share a
-template). This is on top of, not instead of, using each business's
-real data — that's still what does the most work to avoid looking
-generic.
+template). Pages also aren't static anymore: sections fade/slide in
+on scroll and cards/buttons/photos have real hover states
+(`templates/shared/shell.mjs`) — small things, but they're what make
+a page feel like a built site instead of a static mockup image. None
+of this replaces using each business's real data, which is still what
+does the most work to avoid looking generic.
 
 **Logo & brand colors — the easy way to personalize without touching
 the JSON**: fill in the flat `Logo URL`, `Primary Color`, `Secondary
@@ -305,24 +319,28 @@ real usage data first, which doesn't exist yet.
 - **Photo proxy**: a server-side route that fetches Google Places
   photos without putting the API key in the page's HTML, so
   `business.photos` could populate automatically instead of by hand.
-- **Full content editor**: `leadgen-admin.html` (built) only
-  *triggers* generate/validate/approve from a phone — it doesn't edit
-  content. A form to edit headline/services/photos/CTA/etc. without
-  touching raw JSON in Airtable is still a possible later step.
+- **Richer content editor**: `leadgen-admin.html` covers the common
+  case (ChatGPT-drafted headline/subheadline/about/services + logo +
+  colors + photos). It doesn't expose everything the JSON supports
+  (reviews, section order, hero variant) — a fuller form is still a
+  possible later step if the common case stops being enough.
 - **CTA/phone click tracking**: right now only page views are
   recorded (`Preview Views`, `Preview Last Viewed`). Knowing whether
   someone actually clicked "call" or the CTA would need a small
   client-side beacon and 1-2 more Airtable fields.
-- **More visual variants**: today it's 2 palettes × 2 section orders ×
-  2 hero styles per category. More of each would mean less repetition
-  once there are enough previews live to notice.
 - **Data-driven personalization**: using `meta.personalizationScore`
   or actual reply/conversion rates to influence which variant gets
   picked, instead of a fixed hash of the slug. Needs real conversion
   data to mean anything.
-- **AI-assisted copy**: generating `content.headline`/`about`/
-  `valueProps` from `auditContext` with an LLM instead of the current
-  rule-based `valuePropsFromSignals()`. Would still need a human to
+- **Direct LLM API instead of copy-paste**: `leadgen-admin.html`'s
+  ChatGPT step is manual copy/paste on purpose — wiring a model API
+  directly into `generate-preview.mjs` would remove that step, at the
+  cost of an API key/cost to manage and one less human glance at the
+  copy before it's saved. Worth it if the copy-paste step becomes the
+  bottleneck, not before.
+- **AI-assisted copy, further**: `valuePropsFromSignals()` is still
+  rule-based, not LLM-based. Could feed `auditContext` into a model for
+  richer phrasing. Would still need a human to
   review before approval — never auto-approve generated copy.
 - **Smarter photo selection**: picking the *best* available photos
   instead of just the first few, once there's a real photo pipeline.

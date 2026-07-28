@@ -12,7 +12,7 @@ export function reviews(config) {
   const title = copy(language, "Ce que disent leurs clients", "What their customers say");
   const attribution = copy(language, "— Avis public Google", "— Public Google review");
 
-  return `<section class="reviews"><div class="container">
+  return `<section class="reviews" data-reveal><div class="container">
     <h2>${title}</h2>
     <div class="reviews-grid">
       ${list.map((r) => `

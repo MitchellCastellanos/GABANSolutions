@@ -11,7 +11,7 @@ export function services(config) {
   const language = config.language === "fr" ? "fr" : "en";
   const title = copy(language, "Nos services", "Our services");
 
-  return `<section class="services"><div class="container">
+  return `<section class="services" data-reveal><div class="container">
     <h2>${title}</h2>
     <div class="services-grid">
       ${list.map((item) => `<div class="service-card">${escapeHtml(item)}</div>`).join("\n")}

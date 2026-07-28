@@ -11,7 +11,7 @@ export function gallery(config) {
   const language = config.language === "fr" ? "fr" : "en";
   const title = copy(language, "Photos", "Photos");
 
-  return `<section class="gallery"><div class="container">
+  return `<section class="gallery" data-reveal><div class="container">
     <h2>${title}</h2>
     <div class="gallery-grid">
       ${photos.map((p) => `<img src="${escapeHtml(p.url)}" alt="${escapeHtml(p.caption || config.business?.name || "")}" loading="lazy">`).join("\n")}

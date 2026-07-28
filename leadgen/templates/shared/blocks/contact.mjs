@@ -11,7 +11,7 @@ export function contact(config) {
   const title = copy(language, "Nous joindre", "Get in touch");
   const callLabel = copy(language, "Appeler maintenant", "Call now");
 
-  return `<section class="contact"><div class="container">
+  return `<section class="contact" data-reveal><div class="container">
     <h2>${title}</h2>
     ${address ? `<p>${escapeHtml(address)}</p>` : ""}
     ${phone ? `<a class="cta-btn" href="tel:${escapeHtml(phone.replace(/[^0-9+]/g, ""))}">${callLabel}</a>` : ""}

@@ -18,7 +18,7 @@ export const defaultPalette = {
 };
 export const paletteVariants = [
   defaultPalette,
-  { primaryColor: "#101820", secondaryColor: "#3fd0c9", accentColor: "#ffffff", headingFont: "sans-serif", style: "bold-energetic-teal" }
+  { primaryColor: "#101820", secondaryColor: "#3fd0c9", accentColor: "#ffffff", headingFont: "rounded", style: "bold-energetic-teal" }
 ];
 
 export const defaultCta = {
