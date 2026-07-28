@@ -67,11 +67,11 @@ and a small library of category templates in `leadgen/templates/`.
    something already sent.
 
 3. Fill in the gaps by hand: edit the "Preview Config JSON" long-text
-   field directly in Airtable (v1 editor — see "Files to create" in the
-   original design doc for the v2 admin-panel plan). Typically needed:
-   content.services (2-3 real ones), business.photos (paste a hosted
-   image URL — see "Photos" below), content.reviews if you want to
-   quote a real Google review.
+   field directly in Airtable (that's the editor for now — see "Future
+   ideas" at the bottom of this file for a possible admin-panel
+   version later). Typically needed: content.services (2-3 real
+   ones), business.photos (paste a hosted image URL — see "Photos"
+   below), content.reviews if you want to quote a real Google review.
 
 4. npm run leadgen:validate-preview -- --slug=<slug>
      -> prints errors (lorem ipsum, dead CTA links, fake phone numbers,
@@ -282,3 +282,34 @@ Once a prospect replies to an email, move their Airtable status to
 in `docs/LEAD_PROCESS.md` (2-hour SLA, Contacted → Qualifying → Proposal
 Sent → Won/Lost). This system only owns getting a reply — everything
 after that is the existing playbook.
+
+## Future ideas (not planned, not promised — just notes for later)
+
+Nothing below this line is scheduled. It's what's left over from the
+original design pass, kept here so it's not forgotten if it ever
+becomes worth building — not a roadmap. Most of it depends on having
+real usage data first, which doesn't exist yet.
+
+- **Photo proxy**: a server-side route that fetches Google Places
+  photos without putting the API key in the page's HTML, so
+  `business.photos` could populate automatically instead of by hand.
+- **Admin edit panel**: a protected `/api/admin/preview/:slug` page
+  (same `CRON_SECRET`-style bearer auth as `api/cron/*`) so previews
+  can be edited without touching raw JSON in Airtable.
+- **CTA/phone click tracking**: right now only page views are
+  recorded (`Preview Views`, `Preview Last Viewed`). Knowing whether
+  someone actually clicked "call" or the CTA would need a small
+  client-side beacon and 1-2 more Airtable fields.
+- **More visual variants**: today it's 2 palettes × 2 section orders ×
+  2 hero styles per category. More of each would mean less repetition
+  once there are enough previews live to notice.
+- **Data-driven personalization**: using `meta.personalizationScore`
+  or actual reply/conversion rates to influence which variant gets
+  picked, instead of a fixed hash of the slug. Needs real conversion
+  data to mean anything.
+- **AI-assisted copy**: generating `content.headline`/`about`/
+  `valueProps` from `auditContext` with an LLM instead of the current
+  rule-based `valuePropsFromSignals()`. Would still need a human to
+  review before approval — never auto-approve generated copy.
+- **Smarter photo selection**: picking the *best* available photos
+  instead of just the first few, once there's a real photo pipeline.
