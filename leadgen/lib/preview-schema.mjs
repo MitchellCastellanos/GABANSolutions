@@ -11,6 +11,28 @@
 const BANNED_STRINGS = ["lorem ipsum", "example.com", "placeholder", "test business"];
 const FAKE_PHONE_PATTERNS = [/555-01\d\d/, /000-0000/, /123-4567/];
 
+// Hosts that serve an HTML *page* around an image rather than the raw
+// image bytes — pasting one of these into an <img src> renders as a
+// broken image. Real example that prompted this: imgur.com/a/... and
+// imgur.com/gallery/... album/gallery pages instead of i.imgur.com direct links.
+const PAGE_NOT_IMAGE_PATTERNS = [
+  /imgur\.com\/a\//i,
+  /imgur\.com\/gallery\//i,
+  /photos\.google\.com/i,
+  /drive\.google\.com/i,
+  /facebook\.com/i,
+  /instagram\.com/i
+];
+
+function isLikelyPageLink(url) {
+  return PAGE_NOT_IMAGE_PATTERNS.some((re) => re.test(url));
+}
+
+/** "Longueuil, QC" -> "longueuil" — city comparisons should ignore the province suffix. */
+function cityNameOnly(city) {
+  return (city || "").split(",")[0].trim().toLowerCase();
+}
+
 function collectStrings(config) {
   const strings = [
     config.content?.eyebrow,
@@ -60,6 +82,15 @@ export function validatePreviewConfig(config, knownCategories = []) {
     errors.push(`Phone number looks fake: "${phone}"`);
   }
 
+  if (config?.business?.logo && isLikelyPageLink(config.business.logo)) {
+    errors.push(`Logo URL looks like a page link, not a direct image (use the raw file URL, e.g. i.imgur.com/xxx.jpg): "${config.business.logo}"`);
+  }
+  (config?.business?.photos || []).forEach((photo, index) => {
+    if (photo?.url && isLikelyPageLink(photo.url)) {
+      errors.push(`Photo #${index + 1} URL looks like a page link, not a direct image (use the raw file URL, e.g. i.imgur.com/xxx.jpg): "${photo.url}"`);
+    }
+  });
+
   const services = config?.content?.services || [];
   if (services.length < 2) {
     warnings.push("Fewer than 2 real services listed");
@@ -72,7 +103,7 @@ export function validatePreviewConfig(config, knownCategories = []) {
   if (reviews.length === 0) {
     warnings.push("No reviews used");
   }
-  const city = (config?.business?.city || "").toLowerCase();
+  const city = cityNameOnly(config?.business?.city);
   const headline = (config?.content?.headline || "").toLowerCase();
   if (city && !headline.includes(city) && !(config?.content?.subheadline || "").toLowerCase().includes(city)) {
     warnings.push("Headline/subheadline doesn't mention the city — reads generic");
@@ -97,7 +128,7 @@ export function personalizationScore(config) {
   if ((config?.business?.photos || []).length >= 2) score += 1;
   if ((config?.content?.reviews || []).length > 0) score += 1;
   if ((config?.content?.valueProps || []).length > 0) score += 1;
-  const city = (config?.business?.city || "").toLowerCase();
+  const city = cityNameOnly(config?.business?.city);
   const headline = (config?.content?.headline || "").toLowerCase();
   if (city && headline.includes(city)) score += 1;
   if (headline && headline.includes((config?.business?.category || "").toLowerCase())) score += 1;
