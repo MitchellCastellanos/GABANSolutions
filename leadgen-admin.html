@@ -9,37 +9,44 @@
     * { box-sizing: border-box; }
     body {
       margin: 0; font-family: system-ui, -apple-system, sans-serif; background: #f6f6f4;
-      color: #1a1a1a; padding: 1.25rem; max-width: 480px; margin: 0 auto;
+      color: #1a1a1a; padding: 1.25rem; max-width: 520px; margin: 0 auto;
     }
     h1 { font-size: 1.3rem; margin: 1rem 0 0.25rem; }
-    p.sub { color: #666; font-size: 0.9rem; margin: 0 0 1.5rem; }
+    h2 { font-size: 1rem; margin: 2rem 0 0.25rem; border-top: 1px solid #e2e2de; padding-top: 1.5rem; }
+    p.sub { color: #666; font-size: 0.9rem; margin: 0 0 1rem; }
     label { display: block; font-weight: 600; font-size: 0.85rem; margin: 1rem 0 0.35rem; }
-    input {
-      width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px;
-      font-size: 1rem; background: #fff;
+    input, textarea {
+      width: 100%; padding: 0.7rem; border: 1px solid #ddd; border-radius: 8px;
+      font-size: 0.95rem; background: #fff; font-family: inherit;
     }
+    textarea { resize: vertical; }
+    textarea.mono { font-family: ui-monospace, monospace; font-size: 0.82rem; }
     button {
-      width: 100%; padding: 0.9rem; margin-top: 0.75rem; border: none; border-radius: 8px;
-      font-size: 1rem; font-weight: 700; cursor: pointer;
+      padding: 0.85rem 1rem; margin-top: 0.75rem; border: none; border-radius: 8px;
+      font-size: 0.95rem; font-weight: 700; cursor: pointer; width: 100%;
     }
-    .btn-generate { background: #111; color: #fff; }
+    .btn-primary { background: #111; color: #fff; }
+    .btn-secondary { background: #e5e5e0; color: #111; }
     .btn-approve { background: #c9a227; color: #111; }
     button:disabled { opacity: 0.5; cursor: default; }
     .output {
-      margin-top: 1.25rem; padding: 1rem; border-radius: 8px; background: #fff;
-      border: 1px solid #eee; font-size: 0.9rem; white-space: pre-wrap; display: none;
+      margin-top: 1rem; padding: 1rem; border-radius: 8px; background: #fff;
+      border: 1px solid #eee; font-size: 0.88rem; white-space: pre-wrap; display: none;
     }
     .output.show { display: block; }
     .output.error { border-color: #e0a72e; background: #fff8ea; }
     .output a { color: #0b3d63; }
     .errors { color: #b3261e; }
     .warnings { color: #8a6d00; }
+    .hint { font-size: 0.78rem; color: #888; margin-top: 0.35rem; }
+    .color-row { display: flex; gap: 0.75rem; }
+    .color-row > div { flex: 1; }
     details { margin-top: 1.5rem; font-size: 0.85rem; color: #888; }
   </style>
 </head>
 <body>
   <h1>Lead Radar — Preview admin</h1>
-  <p class="sub">Generate and approve website previews from your phone — no terminal needed.</p>
+  <p class="sub">Generate, write, and approve website previews from your phone — no terminal needed.</p>
 
   <label for="token">Access token (ask GABAN admin — same as CRON_SECRET)</label>
   <input id="token" type="password" placeholder="paste once, it's saved on this device">
@@ -47,27 +54,65 @@
   <label for="slug">Prospect slug (from the Airtable "Slug" column)</label>
   <input id="slug" type="text" placeholder="garage-lachine-auto-abcd1234">
 
-  <button class="btn-generate" id="generateBtn">1. Generate preview</button>
-  <button class="btn-approve" id="approveBtn">2. Validate &amp; approve</button>
+  <h2>1. Generate the draft</h2>
+  <button class="btn-primary" id="generateBtn">Generate preview</button>
+  <div class="output" id="generateOutput"></div>
 
-  <div class="output" id="output"></div>
+  <h2>2. Write the content (ChatGPT does the drafting)</h2>
+  <p class="sub">Generate the preview first — this box fills in with the business's real data.</p>
+  <label for="promptBox">Prompt (copy this into ChatGPT)</label>
+  <textarea id="promptBox" class="mono" rows="10" readonly placeholder="Generate a preview first to build this prompt."></textarea>
+  <button class="btn-secondary" id="copyPromptBtn">Copy prompt</button>
+
+  <label for="chatgptResponse">Paste ChatGPT's reply here</label>
+  <textarea id="chatgptResponse" class="mono" rows="8" placeholder="HEADLINE: ...&#10;SUBHEADLINE: ...&#10;ABOUT: ...&#10;SERVICES: ... | ... | ..."></textarea>
+
+  <label for="logoUrl">Logo URL (optional — more personalization)</label>
+  <input id="logoUrl" type="text" placeholder="https://...">
+
+  <div class="color-row">
+    <div>
+      <label for="primaryColor">Primary color</label>
+      <input id="primaryColor" type="text" placeholder="#0b3d63">
+    </div>
+    <div>
+      <label for="secondaryColor">Secondary color</label>
+      <input id="secondaryColor" type="text" placeholder="#c9a227">
+    </div>
+  </div>
+  <p class="hint">No design skills needed — screenshot the business's Facebook/Instagram/site and ask ChatGPT (or any vision-capable model) "what are the 2 main brand colors here as hex codes, and is there a clean logo image I could grab?"</p>
+
+  <label for="photos">Photo URLs (one per line, optional " | caption")</label>
+  <textarea id="photos" rows="4" placeholder="https://i.imgur.com/xxxx.jpg | Storefront&#10;https://i.imgur.com/yyyy.jpg"></textarea>
+
+  <button class="btn-primary" id="saveContentBtn">Save content</button>
+  <div class="output" id="saveOutput"></div>
+
+  <h2>3. Validate &amp; approve</h2>
+  <button class="btn-approve" id="approveBtn">Validate & approve</button>
+  <div class="output" id="approveOutput"></div>
 
   <details>
     <summary>How this works</summary>
     <p>"Generate" builds a draft from what's already in Airtable and is
-    safe to run again later (it only refreshes Logo URL/Primary
-    Color/Secondary Color, never overwrites services/photos/reviews
-    you've already added). "Validate &amp; approve" checks for
-    placeholder text, dead links, fake numbers, etc. — it only
-    approves (and unlocks sending) when there are zero errors.</p>
+    safe to run again later. "Save content" merges whatever you fill in
+    (ChatGPT's reply, logo, colors, photos) into the existing preview —
+    it never overwrites fields you leave blank. "Validate &amp; approve"
+    checks for placeholder text, dead links, fake numbers, etc. and only
+    approves (unlocking sending) when there are zero errors. Everything
+    written here also shows up in the matching Airtable row.</p>
   </details>
 
   <script>
-    const tokenEl = document.getElementById("token");
-    const slugEl = document.getElementById("slug");
-    const outputEl = document.getElementById("output");
-    const generateBtn = document.getElementById("generateBtn");
-    const approveBtn = document.getElementById("approveBtn");
+    const $ = (id) => document.getElementById(id);
+    const tokenEl = $("token");
+    const slugEl = $("slug");
+    const promptBox = $("promptBox");
+    const chatgptResponseEl = $("chatgptResponse");
+    const logoUrlEl = $("logoUrl");
+    const primaryColorEl = $("primaryColor");
+    const secondaryColorEl = $("secondaryColor");
+    const photosEl = $("photos");
 
     tokenEl.value = localStorage.getItem("leadgenAdminToken") || "";
     slugEl.value = localStorage.getItem("leadgenAdminSlug") || "";
@@ -78,78 +123,180 @@
       }[ch]));
     }
 
-    function showOutput(html, isError) {
-      outputEl.innerHTML = html;
-      outputEl.className = "output show" + (isError ? " error" : "");
+    function showOutput(elId, html, isError) {
+      const el = $(elId);
+      el.innerHTML = html;
+      el.className = "output show" + (isError ? " error" : "");
     }
 
-    async function callEndpoint(path) {
+    function rememberInputs() {
+      localStorage.setItem("leadgenAdminToken", tokenEl.value.trim());
+      localStorage.setItem("leadgenAdminSlug", slugEl.value.trim());
+    }
+
+    async function callJson(path, { method = "GET", body } = {}) {
       const token = tokenEl.value.trim();
       const slug = slugEl.value.trim();
-      if (!token || !slug) {
-        showOutput("Fill in the token and slug first.", true);
-        return;
-      }
-      localStorage.setItem("leadgenAdminToken", token);
-      localStorage.setItem("leadgenAdminSlug", slug);
+      if (!token || !slug) throw new Error("Fill in the token and slug first.");
+      rememberInputs();
 
-      generateBtn.disabled = true;
-      approveBtn.disabled = true;
-      showOutput("Working...", false);
-
-      try {
-        const res = await fetch(`${path}?slug=${encodeURIComponent(slug)}`, {
-          headers: { Authorization: `Bearer ${token}` }
-        });
-        const data = await res.json();
-        return data;
-      } catch (err) {
-        showOutput(`Network error: ${escapeHtml(err.message)}`, true);
-        return null;
-      } finally {
-        generateBtn.disabled = false;
-        approveBtn.disabled = false;
+      const opts = { method, headers: { Authorization: `Bearer ${token}` } };
+      let url = path;
+      if (method === "GET") {
+        url += `?slug=${encodeURIComponent(slug)}`;
+      } else {
+        opts.headers["Content-Type"] = "application/json";
+        opts.body = JSON.stringify({ slug, ...body });
       }
+      const res = await fetch(url, opts);
+      return res.json();
     }
 
-    generateBtn.addEventListener("click", async () => {
-      const data = await callEndpoint("/api/cron/generate-preview");
-      if (!data) return;
-      if (!data.ok) {
-        showOutput(`Error: ${escapeHtml(data.error)}`, true);
-        return;
+    function buildPrompt(business, name) {
+      const signalsLine = (business.signals || []).length
+        ? business.signals.join(", ")
+        : "ninguna en particular";
+      return `Eres redactor de contenido para una pagina de presentacion (preview) de un negocio real. Estos son los datos reales, no inventes nada fuera de ellos:
+
+- Nombre: ${name}
+- Categoria: ${business.category || "-"}
+- Ciudad: ${business.city || "-"}
+- Direccion: ${business.address || "-"}
+- Telefono: ${business.phone || "-"}
+- Rating de Google: ${business.rating != null ? business.rating + "/5" : "-"} (${business.reviewCount != null ? business.reviewCount : "?"} resenas)
+- Senales detectadas en su sitio actual: ${signalsLine}
+
+Escribe el contenido para su pagina, EN FRANCES (Quebec), tono profesional y cercano. No inventes certificaciones, premios, cifras ni afirmaciones especificas no verificables sobre el negocio -- para los servicios usa los tipicos y genericos de este tipo de negocio en esta zona.
+
+Responde UNICAMENTE con este formato exacto, una linea por campo, sin nada antes ni despues:
+
+HEADLINE: (frase corta y llamativa que mencione la ciudad o la categoria)
+SUBHEADLINE: (una frase de apoyo, una linea)
+ABOUT: (2-3 frases sobre el negocio)
+SERVICES: (3 a 5 servicios tipicos separados por " | ")`;
+    }
+
+    function parseChatGptResponse(text) {
+      const result = {};
+      for (const line of text.split("\n")) {
+        const m = line.match(/^([A-Za-zÀ-ÿ_]+)\s*:\s*(.*)$/);
+        if (!m) continue;
+        const key = m[1].trim().toUpperCase();
+        const value = m[2].trim();
+        if (key === "HEADLINE") result.headline = value;
+        else if (key === "SUBHEADLINE") result.subheadline = value;
+        else if (key === "ABOUT") result.about = value;
+        else if (key === "SERVICES") result.services = value.split("|").map((s) => s.trim()).filter(Boolean);
       }
-      const r = data.result;
-      const notes = (r.personalizationNotes || []).map((n) => `<li>${escapeHtml(n)}</li>`).join("");
-      showOutput(
-        `<strong>${r.isRefresh ? "Refreshed logo/colors" : "Draft created"}</strong> for ${escapeHtml(r.businessName)}<br>` +
-        `Template: ${escapeHtml(r.templateCategory)} · Language: ${escapeHtml(r.language)}<br>` +
-        (notes ? `<ul>${notes}</ul>` : "") +
-        `<a href="${r.previewUrl}" target="_blank" rel="noopener">Open preview →</a>`,
-        false
-      );
+      return result;
+    }
+
+    function parsePhotos(text) {
+      return text.split("\n").map((l) => l.trim()).filter(Boolean).map((line) => {
+        const [url, caption] = line.split("|").map((s) => (s || "").trim());
+        return caption ? { url, caption } : { url };
+      });
+    }
+
+    $("generateBtn").addEventListener("click", async () => {
+      $("generateBtn").disabled = true;
+      showOutput("generateOutput", "Working...", false);
+      try {
+        const data = await callJson("/api/cron/generate-preview");
+        if (!data.ok) {
+          showOutput("generateOutput", `Error: ${escapeHtml(data.error)}`, true);
+          return;
+        }
+        const r = data.result;
+        promptBox.value = buildPrompt(r.business || {}, r.businessName);
+        const notes = (r.personalizationNotes || []).map((n) => `<li>${escapeHtml(n)}</li>`).join("");
+        showOutput(
+          "generateOutput",
+          `<strong>${r.isRefresh ? "Refreshed" : "Draft created"}</strong> for ${escapeHtml(r.businessName)}<br>` +
+          `Template: ${escapeHtml(r.templateCategory)} · Language: ${escapeHtml(r.language)}<br>` +
+          (notes ? `<ul>${notes}</ul>` : "") +
+          `<a href="${r.previewUrl}" target="_blank" rel="noopener">Open preview →</a>`,
+          false
+        );
+      } catch (err) {
+        showOutput("generateOutput", escapeHtml(err.message), true);
+      } finally {
+        $("generateBtn").disabled = false;
+      }
     });
 
-    approveBtn.addEventListener("click", async () => {
-      const data = await callEndpoint("/api/cron/approve-preview");
-      if (!data) return;
-      if (!data.ok) {
-        showOutput(`Error: ${escapeHtml(data.error)}`, true);
-        return;
+    $("copyPromptBtn").addEventListener("click", async () => {
+      if (!promptBox.value) return;
+      try {
+        await navigator.clipboard.writeText(promptBox.value);
+        $("copyPromptBtn").textContent = "Copied!";
+        setTimeout(() => { $("copyPromptBtn").textContent = "Copy prompt"; }, 1500);
+      } catch {
+        promptBox.select();
       }
-      const r = data.result;
-      const errorsHtml = r.errors.length
-        ? `<div class="errors"><strong>Errors (blocked approval):</strong><ul>${r.errors.map((e) => `<li>${escapeHtml(e)}</li>`).join("")}</ul></div>`
-        : "";
-      const warningsHtml = r.warnings.length
-        ? `<div class="warnings"><strong>Warnings:</strong><ul>${r.warnings.map((w) => `<li>${escapeHtml(w)}</li>`).join("")}</ul></div>`
-        : "";
-      showOutput(
-        `<strong>${r.approved ? "✓ Approved" : "Not approved"}</strong> — ${escapeHtml(r.businessName)} · Score ${r.score}/10<br>` +
-        errorsHtml + warningsHtml +
-        (r.approved ? `<a href="${r.previewUrl}" target="_blank" rel="noopener">Open preview →</a>` : ""),
-        !r.approved
-      );
+    });
+
+    $("saveContentBtn").addEventListener("click", async () => {
+      $("saveContentBtn").disabled = true;
+      showOutput("saveOutput", "Saving...", false);
+      try {
+        const parsed = parseChatGptResponse(chatgptResponseEl.value || "");
+        const photos = parsePhotos(photosEl.value || "");
+        const patch = {
+          ...parsed,
+          photos,
+          logoUrl: logoUrlEl.value.trim(),
+          primaryColor: primaryColorEl.value.trim(),
+          secondaryColor: secondaryColorEl.value.trim()
+        };
+        const data = await callJson("/api/cron/update-preview-content", { method: "POST", body: patch });
+        if (!data.ok) {
+          showOutput("saveOutput", `Error: ${escapeHtml(data.error)}`, true);
+          return;
+        }
+        const r = data.result;
+        showOutput(
+          "saveOutput",
+          `<strong>Saved</strong> for ${escapeHtml(r.businessName)}<br>` +
+          `Updated: ${r.updatedFields.length ? escapeHtml(r.updatedFields.join(", ")) : "(nothing — everything was left blank)"}<br>` +
+          `<a href="${r.previewUrl}" target="_blank" rel="noopener">Open preview →</a>`,
+          false
+        );
+      } catch (err) {
+        showOutput("saveOutput", escapeHtml(err.message), true);
+      } finally {
+        $("saveContentBtn").disabled = false;
+      }
+    });
+
+    $("approveBtn").addEventListener("click", async () => {
+      $("approveBtn").disabled = true;
+      showOutput("approveOutput", "Working...", false);
+      try {
+        const data = await callJson("/api/cron/approve-preview");
+        if (!data.ok) {
+          showOutput("approveOutput", `Error: ${escapeHtml(data.error)}`, true);
+          return;
+        }
+        const r = data.result;
+        const errorsHtml = r.errors.length
+          ? `<div class="errors"><strong>Errors (blocked approval):</strong><ul>${r.errors.map((e) => `<li>${escapeHtml(e)}</li>`).join("")}</ul></div>`
+          : "";
+        const warningsHtml = r.warnings.length
+          ? `<div class="warnings"><strong>Warnings:</strong><ul>${r.warnings.map((w) => `<li>${escapeHtml(w)}</li>`).join("")}</ul></div>`
+          : "";
+        showOutput(
+          "approveOutput",
+          `<strong>${r.approved ? "✓ Approved" : "Not approved"}</strong> — ${escapeHtml(r.businessName)} · Score ${r.score}/10<br>` +
+          errorsHtml + warningsHtml +
+          (r.approved ? `<a href="${r.previewUrl}" target="_blank" rel="noopener">Open preview →</a>` : ""),
+          !r.approved
+        );
+      } catch (err) {
+        showOutput("approveOutput", escapeHtml(err.message), true);
+      } finally {
+        $("approveBtn").disabled = false;
+      }
     });
   </script>
 </body>

@@ -21,4 +21,4 @@ export function pickVariant(seed, options) {
   return options[hash % options.length];
 }
 
-export const HERO_VARIANTS = ["split", "centered"];
+export const HERO_VARIANTS = ["split", "centered", "overlap"];

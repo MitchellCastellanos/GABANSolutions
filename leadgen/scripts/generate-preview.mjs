@@ -216,7 +216,19 @@ export async function generatePreviewForSlug(slug, { dryRun = false } = {}) {
     language: config.language,
     personalizationNotes: isRefresh ? [] : config.auditContext.personalizationNotes,
     previewUrl: `https://gabansolutions.ca/preview/${slug}`,
-    saved: !dryRun
+    saved: !dryRun,
+    // Extra business context, mainly so a caller (leadgen-admin.html)
+    // can build a ChatGPT prompt without a second round-trip.
+    business: {
+      category: record.fields[F.CATEGORY] || "",
+      city: record.fields[F.CITY] || "",
+      address: record.fields[F.ADDRESS] || "",
+      phone: record.fields[F.PHONE] || "",
+      rating: typeof record.fields[F.RATING] === "number" ? record.fields[F.RATING] : null,
+      reviewCount: typeof record.fields[F.REVIEW_COUNT] === "number" ? record.fields[F.REVIEW_COUNT] : null,
+      website: record.fields[F.WEBSITE] || "",
+      signals: parseSignals(record.fields[F.SIGNALS])
+    }
   };
 }
 

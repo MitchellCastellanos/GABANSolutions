@@ -23,7 +23,7 @@ export function trustBar(config) {
     ? copy(language, `Basé à ${escapeHtml(city)}`, `Based in ${escapeHtml(city)}`)
     : "";
 
-  return `<section class="trust-bar"><div class="container">
+  return `<section class="trust-bar" data-reveal><div class="container">
     ${ratingText}${ratingText && cityText ? " · " : ""}${cityText}
   </div></section>`;
 }
