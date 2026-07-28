@@ -20,6 +20,7 @@ import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { upsertByField } from "../lib/airtable.mjs";
+import { F, STATUS } from "../lib/fields.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DRY_RUN = process.argv.includes("--dry-run");
@@ -87,18 +88,18 @@ function slugify(text) {
 function toProspectFields(place, category, area) {
   const shortId = (place.id || "").slice(-8);
   return {
-    "Nombre": place.displayName?.text || "(sin nombre)",
-    "Teléfono": place.internationalPhoneNumber || "",
-    "Website": place.websiteUri || "",
-    "Categoría": category.label,
-    "Ciudad": area.label,
-    "Dirección": place.formattedAddress || "",
-    "Rating": typeof place.rating === "number" ? place.rating : null,
-    "# Reviews": typeof place.userRatingCount === "number" ? place.userRatingCount : null,
-    "Business Status": place.businessStatus || "",
-    "Google Place ID": place.id,
-    "Slug": `${slugify(place.displayName?.text)}-${shortId}`,
-    "Estado del pipeline": "Prospectado"
+    [F.NAME]: place.displayName?.text || "(unnamed)",
+    [F.PHONE]: place.internationalPhoneNumber || "",
+    [F.WEBSITE]: place.websiteUri || "",
+    [F.CATEGORY]: category.label,
+    [F.CITY]: area.label,
+    [F.ADDRESS]: place.formattedAddress || "",
+    [F.RATING]: typeof place.rating === "number" ? place.rating : null,
+    [F.REVIEW_COUNT]: typeof place.userRatingCount === "number" ? place.userRatingCount : null,
+    [F.BUSINESS_STATUS]: place.businessStatus || "",
+    [F.GOOGLE_PLACE_ID]: place.id,
+    [F.SLUG]: `${slugify(place.displayName?.text)}-${shortId}`,
+    [F.PIPELINE_STATUS]: STATUS.PROSPECTED
   };
 }
 
@@ -149,9 +150,9 @@ export async function main() {
 
         const fields = toProspectFields(place, category, area);
         if (DRY_RUN) {
-          console.log("  [dry-run] upsert:", fields["Nombre"]);
+          console.log("  [dry-run] upsert:", fields[F.NAME]);
         } else {
-          await upsertByField("Google Place ID", fields);
+          await upsertByField(F.GOOGLE_PLACE_ID, fields);
         }
         written += 1;
       }

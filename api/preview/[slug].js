@@ -14,6 +14,7 @@
 // ============================================================
 
 import { findByField, updateRecord } from "../../leadgen/lib/airtable.mjs";
+import { F } from "../../leadgen/lib/fields.mjs";
 
 function escapeHtml(value) {
   return String(value || "").replace(/[&<>"']/g, (ch) => ({
@@ -84,7 +85,7 @@ export default async function handler(req, res) {
 
   let record;
   try {
-    record = await findByField("Slug", slug);
+    record = await findByField(F.SLUG, slug);
   } catch (err) {
     res.status(500).setHeader("Content-Type", "text/plain; charset=utf-8");
     return res.end("Something went wrong loading this preview.");
@@ -96,16 +97,16 @@ export default async function handler(req, res) {
 
   const fields = record.fields;
 
-  if (!fields["Primera vista"]) {
-    updateRecord(record.id, { "Primera vista": new Date().toISOString() }).catch(() => {});
+  if (!fields[F.FIRST_VIEWED]) {
+    updateRecord(record.id, { [F.FIRST_VIEWED]: new Date().toISOString() }).catch(() => {});
   }
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   return res.status(200).end(
     renderProposal({
-      name: fields["Nombre"],
-      mockupUrl: fields["Link al mockup"],
-      businessParam: fields["Nombre"] || ""
+      name: fields[F.NAME],
+      mockupUrl: fields[F.MOCKUP_LINK],
+      businessParam: fields[F.NAME] || ""
     })
   );
 }

@@ -20,6 +20,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { listRecords, updateRecord } from "../lib/airtable.mjs";
 import { scoreProspect } from "../lib/scoring.mjs";
+import { F, STATUS } from "../lib/fields.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DRY_RUN = process.argv.includes("--dry-run");
@@ -28,7 +29,7 @@ const BUCKET_LABELS = {
   hot: "🔥 Hot",
   warm: "🌤 Warm",
   low: "❄️ Low",
-  disqualified: "Descartado"
+  disqualified: "Discarded"
 };
 
 async function loadTargetCategories() {
@@ -38,7 +39,7 @@ async function loadTargetCategories() {
 }
 
 function parseAudit(record) {
-  const raw = record.fields["Site Audit JSON"];
+  const raw = record.fields[F.SITE_AUDIT_JSON];
   if (!raw) return undefined;
   try {
     return JSON.parse(raw);
@@ -50,7 +51,7 @@ function parseAudit(record) {
 export async function main() {
   const targetCategories = await loadTargetCategories();
   const records = await listRecords({
-    filterByFormula: `OR({Estado del pipeline} = "Prospectado", {Estado del pipeline} = "Calificado")`
+    filterByFormula: `OR({${F.PIPELINE_STATUS}} = "${STATUS.PROSPECTED}", {${F.PIPELINE_STATUS}} = "${STATUS.QUALIFIED}")`
   });
 
   console.log(`Calculando score para ${records.length} prospectos.`);
@@ -58,26 +59,26 @@ export async function main() {
   for (const record of records) {
     const f = record.fields;
     const prospect = {
-      name: f["Nombre"],
-      website: f["Website"],
-      rating: f["Rating"],
-      userRatingsTotal: f["# Reviews"],
-      businessStatus: f["Business Status"],
-      phone: f["Teléfono"],
-      categories: f["Categoría"] ? [f["Categoría"]] : [],
+      name: f[F.NAME],
+      website: f[F.WEBSITE],
+      rating: f[F.RATING],
+      userRatingsTotal: f[F.REVIEW_COUNT],
+      businessStatus: f[F.BUSINESS_STATUS],
+      phone: f[F.PHONE],
+      categories: f[F.CATEGORY] ? [f[F.CATEGORY]] : [],
       targetCategories,
       siteAudit: parseAudit(record)
     };
 
     const result = scoreProspect(prospect);
     const fields = {
-      "Score": result.score,
-      "Bucket": BUCKET_LABELS[result.bucket],
-      "Señales detectadas": result.signals.join(", ") || "-",
-      "Estado del pipeline": result.disqualified ? "Descartado" : "Calificado"
+      [F.SCORE]: result.score,
+      [F.BUCKET]: BUCKET_LABELS[result.bucket],
+      [F.SIGNALS]: result.signals.join(", ") || "-",
+      [F.PIPELINE_STATUS]: result.disqualified ? STATUS.DISCARDED : STATUS.QUALIFIED
     };
 
-    console.log(`  ${f["Nombre"]}: score=${result.score} bucket=${result.bucket}`);
+    console.log(`  ${f[F.NAME]}: score=${result.score} bucket=${result.bucket}`);
 
     if (DRY_RUN) {
       console.log("    [dry-run]", fields);

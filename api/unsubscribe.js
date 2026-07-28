@@ -10,6 +10,7 @@
 // ============================================================
 
 import { findByField, updateRecord } from "../leadgen/lib/airtable.mjs";
+import { F, STATUS } from "../leadgen/lib/fields.mjs";
 
 function renderPage(message) {
   return `<!DOCTYPE html><html><head><meta charset="utf-8"><title>GABAN Solutions</title></head>
@@ -28,9 +29,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const record = await findByField("Slug", slug);
+    const record = await findByField(F.SLUG, slug);
     if (record) {
-      await updateRecord(record.id, { "Estado del pipeline": "No contactar" });
+      await updateRecord(record.id, { [F.PIPELINE_STATUS]: STATUS.DO_NOT_CONTACT });
     }
   } catch {
     return res.status(500).end(renderPage("Something went wrong. Reply to any of our emails and we'll remove you manually."));

@@ -26,8 +26,10 @@
 // (e.g. "https://gabansolutions.ca").
 // ============================================================
 
+import { fileURLToPath } from "node:url";
 import { listRecords, updateRecord } from "../lib/airtable.mjs";
 import { initialEmail, followUpOne, followUpTwo, followUpThree, sendEmail } from "../lib/email.mjs";
+import { F, STATUS } from "../lib/fields.mjs";
 
 const DRY_RUN = process.argv.includes("--dry-run");
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -44,7 +46,7 @@ function daysSince(isoDate) {
 }
 
 function contactEmailOf(fields) {
-  const contact = fields["Email"] || fields["Teléfono"] || "";
+  const contact = fields[F.EMAIL] || fields[F.PHONE] || "";
   return /@/.test(contact) ? contact : null;
 }
 
@@ -60,7 +62,7 @@ async function sendAndRecord({ record, template, fields, statusUpdate }) {
 
 async function processInitialSends(siteUrl) {
   const records = await listRecords({
-    filterByFormula: `AND({Estado del pipeline} = "Mockup listo", {Link a la propuesta} = "")`
+    filterByFormula: `AND({${F.PIPELINE_STATUS}} = "${STATUS.MOCKUP_READY}", {${F.PROPOSAL_LINK}} = "")`
   });
   console.log(`Envíos iniciales pendientes: ${records.length}`);
 
@@ -68,13 +70,13 @@ async function processInitialSends(siteUrl) {
     const f = record.fields;
     const to = contactEmailOf(f);
     if (!to) {
-      console.log(`  Sin email para ${f["Nombre"]}, no se puede enviar automáticamente. Saltando.`);
+      console.log(`  No email for ${f[F.NAME]}, skipping.`);
       continue;
     }
-    const slug = f["Slug"];
+    const slug = f[F.SLUG];
     const previewUrl = `${siteUrl}/api/preview/${slug}`;
     const unsubscribeUrl = `${siteUrl}/api/unsubscribe?slug=${slug}`;
-    const template = initialEmail({ businessName: f["Nombre"], previewUrl, unsubscribeUrl });
+    const template = initialEmail({ businessName: f[F.NAME], previewUrl, unsubscribeUrl });
     const now = new Date().toISOString();
 
     await sendAndRecord({
@@ -82,11 +84,11 @@ async function processInitialSends(siteUrl) {
       template,
       fields: { to },
       statusUpdate: {
-        "Estado del pipeline": "Propuesta enviada",
-        "Link a la propuesta": previewUrl,
-        "Fecha de primer email": now,
-        "Fecha de último follow-up": now,
-        "# de follow-ups enviados": 0
+        [F.PIPELINE_STATUS]: STATUS.PROPOSAL_SENT,
+        [F.PROPOSAL_LINK]: previewUrl,
+        [F.FIRST_EMAIL_DATE]: now,
+        [F.LAST_FOLLOWUP_DATE]: now,
+        [F.FOLLOWUPS_SENT]: 0
       }
     });
   }
@@ -94,7 +96,7 @@ async function processInitialSends(siteUrl) {
 
 async function processFollowUps(siteUrl) {
   const records = await listRecords({
-    filterByFormula: `{Estado del pipeline} = "Propuesta enviada"`
+    filterByFormula: `{${F.PIPELINE_STATUS}} = "${STATUS.PROPOSAL_SENT}"`
   });
   console.log(`Prospectos en seguimiento: ${records.length}`);
 
@@ -103,20 +105,20 @@ async function processFollowUps(siteUrl) {
     const to = contactEmailOf(f);
     if (!to) continue;
 
-    const sentCount = f["# de follow-ups enviados"] || 0;
-    const daysSinceFirst = daysSince(f["Fecha de primer email"]);
-    const daysSinceLast = daysSince(f["Fecha de último follow-up"]);
-    const slug = f["Slug"];
-    const previewUrl = f["Link a la propuesta"] || `${siteUrl}/api/preview/${slug}`;
+    const sentCount = f[F.FOLLOWUPS_SENT] || 0;
+    const daysSinceFirst = daysSince(f[F.FIRST_EMAIL_DATE]);
+    const daysSinceLast = daysSince(f[F.LAST_FOLLOWUP_DATE]);
+    const slug = f[F.SLUG];
+    const previewUrl = f[F.PROPOSAL_LINK] || `${siteUrl}/api/preview/${slug}`;
     const unsubscribeUrl = `${siteUrl}/api/unsubscribe?slug=${slug}`;
-    const businessName = f["Nombre"];
+    const businessName = f[F.NAME];
     const now = new Date().toISOString();
 
     if (sentCount >= 3) {
       if (daysSinceLast >= 7) {
         console.log(`  Archivando (sin respuesta): ${businessName}`);
         if (!DRY_RUN) {
-          await updateRecord(record.id, { "Estado del pipeline": "Sin respuesta" });
+          await updateRecord(record.id, { [F.PIPELINE_STATUS]: STATUS.NO_RESPONSE });
         }
       }
       continue;
@@ -140,8 +142,8 @@ async function processFollowUps(siteUrl) {
       template,
       fields: { to },
       statusUpdate: {
-        "Fecha de último follow-up": now,
-        "# de follow-ups enviados": sentCount + 1
+        [F.LAST_FOLLOWUP_DATE]: now,
+        [F.FOLLOWUPS_SENT]: sentCount + 1
       }
     });
   }

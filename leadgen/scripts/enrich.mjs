@@ -18,6 +18,7 @@
 
 import { fileURLToPath } from "node:url";
 import { listRecords, updateRecord } from "../lib/airtable.mjs";
+import { F, STATUS } from "../lib/fields.mjs";
 
 const DRY_RUN = process.argv.includes("--dry-run");
 const PAGESPEED_URL = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
@@ -65,22 +66,22 @@ function fieldsFromAudit(audit) {
   if (audit.mobileFriendly === false) signalParts.push("no mobile-friendly");
 
   return {
-    "Site Audit JSON": JSON.stringify(audit),
-    "Señales detectadas": signalParts.join(", ") || "sitio parece saludable",
-    "Estado del pipeline": "Calificado"
+    [F.SITE_AUDIT_JSON]: JSON.stringify(audit),
+    [F.SIGNALS]: signalParts.join(", ") || "site looks healthy",
+    [F.PIPELINE_STATUS]: STATUS.QUALIFIED
   };
 }
 
 export async function main() {
   const records = await listRecords({
-    filterByFormula: `AND({Website} != "", {Estado del pipeline} = "Prospectado")`
+    filterByFormula: `AND({${F.WEBSITE}} != "", {${F.PIPELINE_STATUS}} = "${STATUS.PROSPECTED}")`
   });
 
   console.log(`Encontrados ${records.length} prospectos con website pendientes de auditar.`);
 
   for (const record of records) {
-    const website = record.fields["Website"];
-    console.log(`Auditando: ${record.fields["Nombre"]} — ${website}`);
+    const website = record.fields[F.WEBSITE];
+    console.log(`Auditando: ${record.fields[F.NAME]} — ${website}`);
 
     const reachable = await checkReachable(website);
     let pagespeed = { performanceScore: null, mobileFriendly: null };
