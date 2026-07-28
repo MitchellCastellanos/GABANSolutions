@@ -13,7 +13,14 @@
 //
 // Required env vars: AIRTABLE_API_KEY, AIRTABLE_BASE_ID.
 // Optional: GOOGLE_PAGESPEED_API_KEY (PageSpeed works unauthenticated
-// at low volume, but a key raises the rate limit).
+// at low volume, but a key raises the rate limit — strongly
+// recommended once you're running hundreds of prospects, since the
+// unauthenticated quota gets throttled hard and audits silently
+// slow to a crawl rather than failing outright).
+// Optional: LEADGEN_ENRICH_CONCURRENCY (default 8) — how many site
+// audits to run at once. PageSpeed audits were previously run one at
+// a time, which is why a full pass over ~500 prospects could take
+// 45+ minutes; running them concurrently is the main lever here.
 // ============================================================
 
 import { fileURLToPath } from "node:url";
@@ -22,6 +29,19 @@ import { F, STATUS } from "../lib/fields.mjs";
 
 const DRY_RUN = process.argv.includes("--dry-run");
 const PAGESPEED_URL = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed";
+const CONCURRENCY = Number(process.env.LEADGEN_ENRICH_CONCURRENCY) || 8;
+const PAGESPEED_TIMEOUT_MS = 20000;
+
+async function mapWithConcurrency(items, limit, fn) {
+  let index = 0;
+  async function worker() {
+    while (index < items.length) {
+      const current = index++;
+      await fn(items[current], current);
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+}
 
 async function checkReachable(url) {
   const controller = new AbortController();
@@ -45,17 +65,23 @@ async function runPageSpeed(url) {
   if (process.env.GOOGLE_PAGESPEED_API_KEY) {
     params.set("key", process.env.GOOGLE_PAGESPEED_API_KEY);
   }
-  const res = await fetch(`${PAGESPEED_URL}?${params.toString()}`);
-  if (!res.ok) {
-    throw new Error(`PageSpeed request failed (${res.status})`);
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), PAGESPEED_TIMEOUT_MS);
+  try {
+    const res = await fetch(`${PAGESPEED_URL}?${params.toString()}`, { signal: controller.signal });
+    if (!res.ok) {
+      throw new Error(`PageSpeed request failed (${res.status})`);
+    }
+    const data = await res.json();
+    const performanceScore = data.lighthouseResult?.categories?.performance?.score;
+    const mobileFriendly = data.lighthouseResult?.audits?.["viewport"]?.score === 1;
+    return {
+      performanceScore: typeof performanceScore === "number" ? Math.round(performanceScore * 100) : null,
+      mobileFriendly
+    };
+  } finally {
+    clearTimeout(timer);
   }
-  const data = await res.json();
-  const performanceScore = data.lighthouseResult?.categories?.performance?.score;
-  const mobileFriendly = data.lighthouseResult?.audits?.["viewport"]?.score === 1;
-  return {
-    performanceScore: typeof performanceScore === "number" ? Math.round(performanceScore * 100) : null,
-    mobileFriendly
-  };
 }
 
 function fieldsFromAudit(audit) {
@@ -77,9 +103,9 @@ export async function main() {
     filterByFormula: `AND({${F.WEBSITE}} != "", {${F.PIPELINE_STATUS}} = "${STATUS.PROSPECTED}")`
   });
 
-  console.log(`Encontrados ${records.length} prospectos con website pendientes de auditar.`);
+  console.log(`Encontrados ${records.length} prospectos con website pendientes de auditar (concurrencia: ${CONCURRENCY}).`);
 
-  for (const record of records) {
+  await mapWithConcurrency(records, CONCURRENCY, async (record) => {
     const website = record.fields[F.WEBSITE];
     console.log(`Auditando: ${record.fields[F.NAME]} — ${website}`);
 
@@ -89,7 +115,7 @@ export async function main() {
       try {
         pagespeed = await runPageSpeed(website);
       } catch (err) {
-        console.error(`  PageSpeed falló: ${err.message}`);
+        console.error(`  PageSpeed falló para ${website}: ${err.message}`);
       }
     }
 
@@ -101,7 +127,7 @@ export async function main() {
     } else {
       await updateRecord(record.id, fields);
     }
-  }
+  });
 
   console.log("Listo.");
 }
