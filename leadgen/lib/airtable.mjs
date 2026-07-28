@@ -71,7 +71,11 @@ export async function findByField(field, value) {
 export async function createRecord(fields) {
   const result = await airtableFetch(tableUrl(), {
     method: "POST",
-    body: JSON.stringify({ fields })
+    // typecast lets Airtable auto-add a missing single-select option
+    // (e.g. a new Pipeline Status/Call Outcome value) instead of
+    // erroring the whole write — this repo's status values evolve
+    // faster than anyone remembers to update the base schema by hand.
+    body: JSON.stringify({ fields, typecast: true })
   });
   return result;
 }
@@ -79,7 +83,7 @@ export async function createRecord(fields) {
 export async function updateRecord(recordId, fields) {
   const result = await airtableFetch(`${tableUrl()}/${recordId}`, {
     method: "PATCH",
-    body: JSON.stringify({ fields })
+    body: JSON.stringify({ fields, typecast: true })
   });
   return result;
 }
