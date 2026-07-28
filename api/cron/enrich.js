@@ -1,4 +1,6 @@
-// GET /api/cron/enrich — invoked by Vercel Cron (see vercel.json).
+// GET /api/cron/enrich — manual/HTTP trigger for leadgen/scripts/enrich.mjs.
+// Not on the Vercel Cron schedule — see .github/workflows/leadgen-weekly.yml
+// and the note in api/cron/prospect.js.
 import { main as runEnrich } from "../../leadgen/scripts/enrich.mjs";
 import { requireCronAuth } from "../../leadgen/lib/cron-auth.mjs";
 

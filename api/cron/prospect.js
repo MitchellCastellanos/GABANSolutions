@@ -1,6 +1,9 @@
-// GET /api/cron/prospect — invoked by Vercel Cron (see vercel.json).
-// Thin wrapper around leadgen/scripts/prospect.mjs so it can run on
-// a schedule without a long-lived server.
+// GET /api/cron/prospect — manual/HTTP trigger for leadgen/scripts/prospect.mjs.
+// Not on the Vercel Cron schedule (see vercel.json) — the weekly
+// prospect->enrich->score run lives in .github/workflows/leadgen-weekly.yml
+// instead, since Vercel Hobby's function timeout is too tight for it.
+// This endpoint still works standalone if you want to trigger this one
+// step over HTTP (same CRON_SECRET bearer-token auth).
 import { main as runProspect } from "../../leadgen/scripts/prospect.mjs";
 import { requireCronAuth } from "../../leadgen/lib/cron-auth.mjs";
 

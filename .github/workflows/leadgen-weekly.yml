@@ -1,0 +1,34 @@
+name: Lead Radar weekly prospecting
+
+# Runs prospect -> enrich -> score every Monday. Kept outside Vercel
+# Cron on purpose: PageSpeed audits in enrich.mjs can take several
+# seconds per site, and looping through ~25 category/area searches in
+# prospect.mjs adds up too — comfortably over Vercel Hobby's function
+# timeout if chained into one serverless request. GitHub Actions has
+# no such limit, so the three steps run here as plain Node scripts.
+# send-proposal.mjs stays on Vercel Cron (api/cron/send-proposal.js)
+# since its daily workload is much lighter.
+
+on:
+  schedule:
+    - cron: "0 9 * * 1" # Monday 09:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  prospect-enrich-score:
+    runs-on: ubuntu-latest
+    env:
+      AIRTABLE_API_KEY: ${{ secrets.AIRTABLE_API_KEY }}
+      AIRTABLE_BASE_ID: ${{ secrets.AIRTABLE_BASE_ID }}
+      AIRTABLE_TABLE: ${{ secrets.AIRTABLE_TABLE }}
+      GOOGLE_PLACES_API_KEY: ${{ secrets.GOOGLE_PLACES_API_KEY }}
+      GOOGLE_PAGESPEED_API_KEY: ${{ secrets.GOOGLE_PAGESPEED_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run leadgen:prospect
+      - run: npm run leadgen:enrich
+      - run: npm run leadgen:score

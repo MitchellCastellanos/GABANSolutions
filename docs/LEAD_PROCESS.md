@@ -11,8 +11,13 @@
 
 Not every lead is inbound anymore. The **Lead Radar** system in
 `leadgen/` finds local businesses on Google Maps, scores how much they'd
-benefit from a new site, and runs its own outreach + follow-up sequence
-by email — all tracked in a separate Airtable pipeline, not this board.
+benefit from a new site, and once a mockup is ready, a human **cold
+calls** them to say "I already made you one, go take a look" — that call
+is the real first touch, not an email. Only after the call is logged as
+interested does an automated email + follow-up sequence take over,
+delivering the link and nudging if they go quiet. All of this is tracked
+in a separate Airtable pipeline, not this board — see `leadgen/README.md`
+for the full call → email → follow-up mechanics.
 
 The two systems meet at one point: when an outbound prospect **replies**,
 move their Airtable record to "Respondió" and bring them into this

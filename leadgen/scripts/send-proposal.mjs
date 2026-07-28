@@ -2,21 +2,32 @@
 // ============================================================
 // leadgen/scripts/send-proposal.mjs
 //
+// The cold call is the real first touch, not this script. Once a
+// prospect has both a phone number and a mockup ("Mockup Ready"),
+// that's the call queue — a human calls them, says "I already made
+// you one, go take a look", and logs the result as "Call Outcome".
+// This script only takes over *after* that: when a human marks a
+// call "Called - Interested" (see leadgen/lib/fields.mjs
+// CALL_OUTCOME), it sends the actual proposal link by email as the
+// follow-through on what was promised on the phone.
+//
 // Runs daily (Vercel Cron). Two jobs in one pass:
 //
-//  1. Initial send: prospects in "Mockup listo" (a human uploaded
-//     the mockup to Airtable) get the first outreach email, then
-//     move to "Propuesta enviada".
+//  1. Initial send: prospects moved to "Called - Interested" (a
+//     human just had a good call) get the proposal email with the
+//     link, then move to "Proposal Sent".
 //
-//  2. Follow-ups: prospects in "Propuesta enviada" who haven't
+//  2. Follow-ups: prospects in "Proposal Sent" who haven't
 //     replied get follow-up 1 at day 3, follow-up 2 at day 7,
 //     follow-up 3 at day 14 (counted from the initial send). After
 //     follow-up 3, if a week passes with still no reply, the
-//     prospect is archived to "Sin respuesta" and not contacted again.
+//     prospect is archived to "No Response" and not contacted again.
 //
 // A prospect only leaves this loop by replying (moved manually to
-// "Respondió" once a human sees the reply) or by unsubscribing
-// (api/unsubscribe.js sets "No contactar").
+// "Replied" once a human sees the reply) or by unsubscribing
+// (api/unsubscribe.js sets "Do Not Contact"). Calls logged as "Not
+// Interested" or "Call Back Later" never enter this script's flow —
+// see leadgen/README.md for the full call-handling playbook.
 //
 // Usage:
 //   node leadgen/scripts/send-proposal.mjs [--dry-run]
@@ -62,7 +73,7 @@ async function sendAndRecord({ record, template, fields, statusUpdate }) {
 
 async function processInitialSends(siteUrl) {
   const records = await listRecords({
-    filterByFormula: `AND({${F.PIPELINE_STATUS}} = "${STATUS.MOCKUP_READY}", {${F.PROPOSAL_LINK}} = "")`
+    filterByFormula: `AND({${F.PIPELINE_STATUS}} = "${STATUS.CALLED_INTERESTED}", {${F.PROPOSAL_LINK}} = "")`
   });
   console.log(`Envíos iniciales pendientes: ${records.length}`);
 
