@@ -4,8 +4,8 @@ function copy(language, fr, en) {
   return language === "fr" ? fr : en;
 }
 
-export function reviews(config) {
-  const list = config.content?.reviews || [];
+export function reviews(config, page) {
+  const list = page?.content?.reviews || [];
   if (list.length === 0) return "";
 
   const language = config.language === "fr" ? "fr" : "en";

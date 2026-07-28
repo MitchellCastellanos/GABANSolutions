@@ -7,13 +7,18 @@
 // Category, Rating, Review Count, Signals) and writes it to the
 // "Preview Config JSON" field with "Preview Status" = "draft".
 //
+// A fresh config is a real 3-page mini-site: home, a middle page
+// (label varies by category — "Services", "Menu" for restaurants,
+// "Programs" for gyms, "Practice Areas" for lawyers), and contact.
+// See leadgen/lib/preview-render.mjs and templates/shared/blocks/
+// navBar.mjs for how those pages get rendered/linked.
+//
 // Safe to re-run: if a config already exists (someone has been
 // editing services/photos/reviews by hand), re-running this script
 // does NOT overwrite that work — it only refreshes business.logo and
 // branding colors from the "Logo URL" / "Primary Color" / "Secondary
-// Color" Airtable fields, so you can fill those in later (e.g. after
-// asking ChatGPT to pull brand colors from a screenshot of the
-// business's Facebook page) and re-run without losing anything.
+// Color" Airtable fields (both are top-level, shared by every page),
+// so you can fill those in later and re-run without losing anything.
 //
 // Deliberately does NOT fetch photos automatically — Google Places
 // Photo Media URLs require the API key as a query param, which
@@ -37,6 +42,11 @@ import { findByField, updateRecord } from "../lib/airtable.mjs";
 import { F, PREVIEW_STATUS } from "../lib/fields.mjs";
 import { guessCategoryKey, resolveTemplate, knownCategoryKeys } from "../templates/registry.mjs";
 import { pickVariant, HERO_VARIANTS } from "../templates/shared/variant.mjs";
+
+const NAV_LABELS = {
+  home: { fr: "Accueil", en: "Home" },
+  contact: { fr: "Contact", en: "Contact" }
+};
 
 function parseSignals(signalsText) {
   if (!signalsText) return [];
@@ -84,6 +94,7 @@ function buildFreshConfig(record) {
   const f = record.fields;
   const name = f[F.NAME] || "";
   const city = f[F.CITY] || "";
+  const cityShort = city.split(",")[0].trim();
   const categoryLabel = f[F.CATEGORY] || "";
   const categoryKey = categoryKeyFor(f);
   const template = resolveTemplate(categoryKey);
@@ -92,17 +103,25 @@ function buildFreshConfig(record) {
 
   const signals = parseSignals(f[F.SIGNALS]);
   const valueProps = valuePropsFromSignals(signals, language);
-  const ctaLabel = template.defaultCta[language];
+  const cta = {
+    label: template.defaultCta[language],
+    href: `https://gabansolutions.ca/contact.html?ref=outbound-proposal&business=${encodeURIComponent(name)}`
+  };
+  const middleLabel = (template.middlePageLabel && template.middlePageLabel[language]) || "Services";
 
-  const sectionOrder = pickVariant(slug, template.sectionOrderVariants || [template.defaultSectionOrder]);
   const heroVariant = pickVariant(`${slug}-hero`, HERO_VARIANTS);
   const pickedPalette = pickVariant(`${slug}-palette`, template.paletteVariants || [template.defaultPalette]);
-
   const branding = {
     ...pickedPalette,
     ...(f[F.PRIMARY_COLOR] ? { primaryColor: f[F.PRIMARY_COLOR] } : {}),
     ...(f[F.SECONDARY_COLOR] ? { secondaryColor: f[F.SECONDARY_COLOR] } : {})
   };
+
+  // Home reuses the category's usual section-order flavor, minus the
+  // full services list and gallery — those get their own page now so
+  // content isn't repeated across the site.
+  const rawOrder = pickVariant(slug, template.sectionOrderVariants || [template.defaultSectionOrder]);
+  const homeSectionOrder = rawOrder.filter((s) => s !== "services" && s !== "gallery");
 
   return {
     slug,
@@ -122,40 +141,62 @@ function buildFreshConfig(record) {
       photos: []
     },
     branding,
-    content: {
-      eyebrow: "",
-      headline: buildHeadline(name, city, categoryLabel, language),
-      subheadline: "",
-      services: [],
-      about: "",
-      valueProps,
-      reviews: [],
-      cta: { label: ctaLabel, href: `https://gabansolutions.ca/contact.html?ref=outbound-proposal&business=${encodeURIComponent(name)}` }
-    },
-    layout: {
-      heroVariant,
-      sectionOrder
+    pages: {
+      home: {
+        navLabel: NAV_LABELS.home[language],
+        heroVariant,
+        sectionOrder: homeSectionOrder,
+        content: {
+          eyebrow: "",
+          headline: buildHeadline(name, cityShort, categoryLabel, language),
+          subheadline: "",
+          about: "",
+          valueProps,
+          reviews: [],
+          cta
+        }
+      },
+      services: {
+        navLabel: middleLabel,
+        sectionOrder: ["pageHeader", "services", "gallery", "contact"],
+        content: {
+          headline: middleLabel,
+          intro: "",
+          services: [],
+          cta
+        }
+      },
+      contact: {
+        navLabel: NAV_LABELS.contact[language],
+        sectionOrder: ["pageHeader", "contact"],
+        content: {
+          headline: language === "fr" ? "Contactez-nous" : "Contact us",
+          intro: "",
+          cta
+        }
+      }
     },
     auditContext: {
       detectedSignals: signals,
       currentSiteProblems: signals,
       personalizationNotes: [
-        "TODO: add 2-3 real services",
+        "TODO: add 2-3 real services/items on the middle page",
         "TODO: add at least 1-2 real photos (hosted URL, e.g. Imgur or a Google Places photo link)",
-        "TODO: consider adding a real Google review to content.reviews"
+        "TODO: write a short intro for the middle and contact pages",
+        "TODO: consider adding a real Google review to the home page"
       ]
     },
     meta: {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       approvedAt: null,
-      version: 1,
+      version: 2,
       generatedBy: "script"
     }
   };
 }
 
-/** Re-run on an existing config: only refresh logo/colors from the flat Airtable fields, leave every hand-edited section alone. */
+/** Re-run on an existing config: only refresh logo/colors from the flat Airtable fields, leave every hand-edited section alone. Business/branding are top-level in both the legacy and multi-page shapes, so this needs no changes for either. */
 function refreshExistingConfig(record, existing) {
   const f = record.fields;
   const config = JSON.parse(JSON.stringify(existing));
@@ -208,6 +249,10 @@ export async function generatePreviewForSlug(slug, { dryRun = false } = {}) {
     await updateRecord(record.id, fields);
   }
 
+  const pageSummaries = config.pages
+    ? Object.fromEntries(Object.entries(config.pages).map(([key, p]) => [key, { navLabel: p.navLabel }]))
+    : null;
+
   return {
     slug,
     businessName: record.fields[F.NAME],
@@ -216,6 +261,7 @@ export async function generatePreviewForSlug(slug, { dryRun = false } = {}) {
     language: config.language,
     personalizationNotes: isRefresh ? [] : config.auditContext.personalizationNotes,
     previewUrl: `https://gabansolutions.ca/preview/${slug}`,
+    pages: pageSummaries,
     saved: !dryRun,
     // Extra business context, mainly so a caller (leadgen-admin.html)
     // can build a ChatGPT prompt without a second round-trip.

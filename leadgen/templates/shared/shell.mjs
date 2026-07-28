@@ -46,6 +46,20 @@ function styleBlock(branding) {
     }
     .gaban-bar a { color: var(--secondary); text-decoration: underline; }
 
+    .site-nav { background: var(--accent); border-bottom: 1px solid rgba(0,0,0,0.08); }
+    .site-nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 0.9rem 1.5rem; flex-wrap: wrap; gap: 0.5rem; }
+    .site-nav-brand { font-weight: 800; font-family: var(--heading-font); }
+    .site-nav-links { display: flex; gap: 1.5rem; }
+    .site-nav-links a.nav-link { text-decoration: none; font-weight: 600; font-size: 0.92rem; padding-bottom: 2px; border-bottom: 2px solid transparent; }
+    .site-nav-links a.nav-link--active { border-bottom-color: var(--secondary); }
+    .site-nav-links a.nav-link:hover { border-bottom-color: var(--secondary); }
+
+    .page-header { background: var(--primary); color: var(--accent); padding: 3rem 0; }
+    .page-header h1 { font-size: clamp(1.6rem, 3.5vw, 2.2rem); }
+    .page-header p { opacity: 0.9; max-width: 50ch; }
+
+    .contact-map { width: 100%; height: 260px; border: 0; border-radius: 10px; margin-top: 1.5rem; }
+
     .hero { background: var(--primary); color: var(--accent); position: relative; padding-bottom: 0; }
     .hero-inner-wrap { padding-bottom: 3.5rem; }
     .hero--split .hero-inner { display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; }
@@ -117,13 +131,14 @@ function styleBlock(branding) {
   `;
 }
 
-export function renderShell({ config, bodyHtml }) {
+export function renderShell({ config, bodyHtml, navHtml = "", pageTitle = "" }) {
   const name = escapeHtml(config.business?.name || "");
   const language = config.language === "fr" ? "fr" : "en";
-  const title = copy(language,
+  const baseTitle = copy(language,
     `Concept de site web pour ${name} — GABAN Solutions`,
     `A website concept for ${name} — GABAN Solutions`
   );
+  const title = pageTitle ? `${escapeHtml(pageTitle)} — ${name} — GABAN Solutions` : baseTitle;
   const barText = copy(language,
     `Ceci est un concept privé de site web préparé par GABAN Solutions pour <strong>${name}</strong>. `,
     `This is a private website concept prepared by GABAN Solutions for <strong>${name}</strong>. `
@@ -163,6 +178,7 @@ export function renderShell({ config, bodyHtml }) {
 <body>
   ${draftBanner}
   <div class="gaban-bar">${barText}<a href="${contactHref}">${barLinkLabel}</a></div>
+  ${navHtml}
   ${bodyHtml}
   <div class="concept-footer">
     <strong>GABAN Solutions</strong> — Montreal, QC · hello@gabansolutions.ca · +1 (514) 258-0648<br>

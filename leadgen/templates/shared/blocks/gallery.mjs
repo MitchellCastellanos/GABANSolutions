@@ -4,8 +4,14 @@ function copy(language, fr, en) {
   return language === "fr" ? fr : en;
 }
 
-export function gallery(config) {
-  const photos = (config.business?.photos || []).slice(1); // first photo is used by the hero
+export function gallery(config, page) {
+  const allPhotos = config.business?.photos || [];
+  // The hero (when this page has one) already shows photos[0] — skip
+  // it here so it's not shown twice. Inner pages without a hero (see
+  // templates/shared/blocks/pageHeader.mjs) show every photo.
+  const sectionOrder = page?.sectionOrder || page?.layout?.sectionOrder || [];
+  const usesHeroPhoto = sectionOrder.includes("hero");
+  const photos = usesHeroPhoto ? allPhotos.slice(1) : allPhotos;
   if (photos.length === 0) return "";
 
   const language = config.language === "fr" ? "fr" : "en";

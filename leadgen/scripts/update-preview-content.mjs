@@ -2,7 +2,7 @@
 // ============================================================
 // leadgen/scripts/update-preview-content.mjs
 //
-// Merges a content patch (headline/subheadline/about/services,
+// Merges a content patch (headline/subheadline/about/services/etc,
 // photos, logo, brand colors) into an existing Preview Config JSON —
 // meant to be called from api/cron/update-preview-content.js, which
 // leadgen-admin.html hits after you paste in a ChatGPT-drafted
@@ -11,10 +11,18 @@
 // "Secondary Color" Airtable columns (when provided) so they're
 // visible directly in Airtable's UI, not just buried in the JSON.
 //
-// Only touches fields actually present in the patch — omitting a
-// field (or passing an empty array/string) leaves whatever's already
-// in the config alone, so this is safe to call repeatedly with
-// partial updates.
+// For a multi-page config, `patch.pages` targets each page's content
+// independently: { pages: { home: {...}, services: {...}, contact:
+// {...} } }. photos/logoUrl/primaryColor/secondaryColor stay top-level
+// (business/branding are shared across every page). A legacy flat
+// patch (no `patch.pages`, just headline/services/etc directly on the
+// patch) is still accepted and treated as a patch to the "home" page
+// — for a legacy single-page config that's the only page there is.
+//
+// Only touches fields actually present in the patch (omitting a field,
+// or passing an empty array/string, leaves whatever's already in the
+// config alone), so this is safe to call repeatedly with partial
+// updates.
 //
 // Required env vars: AIRTABLE_API_KEY, AIRTABLE_BASE_ID.
 // ============================================================
@@ -22,13 +30,46 @@
 import { findByField, updateRecord } from "../lib/airtable.mjs";
 import { F } from "../lib/fields.mjs";
 
+const STRING_CONTENT_FIELDS = ["eyebrow", "headline", "subheadline", "about", "intro"];
+const ARRAY_CONTENT_FIELDS = ["services", "valueProps", "reviews"];
+
+/** Old-style flat patch (no `.pages`) is treated as a patch to the "home" page. */
+function normalizePagePatches(patch) {
+  if (patch.pages && typeof patch.pages === "object") return patch.pages;
+  const { photos, logoUrl, primaryColor, secondaryColor, ...contentFields } = patch;
+  return Object.keys(contentFields).length ? { home: contentFields } : {};
+}
+
+/** The content object a given page's patch should merge into — config.pages[pageKey].content for a multi-page config, config.content for a legacy single-page one (there's only ever one page there, so any pageKey targets it). */
+function contentTargetFor(config, pageKey) {
+  if (config.pages) {
+    if (!config.pages[pageKey]) config.pages[pageKey] = {};
+    if (!config.pages[pageKey].content) config.pages[pageKey].content = {};
+    return config.pages[pageKey].content;
+  }
+  if (!config.content) config.content = {};
+  return config.content;
+}
+
+function mergePageContent(target, pagePatch, pageKey, updatedFields) {
+  for (const field of STRING_CONTENT_FIELDS) {
+    if (pagePatch[field]) {
+      target[field] = pagePatch[field];
+      updatedFields.push(`${pageKey}.${field}`);
+    }
+  }
+  for (const field of ARRAY_CONTENT_FIELDS) {
+    if (Array.isArray(pagePatch[field]) && pagePatch[field].length) {
+      target[field] = pagePatch[field];
+      updatedFields.push(`${pageKey}.${field}`);
+    }
+  }
+}
+
 /**
  * @param {string} slug
  * @param {object} patch
- * @param {string} [patch.headline]
- * @param {string} [patch.subheadline]
- * @param {string} [patch.about]
- * @param {string[]} [patch.services]
+ * @param {object} [patch.pages] - e.g. { home: {headline, subheadline, about, valueProps, reviews}, services: {headline, intro, services}, contact: {headline, intro} }
  * @param {{url: string, caption?: string}[]} [patch.photos]
  * @param {string} [patch.logoUrl]
  * @param {string} [patch.primaryColor]
@@ -56,13 +97,13 @@ export async function updatePreviewContent(slug, patch = {}) {
 
   const updatedFields = [];
 
-  if (patch.headline) { config.content.headline = patch.headline; updatedFields.push("headline"); }
-  if (patch.subheadline) { config.content.subheadline = patch.subheadline; updatedFields.push("subheadline"); }
-  if (patch.about) { config.content.about = patch.about; updatedFields.push("about"); }
-  if (Array.isArray(patch.services) && patch.services.length) {
-    config.content.services = patch.services;
-    updatedFields.push("services");
+  const pagePatches = normalizePagePatches(patch);
+  for (const [pageKey, pagePatch] of Object.entries(pagePatches)) {
+    if (!pagePatch || typeof pagePatch !== "object") continue;
+    const target = contentTargetFor(config, pageKey);
+    mergePageContent(target, pagePatch, pageKey, updatedFields);
   }
+
   if (Array.isArray(patch.photos) && patch.photos.length) {
     config.business.photos = patch.photos;
     updatedFields.push("photos");

@@ -4,9 +4,9 @@ function copy(language, fr, en) {
   return language === "fr" ? fr : en;
 }
 
-export function about(config) {
-  const text = config.content?.about;
-  const valueProps = config.content?.valueProps || [];
+export function about(config, page) {
+  const text = page?.content?.about;
+  const valueProps = page?.content?.valueProps || [];
   if (!text && valueProps.length === 0) return "";
 
   const language = config.language === "fr" ? "fr" : "en";

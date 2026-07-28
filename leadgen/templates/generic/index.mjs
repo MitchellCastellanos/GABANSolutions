@@ -30,6 +30,8 @@ export const defaultCta = {
   en: "Get in touch"
 };
 
-export function render(config) {
-  return composeSections(config, defaultSectionOrder);
+export const middlePageLabel = { fr: "Services", en: "Services" };
+
+export function render(config, page) {
+  return composeSections(config, page, defaultSectionOrder);
 }

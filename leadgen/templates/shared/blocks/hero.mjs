@@ -6,10 +6,10 @@ import { escapeHtml } from "../html.mjs";
 // ever changes, update this fill to match whatever follows the hero.
 const WAVE_DIVIDER = `<div class="hero-divider" aria-hidden="true"><svg viewBox="0 0 1440 40" preserveAspectRatio="none"><path d="M0,20 C240,40 480,0 720,10 C960,20 1200,40 1440,20 L1440,40 L0,40 Z" fill="#f6f6f4"></path></svg></div>`;
 
-export function hero(config) {
-  const rawVariant = config.layout?.heroVariant;
+export function hero(config, page) {
+  const rawVariant = page?.heroVariant || page?.layout?.heroVariant;
   const variant = ["centered", "overlap"].includes(rawVariant) ? rawVariant : "split";
-  const c = config.content || {};
+  const c = page?.content || {};
   const photo = (config.business?.photos || [])[0];
 
   const copyBlock = `

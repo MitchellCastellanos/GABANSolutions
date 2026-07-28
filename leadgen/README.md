@@ -50,10 +50,32 @@ drives everything downstream.
 
 ## Generating a real, navigable preview (not a static image)
 
-`https://gabansolutions.ca/preview/:slug` renders a real multi-section
-website built from data already in Airtable — not a screenshot or an
-uploaded image. It's driven by a JSON config (`Preview Config JSON`)
-and a small library of category templates in `leadgen/templates/`.
+`https://gabansolutions.ca/preview/:slug` renders a real mini-website
+built from data already in Airtable — not a screenshot or an uploaded
+image. Every fresh preview is **3 real, separate pages** with a working
+nav bar between them:
+
+- `/preview/:slug` — Home
+- `/preview/:slug/services` — the category's middle page. The URL
+  segment is always `services`, but what it's *called* in the nav
+  depends on the business category (`middlePageLabel` in each
+  `leadgen/templates/<category>/index.mjs`): "Services" for most,
+  "Menu" for restaurants, "Programs" for gyms, "Practice Areas" for
+  lawyers.
+- `/preview/:slug/contact` — Contact, with an embedded Google Maps pin
+  for the business address.
+
+It's driven by a JSON config (`Preview Config JSON`, now shaped as
+`{ business, branding, pages: { home, services, contact } }`) and a
+small library of category templates in `leadgen/templates/` — see
+`leadgen/lib/preview-render.mjs` for how a page key resolves to HTML
+and `api/preview/[...segments].js` for the routing.
+
+**Previews generated before this multi-page system still work
+unchanged** — a config with no `pages` key (content directly on it,
+the old flat shape) renders as a single page with no nav bar, exactly
+as it always did. Nothing already in the pipeline breaks; see "Legacy
+previews" below.
 
 **From a phone, no terminal**: open `https://gabansolutions.ca/leadgen-admin.html`
 — paste your access token once (it's the same value as the `CRON_SECRET`
@@ -71,31 +93,44 @@ happens in the Airtable mobile app — no code editor needed there either.
         writes a draft "Preview Config JSON" + Preview Status = "draft"
 
 2. Write the content — the fast way (no design/writing work):
-     leadgen-admin.html builds a prompt pre-filled with the business's
-     real data (name, category, city, rating, detected site problems)
-     and asks for the output in a simple line-by-line format
-     (HEADLINE / SUBHEADLINE / ABOUT / SERVICES). Copy that prompt into
-     ChatGPT (or any chat model), paste the reply back into the page,
-     add a Logo URL / Primary Color / Secondary Color (see "Logo &
-     brand colors" below) and photo URLs (one per line), tap "Save
-     content" — it merges everything into the same Preview Config JSON
-     and also writes Logo URL/Primary Color/Secondary Color as their
-     own Airtable columns, so it's all visible from the Airtable row
-     too, not just inside the JSON.
+     leadgen-admin.html builds **one prompt that covers all 3 pages at
+     once** — pre-filled with the business's real data (name, category,
+     city, rating, detected site problems) and the category's actual
+     middle-page label (e.g. "Menu" for a restaurant) — and asks for
+     the reply in a `PAGE: home` / `PAGE: services` / `PAGE: contact`
+     block format, each with its own HEADLINE/SUBHEADLINE/ABOUT/
+     VALUEPROPS or INTRO/SERVICES fields. Copy that single prompt into
+     ChatGPT (or any chat model), paste the whole reply back into the
+     one response box, add a Logo URL / Primary Color / Secondary
+     Color (see "Logo & brand colors" below — these are shared across
+     every page, filled in once) and photo URLs (one per line), tap
+     "Save content" — it merges each page's block into the matching
+     page in the same Preview Config JSON and also writes Logo
+     URL/Primary Color/Secondary Color as their own Airtable columns,
+     so it's all visible from the Airtable row too, not just inside
+     the JSON.
      -> the same thing works from the CLI/Airtable directly: edit the
         "Preview Config JSON" field by hand if you'd rather not use
-        ChatGPT for a given prospect.
+        ChatGPT for a given prospect — just edit inside the right
+        `pages.<key>.content` block.
+     -> for a legacy single-page preview (no `pages` key), the admin
+        page automatically falls back to the old one-block prompt/save
+        flow — no PAGE markers, same as before this system existed.
 
-3. Open https://gabansolutions.ca/preview/<slug> any time to check —
-   draft previews render with a yellow "INTERNAL REVIEW" banner so
-   nobody confuses them for something already sent.
+3. Open https://gabansolutions.ca/preview/<slug> any time to check the
+   home page (or .../services, .../contact for the other two) — draft
+   previews render with a yellow "INTERNAL REVIEW" banner on every page
+   so nobody confuses them for something already sent.
 
 4. Validate & approve
      npm run leadgen:validate-preview -- --slug=<slug> --approve
      (or the "Validate & approve" button on leadgen-admin.html)
-     -> prints errors (lorem ipsum, dead CTA links, fake phone numbers,
-        missing headline, etc.) and warnings (few services, no photos);
-        only approves — sets Preview Status = "approved" — with zero errors
+     -> checks every page (home/services/contact), printing errors
+        (lorem ipsum, dead CTA links, fake phone numbers, a page
+        missing its headline, etc. — prefixed with which page when
+        there's more than one) and warnings (few services, no photos,
+        no reviews); only approves — sets Preview Status = "approved"
+        — with zero errors
 
 5. Only now set Pipeline Status = "Mockup Ready" — that's still your
    call queue exactly as before. send-proposal.mjs refuses to email
@@ -120,7 +155,8 @@ falling back to a neutral `generic` template for anything else —
 `targets.json`'s `templateCategory`, exact match) and only falls back
 to fuzzy-matching the French `Category` label
 (`guessCategoryKey()`) for older records prospected before that field
-existed.
+existed. Each template also exports `middlePageLabel` (`{ fr, en }`)
+— what the second page is called in the nav for that category.
 
 **Visual variety**: each template has 2 palette variants and 2
 section-order variants, plus a shared split/centered/overlap hero
@@ -173,15 +209,19 @@ directly.
 **Reopening `leadgen-admin.html` after closing it / switching
 prospects**: your token and last-used slug are remembered
 (`localStorage`), and the page automatically re-loads whatever's
-already saved for that slug (headline/subheadline/about/services
-summary, plus pre-filling Logo URL/Primary Color/Secondary
-Color/photo fields) — nothing is lost by closing the tab. Use the
-"Load existing content" button to do the same for a different slug,
-or any time you want to double-check what's currently saved.
+already saved for that slug — a per-page summary (headline/
+subheadline/about/intro/services for each of home/services/contact),
+plus pre-filling Logo URL/Primary Color/Secondary Color/photo fields
+(shared across every page) — nothing is lost by closing the tab. Use
+the "Load existing content" button to do the same for a different
+slug, or any time you want to double-check what's currently saved.
 
-**Legacy previews**: any prospect with a `Mockup Link` image but no
-`Preview Config JSON` still renders the old single-image proposal page
-— nothing already in the pipeline breaks.
+**Legacy previews**: two tiers, both still work. A prospect with a
+`Preview Config JSON` from before the multi-page system (no `pages`
+key) still renders as a single page with no nav bar, at its original
+URL. A prospect with only the old `Mockup Link` image and no `Preview
+Config JSON` at all still renders the old single-image proposal page.
+Nothing already in the pipeline breaks either way.
 
 **Archiving**: once a prospect's `Pipeline Status` lands on `No
 Response`, `Not Interested`, `Discarded`, or `Do Not Contact`, the
@@ -215,7 +255,7 @@ archived`) — nothing gets deleted, it just stops looking live.
 | Pipeline Status | Single select | all scripts |
 | Mockup Link | URL | **manual** |
 | Proposal Link | URL | send-proposal.mjs |
-| First Viewed | Date | api/preview/[slug].js |
+| First Viewed | Date | api/preview/[...segments].js |
 | First Email Date | Date | send-proposal.mjs |
 | Last Follow-up Date | Date | send-proposal.mjs |
 | Follow-ups Sent | Number | send-proposal.mjs |
@@ -225,8 +265,8 @@ archived`) — nothing gets deleted, it just stops looking live.
 | Preview Config JSON | Long text | generate-preview.mjs (creates), **manual** (edits) |
 | Preview Status | Single select | generate-preview.mjs, validate-preview.mjs |
 | Preview Template | Single line text | generate-preview.mjs |
-| Preview Views | Number | api/preview/[slug].js |
-| Preview Last Viewed | Date | api/preview/[slug].js |
+| Preview Views | Number | api/preview/[...segments].js |
+| Preview Last Viewed | Date | api/preview/[...segments].js |
 | Logo URL | URL | **manual** — see "Logo & brand colors" below |
 | Primary Color | Single line text (hex) | **manual** |
 | Secondary Color | Single line text (hex) | **manual** |

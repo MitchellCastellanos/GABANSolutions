@@ -26,6 +26,8 @@ export const defaultCta = {
   en: "Start a free trial"
 };
 
-export function render(config) {
-  return composeSections(config, defaultSectionOrder);
+export const middlePageLabel = { fr: "Programmes", en: "Programs" };
+
+export function render(config, page) {
+  return composeSections(config, page, defaultSectionOrder);
 }

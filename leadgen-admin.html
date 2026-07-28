@@ -64,12 +64,12 @@
 
   <h2>2. Write the content (ChatGPT does the drafting)</h2>
   <p class="sub">Generate the preview first — this box fills in with the business's real data.</p>
-  <label for="promptBox">Prompt (copy this into ChatGPT)</label>
-  <textarea id="promptBox" class="mono" rows="10" readonly placeholder="Generate a preview first to build this prompt."></textarea>
+  <label for="promptBox">Prompt (one prompt, covers all pages — copy this into ChatGPT)</label>
+  <textarea id="promptBox" class="mono" rows="14" readonly placeholder="Generate a preview first to build this prompt."></textarea>
   <button class="btn-secondary" id="copyPromptBtn">Copy prompt</button>
 
-  <label for="chatgptResponse">Paste ChatGPT's reply here</label>
-  <textarea id="chatgptResponse" class="mono" rows="8" placeholder="HEADLINE: ...&#10;SUBHEADLINE: ...&#10;ABOUT: ...&#10;SERVICES: ... | ... | ..."></textarea>
+  <label for="chatgptResponse">Paste ChatGPT's whole reply here (all pages, one paste)</label>
+  <textarea id="chatgptResponse" class="mono" rows="14" placeholder="PAGE: home&#10;HEADLINE: ...&#10;SUBHEADLINE: ...&#10;ABOUT: ...&#10;VALUEPROPS: ... | ...&#10;&#10;PAGE: services&#10;HEADLINE: ...&#10;INTRO: ...&#10;SERVICES: ... | ... | ...&#10;&#10;PAGE: contact&#10;HEADLINE: ...&#10;INTRO: ..."></textarea>
 
   <label for="logoUrl">Logo URL (optional — more personalization)</label>
   <input id="logoUrl" type="text" placeholder="https://...">
@@ -98,17 +98,25 @@
 
   <details>
     <summary>How this works</summary>
-    <p>"Load existing content" pulls in whatever's already saved for a
-    slug (this also runs automatically when you reopen the page with
-    the same token+slug still remembered) — nothing is ever lost by
-    closing the tab. "Generate" builds a draft from what's already in
-    Airtable and is safe to run again later. "Save content" merges
-    whatever you fill in (ChatGPT's reply, logo, colors, photos) into
-    the existing preview — it never overwrites fields you leave blank.
-    "Validate &amp; approve" checks for placeholder text, dead links,
-    fake numbers, page-links pasted instead of direct image URLs, etc.
-    and only approves (unlocking sending) when there are zero errors.
-    Everything written here also shows up in the matching Airtable row.</p>
+    <p>Every fresh preview is now a real 3-page mini-site (Home, a
+    middle page whose label depends on the business category —
+    Services, Menu, Programs, Practice Areas — and Contact), navigable
+    with a real nav bar. "Load existing content" pulls in whatever's
+    already saved for a slug, broken down page by page (this also runs
+    automatically when you reopen the page with the same token+slug
+    still remembered) — nothing is ever lost by closing the tab.
+    "Generate" builds a draft from what's already in Airtable and is
+    safe to run again later. The prompt in step 2 asks ChatGPT for all
+    3 pages in one go — paste the whole reply back in one box. "Save
+    content" merges whatever you fill in (ChatGPT's reply, logo,
+    colors, photos — logo/colors/photos are shared across every page)
+    into the existing preview — it never overwrites fields you leave
+    blank. "Validate &amp; approve" checks every page for placeholder
+    text, dead links, fake numbers, page-links pasted instead of direct
+    image URLs, etc. and only approves (unlocking sending) when there
+    are zero errors. Everything written here also shows up in the
+    matching Airtable row. Previews generated before this update keep
+    working as a single page — this page falls back automatically.</p>
   </details>
 
   <script>
@@ -124,6 +132,14 @@
 
     tokenEl.value = localStorage.getItem("leadgenAdminToken") || "";
     slugEl.value = localStorage.getItem("leadgenAdminSlug") || "";
+
+    // Page keys/labels for the currently loaded prospect's mini-site —
+    // e.g. { home: {navLabel: "Accueil"}, services: {navLabel: "Programmes"},
+    // contact: {navLabel: "Contact"} }. null means either nothing loaded
+    // yet, or this prospect predates the multi-page system (legacy
+    // single-page config) — buildPrompt/parse/save all fall back to the
+    // old flat single-page behavior in that case.
+    let pageMeta = null;
 
     function escapeHtml(value) {
       return String(value || "").replace(/[&<>"']/g, (ch) => ({
@@ -160,7 +176,10 @@
       return res.json();
     }
 
-    function buildPrompt(business, name) {
+    // Legacy fallback for prospects that predate the multi-page system
+    // (pageMeta is null — no `pages` on their config). Same single-block
+    // prompt/parse this admin page always used before.
+    function buildLegacyPrompt(business, name) {
       const signalsLine = (business.signals || []).length
         ? business.signals.join(", ")
         : "ninguna en particular";
@@ -184,7 +203,53 @@ ABOUT: (2-3 frases sobre el negocio)
 SERVICES: (3 a 5 servicios tipicos separados por " | ")`;
     }
 
-    function parseChatGptResponse(text) {
+    // Real 3-page mini-site: one single prompt covers Home + the
+    // category's middle page (Services/Menu/Programs/...) + Contact, so
+    // there's still just one ChatGPT round-trip even though there are
+    // now 3 pages worth of content to write.
+    function buildMultiPagePrompt(business, name, pages) {
+      const signalsLine = (business.signals || []).length
+        ? business.signals.join(", ")
+        : "ninguna en particular";
+      const middleLabel = pages?.services?.navLabel || "Servicios";
+
+      return `Eres redactor de contenido para un mini-sitio web de presentacion (preview) de un negocio real, de 3 paginas: Inicio, ${middleLabel} y Contacto. Estos son los datos reales, no inventes nada fuera de ellos:
+
+- Nombre: ${name}
+- Categoria: ${business.category || "-"}
+- Ciudad: ${business.city || "-"}
+- Direccion: ${business.address || "-"}
+- Telefono: ${business.phone || "-"}
+- Rating de Google: ${business.rating != null ? business.rating + "/5" : "-"} (${business.reviewCount != null ? business.reviewCount : "?"} resenas)
+- Senales detectadas en su sitio actual: ${signalsLine}
+
+Escribe el contenido para las 3 paginas, EN FRANCES (Quebec), tono profesional y cercano. No inventes certificaciones, premios, cifras ni afirmaciones especificas no verificables sobre el negocio -- para los servicios usa los tipicos y genericos de este tipo de negocio en esta zona. No repitas el mismo contenido entre paginas.
+
+Responde UNICAMENTE con este formato exacto (respeta las lineas "PAGE:", una por cada pagina, en este orden y sin nada antes ni despues):
+
+PAGE: home
+HEADLINE: (frase corta y llamativa que mencione la ciudad o la categoria)
+SUBHEADLINE: (una frase de apoyo, una linea)
+ABOUT: (2-3 frases sobre el negocio, para la pagina de inicio)
+VALUEPROPS: (2-3 razones cortas para elegir este negocio, separadas por " | ")
+
+PAGE: services
+HEADLINE: (titulo corto para la pagina de "${middleLabel}")
+INTRO: (1-2 frases de introduccion a esta pagina)
+SERVICES: (3 a 6 ${middleLabel.toLowerCase()} tipicos de este negocio, separados por " | ")
+
+PAGE: contact
+HEADLINE: (titulo corto para la pagina de contacto, ej. "Contactez-nous")
+INTRO: (1-2 frases invitando a contactar o visitar)`;
+    }
+
+    function buildPrompt(business, name) {
+      return pageMeta
+        ? buildMultiPagePrompt(business, name, pageMeta)
+        : buildLegacyPrompt(business, name);
+    }
+
+    function parseLegacyResponse(text) {
       const result = {};
       for (const line of text.split("\n")) {
         const m = line.match(/^([A-Za-zÀ-ÿ_]+)\s*:\s*(.*)$/);
@@ -197,6 +262,38 @@ SERVICES: (3 a 5 servicios tipicos separados por " | ")`;
         else if (key === "SERVICES") result.services = value.split("|").map((s) => s.trim()).filter(Boolean);
       }
       return result;
+    }
+
+    // Splits a multi-page ChatGPT reply on its "PAGE: <key>" markers and
+    // parses each block the same way parseLegacyResponse parses a
+    // single block. Returns { home: {...}, services: {...}, contact: {...} }
+    // ready to send as patch.pages to /api/cron/update-preview-content.
+    function parseMultiPageResponse(text) {
+      const pages = {};
+      let currentKey = null;
+      for (const rawLine of text.split("\n")) {
+        const line = rawLine.trim();
+        if (!line) continue;
+        const pageMatch = line.match(/^PAGE\s*:\s*(\w+)/i);
+        if (pageMatch) {
+          currentKey = pageMatch[1].toLowerCase();
+          pages[currentKey] = pages[currentKey] || {};
+          continue;
+        }
+        if (!currentKey) continue;
+        const m = line.match(/^([A-Za-zÀ-ÿ_]+)\s*:\s*(.*)$/);
+        if (!m) continue;
+        const key = m[1].trim().toUpperCase();
+        const value = m[2].trim();
+        const target = pages[currentKey];
+        if (key === "HEADLINE") target.headline = value;
+        else if (key === "SUBHEADLINE") target.subheadline = value;
+        else if (key === "ABOUT") target.about = value;
+        else if (key === "INTRO") target.intro = value;
+        else if (key === "VALUEPROPS") target.valueProps = value.split("|").map((s) => s.trim()).filter(Boolean);
+        else if (key === "SERVICES") target.services = value.split("|").map((s) => s.trim()).filter(Boolean);
+      }
+      return pages;
     }
 
     function parsePhotos(text) {
@@ -223,24 +320,35 @@ SERVICES: (3 a 5 servicios tipicos separados por " | ")`;
         }
         const r = data.result;
         if (!r.hasConfig) {
+          pageMeta = null;
           if (!silent) showOutput("loadOutput", `No preview generated yet for ${escapeHtml(r.businessName)} — start with "Generate preview" below.`, false);
           return;
         }
+
+        pageMeta = r.isMultiPage ? r.pages : null;
 
         logoUrlEl.value = r.logo || "";
         primaryColorEl.value = r.primaryColor || "";
         secondaryColorEl.value = r.secondaryColor || "";
         photosEl.value = photosToTextarea(r.photos);
 
-        const servicesLine = (r.services || []).length ? r.services.join(", ") : "(none yet)";
+        const pageLines = Object.entries(r.pages || {}).map(([key, p]) => {
+          const servicesLine = (p.services || []).length ? p.services.join(", ") : "(none yet)";
+          const label = p.navLabel ? `${escapeHtml(p.navLabel)} (${escapeHtml(key)})` : escapeHtml(key);
+          return `<strong>${label}</strong><br>` +
+            `&nbsp;&nbsp;Headline: ${escapeHtml(p.headline) || "(none yet)"}<br>` +
+            (p.subheadline ? `&nbsp;&nbsp;Subheadline: ${escapeHtml(p.subheadline)}<br>` : "") +
+            (p.about ? `&nbsp;&nbsp;About: ${escapeHtml(p.about)}<br>` : "") +
+            (p.intro ? `&nbsp;&nbsp;Intro: ${escapeHtml(p.intro)}<br>` : "") +
+            (key === "services" || (p.services || []).length ? `&nbsp;&nbsp;Services: ${escapeHtml(servicesLine)}<br>` : "");
+        }).join("<br>");
+
         showOutput(
           "loadOutput",
-          `<strong>Loaded</strong> ${escapeHtml(r.businessName)} · status: ${escapeHtml(r.status || "-")}<br>` +
-          `<strong>Headline:</strong> ${escapeHtml(r.headline) || "(none yet)"}<br>` +
-          `<strong>Subheadline:</strong> ${escapeHtml(r.subheadline) || "(none yet)"}<br>` +
-          `<strong>About:</strong> ${escapeHtml(r.about) || "(none yet)"}<br>` +
-          `<strong>Services:</strong> ${escapeHtml(servicesLine)}<br>` +
-          `<span class="hint">Logo/colors/photos below are pre-filled. To change the headline/subheadline/about/services, redo step 2 (ChatGPT) and Save content again.</span><br>` +
+          `<strong>Loaded</strong> ${escapeHtml(r.businessName)} · status: ${escapeHtml(r.status || "-")}` +
+          (r.isMultiPage ? "" : " · legacy single-page preview") + `<br><br>` +
+          pageLines + `<br>` +
+          `<span class="hint">Logo/colors/photos below are pre-filled. To change any page's text, redo step 2 (ChatGPT) and Save content again.</span><br>` +
           `<a href="${r.previewUrl}" target="_blank" rel="noopener">Open preview →</a>`,
           false
         );
@@ -270,6 +378,7 @@ SERVICES: (3 a 5 servicios tipicos separados por " | ")`;
           return;
         }
         const r = data.result;
+        pageMeta = r.pages || null;
         promptBox.value = buildPrompt(r.business || {}, r.businessName);
         const notes = (r.personalizationNotes || []).map((n) => `<li>${escapeHtml(n)}</li>`).join("");
         showOutput(
@@ -302,15 +411,19 @@ SERVICES: (3 a 5 servicios tipicos separados por " | ")`;
       $("saveContentBtn").disabled = true;
       showOutput("saveOutput", "Saving...", false);
       try {
-        const parsed = parseChatGptResponse(chatgptResponseEl.value || "");
+        const responseText = chatgptResponseEl.value || "";
         const photos = parsePhotos(photosEl.value || "");
         const patch = {
-          ...parsed,
           photos,
           logoUrl: logoUrlEl.value.trim(),
           primaryColor: primaryColorEl.value.trim(),
           secondaryColor: secondaryColorEl.value.trim()
         };
+        if (pageMeta) {
+          patch.pages = parseMultiPageResponse(responseText);
+        } else {
+          Object.assign(patch, parseLegacyResponse(responseText));
+        }
         const data = await callJson("/api/cron/update-preview-content", { method: "POST", body: patch });
         if (!data.ok) {
           showOutput("saveOutput", `Error: ${escapeHtml(data.error)}`, true);

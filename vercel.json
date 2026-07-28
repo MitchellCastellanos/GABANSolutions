@@ -23,13 +23,13 @@
       "destination": "/software.html"
     },
     {
-      "source": "/preview/:slug",
-      "destination": "/api/preview/:slug"
+      "source": "/preview/:path*",
+      "destination": "/api/preview/:path*"
     }
   ],
   "headers": [
     {
-      "source": "/preview/:slug",
+      "source": "/preview/:path*",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]

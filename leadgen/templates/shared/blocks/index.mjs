@@ -5,3 +5,5 @@ export { about } from "./about.mjs";
 export { reviews } from "./reviews.mjs";
 export { gallery } from "./gallery.mjs";
 export { contact } from "./contact.mjs";
+export { pageHeader } from "./pageHeader.mjs";
+export { navBar } from "./navBar.mjs";

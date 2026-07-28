@@ -26,6 +26,8 @@ export const defaultCta = {
   en: "Book a consultation"
 };
 
-export function render(config) {
-  return composeSections(config, defaultSectionOrder);
+export const middlePageLabel = { fr: "Domaines de pratique", en: "Practice Areas" };
+
+export function render(config, page) {
+  return composeSections(config, page, defaultSectionOrder);
 }

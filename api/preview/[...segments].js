@@ -1,5 +1,6 @@
 // ============================================================
-// GET /preview/:slug (rewritten from /api/preview/:slug in vercel.json)
+// GET /preview/:slug or /preview/:slug/:page (rewritten from
+// /api/preview/:path* in vercel.json)
 //
 // Renders the real, navigable website preview for one prospect:
 // looks up their "Preview Config JSON" in Airtable, resolves the
@@ -9,10 +10,17 @@
 // and what a human opens to review/approve before that email goes
 // out (see leadgen/scripts/validate-preview.mjs).
 //
-// Backwards compatible: prospects that predate this system and only
-// have the old-style "Mockup Link" image (no Preview Config JSON
-// yet) still get the old simple one-image proposal page, so nothing
-// already in the pipeline breaks.
+// Catch-all route: `segments` is ["slug"] for the home page, or
+// ["slug", "services"|"contact"] for an inner page. Multi-page
+// configs have a `pages` map with those keys — see
+// leadgen/scripts/generate-preview.mjs for how it's built.
+//
+// Backwards compatible: prospects that predate the multi-page system
+// (single-page config, no `pages` key) render at their one URL as
+// before regardless of what's requested; prospects that only have the
+// old-style "Mockup Link" image (no Preview Config JSON at all) still
+// get the old single-image proposal page. Nothing already in the
+// pipeline breaks.
 //
 // Records a best-effort view (First Viewed / Preview Views / Preview
 // Last Viewed) on every real (non-bot) visit — never blocks the
@@ -23,7 +31,7 @@
 
 import { findByField, updateRecord } from "../../leadgen/lib/airtable.mjs";
 import { F } from "../../leadgen/lib/fields.mjs";
-import { renderPreview } from "../../leadgen/lib/preview-render.mjs";
+import { renderPreviewPage } from "../../leadgen/lib/preview-render.mjs";
 
 const BOT_UA_PATTERNS = /bot|crawler|spider|facebookexternalhit|slackbot|whatsapp|telegrambot|discordbot|preview/i;
 
@@ -104,7 +112,10 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
-  const slug = (req.query?.slug || "").toString().trim();
+  const segments = Array.isArray(req.query?.segments) ? req.query.segments : [req.query?.segments].filter(Boolean);
+  const slug = (segments[0] || "").toString().trim();
+  const pageKey = (segments[1] || "home").toString().trim();
+
   if (!slug) {
     return renderNotFound(res);
   }
@@ -140,7 +151,11 @@ export default async function handler(req, res) {
       res.status(500).setHeader("Content-Type", "text/plain; charset=utf-8");
       return res.end("This preview's configuration is malformed. Contact GABAN Solutions to fix it.");
     }
-    return res.status(200).end(renderPreview(config));
+    if (segments.length > 1 && !config.pages) {
+      // Legacy single-page config, someone guessed an inner-page URL — just show the one page it has.
+      return res.status(200).end(renderPreviewPage(config, "home"));
+    }
+    return res.status(200).end(renderPreviewPage(config, pageKey));
   }
 
   // Legacy fallback: no rich config yet, just the old single-image page.

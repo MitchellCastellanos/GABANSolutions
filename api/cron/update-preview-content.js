@@ -1,10 +1,12 @@
 // POST /api/cron/update-preview-content — mobile-friendly content
-// save for leadgen-admin.html: merges headline/subheadline/about/
-// services (usually pasted in from ChatGPT) plus photos/logo/brand
-// colors into the prospect's existing Preview Config JSON. Same
-// CRON_SECRET bearer auth as the rest of api/cron/*.
+// save for leadgen-admin.html: merges per-page headline/subheadline/
+// about/services/etc (usually pasted in from ChatGPT) plus photos/
+// logo/brand colors into the prospect's existing Preview Config JSON.
+// Same CRON_SECRET bearer auth as the rest of api/cron/*.
 //
-// Body: { slug, headline?, subheadline?, about?, services?: string[],
+// Body: { slug, pages?: { home?: {headline?, subheadline?, about?,
+//          valueProps?, reviews?}, services?: {headline?, intro?,
+//          services?}, contact?: {headline?, intro?} },
 //          photos?: {url, caption?}[], logoUrl?, primaryColor?, secondaryColor? }
 import { updatePreviewContent } from "../../leadgen/scripts/update-preview-content.mjs";
 import { requireCronAuth } from "../../leadgen/lib/cron-auth.mjs";

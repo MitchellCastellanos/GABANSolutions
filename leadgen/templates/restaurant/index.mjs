@@ -26,6 +26,8 @@ export const defaultCta = {
   en: "Reserve a table"
 };
 
-export function render(config) {
-  return composeSections(config, defaultSectionOrder);
+export const middlePageLabel = { fr: "Menu", en: "Menu" };
+
+export function render(config, page) {
+  return composeSections(config, page, defaultSectionOrder);
 }

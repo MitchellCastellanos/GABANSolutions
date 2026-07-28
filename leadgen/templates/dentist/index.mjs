@@ -35,6 +35,8 @@ export const defaultCta = {
   en: "Book an appointment"
 };
 
-export function render(config) {
-  return composeSections(config, defaultSectionOrder);
+export const middlePageLabel = { fr: "Services", en: "Services" };
+
+export function render(config, page) {
+  return composeSections(config, page, defaultSectionOrder);
 }
