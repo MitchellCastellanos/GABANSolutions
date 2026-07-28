@@ -35,6 +35,20 @@ import { renderPreviewPage } from "../../leadgen/lib/preview-render.mjs";
 
 const BOT_UA_PATTERNS = /bot|crawler|spider|facebookexternalhit|slackbot|whatsapp|telegrambot|discordbot|preview/i;
 
+// Vercel's rewrite → catch-all-API-route binding for this project's
+// (non-Next.js) serverless functions puts the captured path under the
+// query key "...segments" (the bracket syntax from the filename,
+// literal ellipsis included) rather than a clean "segments" key, and
+// gives a single segment as a plain string instead of a 1-item array.
+// Confirmed via a live ?debug=1 dump against production — don't
+// "clean this up" back to req.query.segments without re-checking that.
+function extractSegments(query) {
+  const raw = query?.["...segments"] ?? query?.segments;
+  if (Array.isArray(raw)) return raw.filter(Boolean);
+  if (typeof raw === "string" && raw) return raw.split("/").filter(Boolean);
+  return [];
+}
+
 function escapeHtml(value) {
   return String(value || "").replace(/[&<>"']/g, (ch) => ({
     "&": "&amp;",
@@ -112,38 +126,9 @@ export default async function handler(req, res) {
     return res.status(405).json({ ok: false, error: "Method not allowed" });
   }
 
-  const segments = Array.isArray(req.query?.segments) ? req.query.segments : [req.query?.segments].filter(Boolean);
+  const segments = extractSegments(req.query);
   const slug = (segments[0] || "").toString().trim();
   const pageKey = (segments[1] || "home").toString().trim();
-
-  // TEMPORARY: ?debug=1 dumps what Vercel's rewrite actually handed this
-  // function (query keys, derived slug) plus whether Airtable has a
-  // matching record, instead of the normal 404/page — for tracking down
-  // https://gabansolutions.ca/preview/l-usine-crossfit-longueuil-AwjxqZgM
-  // 404ing after the multi-page rewrite. Remove once resolved.
-  if (req.query?.debug === "1") {
-    let debugRecord = null;
-    let lookupError = null;
-    if (slug) {
-      try {
-        debugRecord = await findByField(F.SLUG, slug);
-      } catch (err) {
-        lookupError = err.message;
-      }
-    }
-    return res.status(200).json({
-      ok: true,
-      rawQueryKeys: Object.keys(req.query || {}),
-      rawQuery: req.query,
-      url: req.url,
-      segments,
-      slug,
-      pageKey,
-      recordFound: Boolean(debugRecord),
-      hasPreviewConfigJson: debugRecord ? Boolean(debugRecord.fields?.[F.PREVIEW_CONFIG_JSON]) : null,
-      lookupError
-    });
-  }
 
   if (!slug) {
     return renderNotFound(res);
