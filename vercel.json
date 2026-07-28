@@ -24,9 +24,6 @@
     }
   ],
   "crons": [
-    { "path": "/api/cron/prospect", "schedule": "0 9 * * 1" },
-    { "path": "/api/cron/enrich", "schedule": "0 10 * * 1" },
-    { "path": "/api/cron/score", "schedule": "0 11 * * 1" },
     { "path": "/api/cron/send-proposal", "schedule": "0 13 * * *" }
   ]
 }

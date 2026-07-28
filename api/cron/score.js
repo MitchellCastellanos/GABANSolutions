@@ -1,4 +1,6 @@
-// GET /api/cron/score — invoked by Vercel Cron (see vercel.json).
+// GET /api/cron/score — manual/HTTP trigger for leadgen/scripts/score.mjs.
+// Not on the Vercel Cron schedule — see .github/workflows/leadgen-weekly.yml
+// and the note in api/cron/prospect.js.
 import { main as runScore } from "../../leadgen/scripts/score.mjs";
 import { requireCronAuth } from "../../leadgen/lib/cron-auth.mjs";
 

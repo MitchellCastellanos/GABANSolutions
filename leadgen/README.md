@@ -122,25 +122,35 @@ touching code. Edit the weights in `leadgen/lib/scoring.mjs` (pure
 function, easy to test) if the bucket cutoffs need tuning — try it against
 5-10 businesses you already know before trusting it at scale.
 
-## Automation (Vercel Cron)
+## Automation
 
-`vercel.json` wires 4 cron jobs, each hitting `api/cron/*.js` which is
-just a thin wrapper calling the matching script's `main()`:
+Split across two schedulers on purpose — the account is on **Vercel
+Hobby**, which caps cron jobs (few jobs, daily-only frequency) and caps
+serverless function execution time, and the weekly prospect → enrich →
+score run is too slow for that (PageSpeed audits alone can take several
+seconds per site).
 
-- Weekly: prospect → enrich → score (Monday mornings, staggered an hour
-  apart so score.mjs runs after enrich.mjs has finished writing).
-- Daily: send-proposal (initial sends for anything marked "Called -
-  Interested" after a cold call, plus follow-up checks for everything
-  "Proposal Sent"). It never touches "Mockup Ready" — that stage waits
-  for a human to call.
+- **Weekly (GitHub Actions, `.github/workflows/leadgen-weekly.yml`)**:
+  prospect → enrich → score, every Monday, run as plain `node` scripts
+  with no timeout ceiling. Needs these set as **GitHub repo secrets**
+  (Settings → Secrets and variables → Actions) — same values as the
+  Vercel env vars: `AIRTABLE_API_KEY`, `AIRTABLE_BASE_ID`,
+  `AIRTABLE_TABLE`, `GOOGLE_PLACES_API_KEY`, `GOOGLE_PAGESPEED_API_KEY`.
+  Trigger it manually any time from the Actions tab ("Run workflow") to
+  backfill without waiting for Monday.
+- **Daily (Vercel Cron, `vercel.json`)**: `api/cron/send-proposal.js`
+  only — one cron job, well inside the Hobby limit. Sends the proposal
+  email for anything marked "Called - Interested" and runs the day
+  3/7/14 follow-up checks for everything "Proposal Sent". Never touches
+  "Mockup Ready" — that stage waits for a human to call.
 
-**Vercel Hobby plan limits cron jobs** (fewer jobs, daily-only
-frequency) — if the account is on Hobby and 4 crons don't fit, drop the
-weekly ones from `vercel.json` and trigger `prospect`/`enrich`/`score` by
-hand (`npm run leadgen:...`) until upgrading to Pro, or trigger the
-`api/cron/*` endpoints from an external scheduler (e.g. a scheduled
-GitHub Actions workflow calling them with the `CRON_SECRET` bearer
-token).
+`api/cron/prospect.js`, `api/cron/enrich.js`, `api/cron/score.js` still
+exist and work (same `CRON_SECRET` bearer-token auth) if you'd rather
+trigger a single step over HTTP instead of from GitHub Actions — they're
+just not wired into `vercel.json`'s `crons` list anymore.
+
+If the project ever moves to Vercel Pro, the weekly steps can move back
+into `vercel.json` crons the same way `send-proposal` is wired now.
 
 ## CASL compliance (Canada's Anti-Spam Law)
 
