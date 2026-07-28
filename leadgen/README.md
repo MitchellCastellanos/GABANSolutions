@@ -48,6 +48,65 @@ Log the result immediately in Airtable (`Call Date`, `Call Outcome`,
 optionally `Call Notes`) before moving to the next call — that's what
 drives everything downstream.
 
+## Generating a real, navigable preview (not a static image)
+
+`https://gabansolutions.ca/preview/:slug` renders a real multi-section
+website built from data already in Airtable — not a screenshot or an
+uploaded image. It's driven by a JSON config (`Preview Config JSON`)
+and a small library of category templates in `leadgen/templates/`.
+
+```
+1. npm run leadgen:generate-preview -- --slug=<slug>
+     -> reads Name/Phone/Address/City/Category/Rating/Review Count/Signals
+        from Airtable, guesses a template category (leadgen/templates/registry.mjs),
+        writes a draft "Preview Config JSON" + Preview Status = "draft"
+        (auditContext.personalizationNotes in the JSON lists what's still missing)
+
+2. Open https://gabansolutions.ca/preview/<slug> — draft previews render
+   with a yellow "INTERNAL REVIEW" banner so nobody confuses them for
+   something already sent.
+
+3. Fill in the gaps by hand: edit the "Preview Config JSON" long-text
+   field directly in Airtable (v1 editor — see "Files to create" in the
+   original design doc for the v2 admin-panel plan). Typically needed:
+   content.services (2-3 real ones), business.photos (paste a hosted
+   image URL — see "Photos" below), content.reviews if you want to
+   quote a real Google review.
+
+4. npm run leadgen:validate-preview -- --slug=<slug>
+     -> prints errors (lorem ipsum, dead CTA links, fake phone numbers,
+        missing headline, etc. — these block approval) and warnings
+        (few services, no photos — reviewer's judgment call)
+
+5. npm run leadgen:validate-preview -- --slug=<slug> --approve
+     -> only works with zero errors; sets Preview Status = "approved"
+        and stamps meta.approvedAt in the JSON
+
+6. Only now set Pipeline Status = "Mockup Ready" — that's still your
+   call queue exactly as before. send-proposal.mjs refuses to email
+   anything that isn't Preview Status "approved" (or, for prospects
+   from before this system existed, that doesn't at least have the
+   old-style Mockup Link image set).
+```
+
+**Templates today**: `dentist` and `car-repair` (`leadgen/templates/`),
+falling back to a neutral `generic` template for any other category —
+see `leadgen/templates/registry.mjs`'s `guessCategoryKey()` for how an
+Airtable `Category` label maps to a template.
+
+**Photos**: deliberately manual for now. Google Places *does* return
+photo references, but turning one into an image URL requires putting
+the Google API key in the URL — which would leak into the page's HTML
+if used directly, so `generate-preview.mjs` doesn't do it. Host photos
+yourself (Imgur, etc., same as the old `Mockup Link` workflow) and
+paste the URL into `business.photos` in the JSON. A server-side photo
+proxy that fetches Places photos without exposing the key is future
+work, not built yet.
+
+**Legacy previews**: any prospect with a `Mockup Link` image but no
+`Preview Config JSON` still renders the old single-image proposal page
+— nothing already in the pipeline breaks.
+
 ## Required Airtable fields (table name: `Prospects`, or set `AIRTABLE_TABLE`)
 
 | Field | Type | Written by |
@@ -78,6 +137,11 @@ drives everything downstream.
 | Call Date | Date | **manual** — log right after each cold call |
 | Call Outcome | Single select | **manual** |
 | Call Notes | Long text (optional) | **manual** |
+| Preview Config JSON | Long text | generate-preview.mjs (creates), **manual** (edits) |
+| Preview Status | Single select | generate-preview.mjs, validate-preview.mjs |
+| Preview Template | Single line text | generate-preview.mjs |
+| Preview Views | Number | api/preview/[slug].js |
+| Preview Last Viewed | Date | api/preview/[slug].js |
 
 **Pipeline Status options** (single select — add every value exactly):
 
@@ -89,6 +153,10 @@ drives everything downstream.
 
 `Interested`, `Not interested`, `No answer`, `Voicemail`,
 `Asked to call back`
+
+**Preview Status options** (single select — add every value exactly):
+
+`draft`, `in_review`, `approved`, `archived`
 
 **Known gap: no email address.** Google Places doesn't return business
 emails, only phone/website. Until an email-finder step is added, someone
@@ -115,6 +183,8 @@ npm run leadgen:prospect -- --dry-run   # then without --dry-run
 npm run leadgen:enrich
 npm run leadgen:score
 npm run leadgen:send -- --dry-run       # then without --dry-run
+npm run leadgen:generate-preview -- --slug=<slug>
+npm run leadgen:validate-preview -- --slug=<slug> [--approve]
 ```
 
 Edit `leadgen/config/targets.json` to change categories/areas without

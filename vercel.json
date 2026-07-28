@@ -21,6 +21,18 @@
         }
       ],
       "destination": "/software.html"
+    },
+    {
+      "source": "/preview/:slug",
+      "destination": "/api/preview/:slug"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/preview/:slug",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
     }
   ],
   "crons": [

@@ -1,20 +1,31 @@
 // ============================================================
-// GET /api/preview/:slug
+// GET /preview/:slug (rewritten from /api/preview/:slug in vercel.json)
 //
-// Renders the no-price outbound proposal page for a single
-// prospect: their name, the mockup a human uploaded to Airtable,
-// and one CTA ("let's talk 15 min") — no pricing anywhere. This is
-// what leadgen/scripts/send-proposal.mjs links to in the initial
-// outreach email.
+// Renders the real, navigable website preview for one prospect:
+// looks up their "Preview Config JSON" in Airtable, resolves the
+// right category template, and renders it via
+// leadgen/lib/preview-render.mjs. This is what
+// leadgen/scripts/send-proposal.mjs links to in outreach emails,
+// and what a human opens to review/approve before that email goes
+// out (see leadgen/scripts/validate-preview.mjs).
 //
-// Looks up the prospect by Slug in Airtable and best-effort records
-// the first view (never blocks the response on that write).
+// Backwards compatible: prospects that predate this system and only
+// have the old-style "Mockup Link" image (no Preview Config JSON
+// yet) still get the old simple one-image proposal page, so nothing
+// already in the pipeline breaks.
+//
+// Records a best-effort view (First Viewed / Preview Views / Preview
+// Last Viewed) on every real (non-bot) visit — never blocks the
+// response on that write.
 //
 // Required env vars: AIRTABLE_API_KEY, AIRTABLE_BASE_ID.
 // ============================================================
 
 import { findByField, updateRecord } from "../../leadgen/lib/airtable.mjs";
 import { F } from "../../leadgen/lib/fields.mjs";
+import { renderPreview } from "../../leadgen/lib/preview-render.mjs";
+
+const BOT_UA_PATTERNS = /bot|crawler|spider|facebookexternalhit|slackbot|whatsapp|telegrambot|discordbot|preview/i;
 
 function escapeHtml(value) {
   return String(value || "").replace(/[&<>"']/g, (ch) => ({
@@ -35,7 +46,9 @@ function renderNotFound(res) {
 </body></html>`);
 }
 
-function renderProposal({ name, mockupUrl, businessParam }) {
+// Old-style single-image proposal page, kept for prospects generated
+// before the rich preview system existed (no Preview Config JSON).
+function renderLegacyImageProposal({ name, mockupUrl, businessParam }) {
   const safeName = escapeHtml(name);
   const ctaHref = `https://gabansolutions.ca/contact.html?ref=outbound-proposal&need=New%20website&business=${encodeURIComponent(businessParam)}`;
 
@@ -72,6 +85,19 @@ function renderProposal({ name, mockupUrl, businessParam }) {
 </html>`;
 }
 
+async function recordView(record) {
+  const currentViews = typeof record.fields[F.PREVIEW_VIEWS] === "number" ? record.fields[F.PREVIEW_VIEWS] : 0;
+  const now = new Date().toISOString();
+  const fields = {
+    [F.PREVIEW_VIEWS]: currentViews + 1,
+    [F.PREVIEW_LAST_VIEWED]: now
+  };
+  if (!record.fields[F.FIRST_VIEWED]) {
+    fields[F.FIRST_VIEWED] = now;
+  }
+  return updateRecord(record.id, fields);
+}
+
 export default async function handler(req, res) {
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
@@ -96,14 +122,30 @@ export default async function handler(req, res) {
   }
 
   const fields = record.fields;
-
-  if (!fields[F.FIRST_VIEWED]) {
-    updateRecord(record.id, { [F.FIRST_VIEWED]: new Date().toISOString() }).catch(() => {});
+  const userAgent = req.headers["user-agent"] || "";
+  const isBot = BOT_UA_PATTERNS.test(userAgent);
+  if (!isBot) {
+    recordView(record).catch(() => {});
   }
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
+  res.setHeader("X-Robots-Tag", "noindex, nofollow");
+
+  const rawConfig = fields[F.PREVIEW_CONFIG_JSON];
+  if (rawConfig) {
+    let config;
+    try {
+      config = JSON.parse(rawConfig);
+    } catch (err) {
+      res.status(500).setHeader("Content-Type", "text/plain; charset=utf-8");
+      return res.end("This preview's configuration is malformed. Contact GABAN Solutions to fix it.");
+    }
+    return res.status(200).end(renderPreview(config));
+  }
+
+  // Legacy fallback: no rich config yet, just the old single-image page.
   return res.status(200).end(
-    renderProposal({
+    renderLegacyImageProposal({
       name: fields[F.NAME],
       mockupUrl: fields[F.MOCKUP_LINK],
       businessParam: fields[F.NAME] || ""

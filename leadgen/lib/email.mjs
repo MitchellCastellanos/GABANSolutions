@@ -32,13 +32,14 @@ function caslFooter(unsubscribeUrl) {
 
 export function initialEmail({ businessName, previewUrl, unsubscribeUrl }) {
   return {
-    subject: `A quick website concept for ${businessName}`,
+    subject: `A working preview of a new website for ${businessName}`,
     html: `
       <p>Hi,</p>
-      <p>I came across <strong>${businessName}</strong> on Google Maps and put
-      together a quick idea of what a new website could look like for you:</p>
+      <p>Like I mentioned on the phone — I came across <strong>${businessName}</strong>
+      on Google Maps and put together a real, working preview of what a new
+      website could look like for you. It's live, you can open it and click around:</p>
       <p><a href="${previewUrl}">${previewUrl}</a></p>
-      <p>No pricing, no obligation — just wanted to show you the concept.
+      <p>No pricing, no obligation — just wanted you to see it for real.
       If it's interesting, do you have 15 minutes this week to talk it through?</p>
       <p>— GABAN Solutions</p>
       ${caslFooter(unsubscribeUrl)}`
@@ -51,7 +52,8 @@ export function followUpOne({ businessName, previewUrl, unsubscribeUrl }) {
     html: `
       <p>Hi again,</p>
       <p>Just following up in case my last email got buried — here's the
-      website concept for <strong>${businessName}</strong> again:</p>
+      live preview for <strong>${businessName}</strong> again, you can open
+      it and browse it like a real site:</p>
       <p><a href="${previewUrl}">${previewUrl}</a></p>
       <p>Happy to chat for 15 minutes whenever works for you.</p>
       <p>— GABAN Solutions</p>
@@ -68,7 +70,7 @@ export function followUpTwo({ businessName, previewUrl, unsubscribeUrl }) {
       businesses on their phone first. A site that isn't fast and
       mobile-friendly quietly loses potential customers before they
       even reach out.</p>
-      <p>Here's the concept again for <strong>${businessName}</strong>
+      <p>Here's the preview again for <strong>${businessName}</strong>
       in case it's useful: <a href="${previewUrl}">${previewUrl}</a></p>
       <p>No pressure — just let me know if a quick call makes sense.</p>
       <p>— GABAN Solutions</p>
@@ -83,7 +85,7 @@ export function followUpThree({ businessName, previewUrl, unsubscribeUrl }) {
       <p>Hi,</p>
       <p>I'll leave it here for now so I'm not clogging your inbox. If
       priorities change and a new site for <strong>${businessName}</strong>
-      becomes worth exploring, the concept is still here:
+      becomes worth exploring, the preview is still here:
       <a href="${previewUrl}">${previewUrl}</a></p>
       <p>Feel free to reach out any time — I'm around.</p>
       <p>— GABAN Solutions</p>
