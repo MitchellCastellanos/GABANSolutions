@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Lead Radar — Preview admin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, sans-serif; background: #f6f6f4;
+      color: #1a1a1a; padding: 1.25rem; max-width: 480px; margin: 0 auto;
+    }
+    h1 { font-size: 1.3rem; margin: 1rem 0 0.25rem; }
+    p.sub { color: #666; font-size: 0.9rem; margin: 0 0 1.5rem; }
+    label { display: block; font-weight: 600; font-size: 0.85rem; margin: 1rem 0 0.35rem; }
+    input {
+      width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 8px;
+      font-size: 1rem; background: #fff;
+    }
+    button {
+      width: 100%; padding: 0.9rem; margin-top: 0.75rem; border: none; border-radius: 8px;
+      font-size: 1rem; font-weight: 700; cursor: pointer;
+    }
+    .btn-generate { background: #111; color: #fff; }
+    .btn-approve { background: #c9a227; color: #111; }
+    button:disabled { opacity: 0.5; cursor: default; }
+    .output {
+      margin-top: 1.25rem; padding: 1rem; border-radius: 8px; background: #fff;
+      border: 1px solid #eee; font-size: 0.9rem; white-space: pre-wrap; display: none;
+    }
+    .output.show { display: block; }
+    .output.error { border-color: #e0a72e; background: #fff8ea; }
+    .output a { color: #0b3d63; }
+    .errors { color: #b3261e; }
+    .warnings { color: #8a6d00; }
+    details { margin-top: 1.5rem; font-size: 0.85rem; color: #888; }
+  </style>
+</head>
+<body>
+  <h1>Lead Radar — Preview admin</h1>
+  <p class="sub">Generate and approve website previews from your phone — no terminal needed.</p>
+
+  <label for="token">Access token (ask GABAN admin — same as CRON_SECRET)</label>
+  <input id="token" type="password" placeholder="paste once, it's saved on this device">
+
+  <label for="slug">Prospect slug (from the Airtable "Slug" column)</label>
+  <input id="slug" type="text" placeholder="garage-lachine-auto-abcd1234">
+
+  <button class="btn-generate" id="generateBtn">1. Generate preview</button>
+  <button class="btn-approve" id="approveBtn">2. Validate &amp; approve</button>
+
+  <div class="output" id="output"></div>
+
+  <details>
+    <summary>How this works</summary>
+    <p>"Generate" builds a draft from what's already in Airtable and is
+    safe to run again later (it only refreshes Logo URL/Primary
+    Color/Secondary Color, never overwrites services/photos/reviews
+    you've already added). "Validate &amp; approve" checks for
+    placeholder text, dead links, fake numbers, etc. — it only
+    approves (and unlocks sending) when there are zero errors.</p>
+  </details>
+
+  <script>
+    const tokenEl = document.getElementById("token");
+    const slugEl = document.getElementById("slug");
+    const outputEl = document.getElementById("output");
+    const generateBtn = document.getElementById("generateBtn");
+    const approveBtn = document.getElementById("approveBtn");
+
+    tokenEl.value = localStorage.getItem("leadgenAdminToken") || "";
+    slugEl.value = localStorage.getItem("leadgenAdminSlug") || "";
+
+    function escapeHtml(value) {
+      return String(value || "").replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+
+    function showOutput(html, isError) {
+      outputEl.innerHTML = html;
+      outputEl.className = "output show" + (isError ? " error" : "");
+    }
+
+    async function callEndpoint(path) {
+      const token = tokenEl.value.trim();
+      const slug = slugEl.value.trim();
+      if (!token || !slug) {
+        showOutput("Fill in the token and slug first.", true);
+        return;
+      }
+      localStorage.setItem("leadgenAdminToken", token);
+      localStorage.setItem("leadgenAdminSlug", slug);
+
+      generateBtn.disabled = true;
+      approveBtn.disabled = true;
+      showOutput("Working...", false);
+
+      try {
+        const res = await fetch(`${path}?slug=${encodeURIComponent(slug)}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        const data = await res.json();
+        return data;
+      } catch (err) {
+        showOutput(`Network error: ${escapeHtml(err.message)}`, true);
+        return null;
+      } finally {
+        generateBtn.disabled = false;
+        approveBtn.disabled = false;
+      }
+    }
+
+    generateBtn.addEventListener("click", async () => {
+      const data = await callEndpoint("/api/cron/generate-preview");
+      if (!data) return;
+      if (!data.ok) {
+        showOutput(`Error: ${escapeHtml(data.error)}`, true);
+        return;
+      }
+      const r = data.result;
+      const notes = (r.personalizationNotes || []).map((n) => `<li>${escapeHtml(n)}</li>`).join("");
+      showOutput(
+        `<strong>${r.isRefresh ? "Refreshed logo/colors" : "Draft created"}</strong> for ${escapeHtml(r.businessName)}<br>` +
+        `Template: ${escapeHtml(r.templateCategory)} · Language: ${escapeHtml(r.language)}<br>` +
+        (notes ? `<ul>${notes}</ul>` : "") +
+        `<a href="${r.previewUrl}" target="_blank" rel="noopener">Open preview →</a>`,
+        false
+      );
+    });
+
+    approveBtn.addEventListener("click", async () => {
+      const data = await callEndpoint("/api/cron/approve-preview");
+      if (!data) return;
+      if (!data.ok) {
+        showOutput(`Error: ${escapeHtml(data.error)}`, true);
+        return;
+      }
+      const r = data.result;
+      const errorsHtml = r.errors.length
+        ? `<div class="errors"><strong>Errors (blocked approval):</strong><ul>${r.errors.map((e) => `<li>${escapeHtml(e)}</li>`).join("")}</ul></div>`
+        : "";
+      const warningsHtml = r.warnings.length
+        ? `<div class="warnings"><strong>Warnings:</strong><ul>${r.warnings.map((w) => `<li>${escapeHtml(w)}</li>`).join("")}</ul></div>`
+        : "";
+      showOutput(
+        `<strong>${r.approved ? "✓ Approved" : "Not approved"}</strong> — ${escapeHtml(r.businessName)} · Score ${r.score}/10<br>` +
+        errorsHtml + warningsHtml +
+        (r.approved ? `<a href="${r.previewUrl}" target="_blank" rel="noopener">Open preview →</a>` : ""),
+        !r.approved
+      );
+    });
+  </script>
+</body>
+</html>
