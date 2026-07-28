@@ -55,8 +55,17 @@ website built from data already in Airtable — not a screenshot or an
 uploaded image. It's driven by a JSON config (`Preview Config JSON`)
 and a small library of category templates in `leadgen/templates/`.
 
+**From a phone, no terminal**: open `https://gabansolutions.ca/leadgen-admin.html`
+— paste your access token once (it's the same value as the `CRON_SECRET`
+env var in Vercel; get it from whoever set up the project, it's saved on
+the device after the first time), paste the prospect's `Slug`, tap
+**Generate preview**, then **Validate & approve**. That's steps 1, 4 and
+5 below done from a browser. Steps 3 (filling in services/photos/
+reviews) and 6 (setting `Pipeline Status`) still happen in the Airtable
+mobile app — no code editor needed there either, just the app.
+
 ```
-1. npm run leadgen:generate-preview -- --slug=<slug>
+1. npm run leadgen:generate-preview -- --slug=<slug>   (or the "Generate preview" button on leadgen-admin.html)
      -> reads Name/Phone/Address/City/Category/Rating/Review Count/Signals
         from Airtable, guesses a template category (leadgen/templates/registry.mjs),
         writes a draft "Preview Config JSON" + Preview Status = "draft"
@@ -67,11 +76,12 @@ and a small library of category templates in `leadgen/templates/`.
    something already sent.
 
 3. Fill in the gaps by hand: edit the "Preview Config JSON" long-text
-   field directly in Airtable (that's the editor for now — see "Future
-   ideas" at the bottom of this file for a possible admin-panel
-   version later). Typically needed: content.services (2-3 real
-   ones), business.photos (paste a hosted image URL — see "Photos"
-   below), content.reviews if you want to quote a real Google review.
+   field directly in Airtable — works fine from the Airtable mobile
+   app (that's the editor for now — see "Future ideas" at the bottom
+   of this file for a possible full in-browser editor later, not
+   built). Typically needed: content.services (2-3 real ones),
+   business.photos (paste a hosted image URL — see "Photos" below),
+   content.reviews if you want to quote a real Google review.
 
 4. npm run leadgen:validate-preview -- --slug=<slug>
      -> prints errors (lorem ipsum, dead CTA links, fake phone numbers,
@@ -81,6 +91,8 @@ and a small library of category templates in `leadgen/templates/`.
 5. npm run leadgen:validate-preview -- --slug=<slug> --approve
      -> only works with zero errors; sets Preview Status = "approved"
         and stamps meta.approvedAt in the JSON
+     -> (steps 4+5 together = the "Validate & approve" button on
+        leadgen-admin.html)
 
 6. Only now set Pipeline Status = "Mockup Ready" — that's still your
    call queue exactly as before. send-proposal.mjs refuses to email
@@ -293,9 +305,10 @@ real usage data first, which doesn't exist yet.
 - **Photo proxy**: a server-side route that fetches Google Places
   photos without putting the API key in the page's HTML, so
   `business.photos` could populate automatically instead of by hand.
-- **Admin edit panel**: a protected `/api/admin/preview/:slug` page
-  (same `CRON_SECRET`-style bearer auth as `api/cron/*`) so previews
-  can be edited without touching raw JSON in Airtable.
+- **Full content editor**: `leadgen-admin.html` (built) only
+  *triggers* generate/validate/approve from a phone — it doesn't edit
+  content. A form to edit headline/services/photos/CTA/etc. without
+  touching raw JSON in Airtable is still a possible later step.
 - **CTA/phone click tracking**: right now only page views are
   recorded (`Preview Views`, `Preview Last Viewed`). Knowing whether
   someone actually clicked "call" or the CTA would need a small

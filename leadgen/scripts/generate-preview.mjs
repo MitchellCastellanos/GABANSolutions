@@ -21,23 +21,22 @@
 // directly. Photos stay a manual step (paste a hosted URL into the
 // config) until a server-side photo proxy is built.
 //
+// The core logic is exported as generatePreviewForSlug() so
+// api/cron/generate-preview.js can call it directly over HTTP (for
+// mobile use via leadgen-admin.html) without shelling out to this
+// CLI — see that file for the mobile trigger flow.
+//
 // Usage:
 //   node leadgen/scripts/generate-preview.mjs --slug=<slug> [--dry-run]
 //
 // Required env vars: AIRTABLE_API_KEY, AIRTABLE_BASE_ID.
 // ============================================================
 
+import { fileURLToPath } from "node:url";
 import { findByField, updateRecord } from "../lib/airtable.mjs";
 import { F, PREVIEW_STATUS } from "../lib/fields.mjs";
 import { guessCategoryKey, resolveTemplate, knownCategoryKeys } from "../templates/registry.mjs";
 import { pickVariant, HERO_VARIANTS } from "../templates/shared/variant.mjs";
-
-const DRY_RUN = process.argv.includes("--dry-run");
-
-function arg(name) {
-  const found = process.argv.find((a) => a.startsWith(`--${name}=`));
-  return found ? found.split("=").slice(1).join("=") : undefined;
-}
 
 function parseSignals(signalsText) {
   if (!signalsText) return [];
@@ -169,11 +168,13 @@ function refreshExistingConfig(record, existing) {
   return config;
 }
 
-async function main() {
-  const slug = arg("slug");
-  if (!slug) {
-    throw new Error("Usage: node leadgen/scripts/generate-preview.mjs --slug=<slug>");
-  }
+/**
+ * Builds/refreshes the Preview Config for one slug and writes it to
+ * Airtable (unless dryRun). Returns a plain-object summary so both
+ * the CLI and the HTTP endpoint can report the result their own way.
+ */
+export async function generatePreviewForSlug(slug, { dryRun = false } = {}) {
+  if (!slug) throw new Error("slug is required");
 
   const record = await findByField(F.SLUG, slug);
   if (!record) {
@@ -203,23 +204,54 @@ async function main() {
     fields[F.PREVIEW_STATUS] = PREVIEW_STATUS.DRAFT;
   }
 
-  if (isRefresh) {
-    console.log(`Refreshing logo/branding only for "${record.fields[F.NAME]}" (existing content preserved).`);
-  } else {
-    console.log(`Draft preview for "${record.fields[F.NAME]}" (template: ${config.template.category}, language: ${config.language})`);
-    console.log("Still needs manual completion:");
-    config.auditContext.personalizationNotes.forEach((note) => console.log(`  - ${note}`));
+  if (!dryRun) {
+    await updateRecord(record.id, fields);
   }
 
-  if (DRY_RUN) {
-    console.log("\n[dry-run] would write:", fields);
+  return {
+    slug,
+    businessName: record.fields[F.NAME],
+    isRefresh,
+    templateCategory: config.template.category,
+    language: config.language,
+    personalizationNotes: isRefresh ? [] : config.auditContext.personalizationNotes,
+    previewUrl: `https://gabansolutions.ca/preview/${slug}`,
+    saved: !dryRun
+  };
+}
+
+function arg(name) {
+  const found = process.argv.find((a) => a.startsWith(`--${name}=`));
+  return found ? found.split("=").slice(1).join("=") : undefined;
+}
+
+async function main() {
+  const slug = arg("slug");
+  const dryRun = process.argv.includes("--dry-run");
+  if (!slug) {
+    throw new Error("Usage: node leadgen/scripts/generate-preview.mjs --slug=<slug>");
+  }
+
+  const result = await generatePreviewForSlug(slug, { dryRun });
+
+  if (result.isRefresh) {
+    console.log(`Refreshing logo/branding only for "${result.businessName}" (existing content preserved).`);
   } else {
-    await updateRecord(record.id, fields);
-    console.log(`\nSaved. Review at: https://gabansolutions.ca/preview/${slug}`);
+    console.log(`Draft preview for "${result.businessName}" (template: ${result.templateCategory}, language: ${result.language})`);
+    console.log("Still needs manual completion:");
+    result.personalizationNotes.forEach((note) => console.log(`  - ${note}`));
+  }
+
+  if (dryRun) {
+    console.log("\n[dry-run] nothing written.");
+  } else {
+    console.log(`\nSaved. Review at: ${result.previewUrl}`);
   }
 }
 
-main().catch((err) => {
-  console.error(err);
-  process.exitCode = 1;
-});
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().catch((err) => {
+    console.error(err);
+    process.exitCode = 1;
+  });
+}
