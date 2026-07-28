@@ -116,6 +116,35 @@ export default async function handler(req, res) {
   const slug = (segments[0] || "").toString().trim();
   const pageKey = (segments[1] || "home").toString().trim();
 
+  // TEMPORARY: ?debug=1 dumps what Vercel's rewrite actually handed this
+  // function (query keys, derived slug) plus whether Airtable has a
+  // matching record, instead of the normal 404/page — for tracking down
+  // https://gabansolutions.ca/preview/l-usine-crossfit-longueuil-AwjxqZgM
+  // 404ing after the multi-page rewrite. Remove once resolved.
+  if (req.query?.debug === "1") {
+    let debugRecord = null;
+    let lookupError = null;
+    if (slug) {
+      try {
+        debugRecord = await findByField(F.SLUG, slug);
+      } catch (err) {
+        lookupError = err.message;
+      }
+    }
+    return res.status(200).json({
+      ok: true,
+      rawQueryKeys: Object.keys(req.query || {}),
+      rawQuery: req.query,
+      url: req.url,
+      segments,
+      slug,
+      pageKey,
+      recordFound: Boolean(debugRecord),
+      hasPreviewConfigJson: debugRecord ? Boolean(debugRecord.fields?.[F.PREVIEW_CONFIG_JSON]) : null,
+      lookupError
+    });
+  }
+
   if (!slug) {
     return renderNotFound(res);
   }
