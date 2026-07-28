@@ -9,6 +9,7 @@ export const F = {
   EMAIL: "Email",
   WEBSITE: "Website",
   CATEGORY: "Category",
+  CATEGORY_KEY: "Category Key",
   CITY: "City",
   ADDRESS: "Address",
   RATING: "Rating",
@@ -34,7 +35,10 @@ export const F = {
   PREVIEW_STATUS: "Preview Status",
   PREVIEW_TEMPLATE: "Preview Template",
   PREVIEW_VIEWS: "Preview Views",
-  PREVIEW_LAST_VIEWED: "Preview Last Viewed"
+  PREVIEW_LAST_VIEWED: "Preview Last Viewed",
+  LOGO_URL: "Logo URL",
+  PRIMARY_COLOR: "Primary Color",
+  SECONDARY_COLOR: "Secondary Color"
 };
 
 export const STATUS = {

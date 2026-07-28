@@ -13,6 +13,8 @@ export const categoryLabels = [];
 
 export const defaultSectionOrder = ["hero", "trustBar", "services", "about", "reviews", "gallery", "contact"];
 
+export const sectionOrderVariants = [defaultSectionOrder];
+
 export const defaultPalette = {
   primaryColor: "#171717",
   secondaryColor: "#c9a227",
@@ -20,6 +22,8 @@ export const defaultPalette = {
   headingFont: "sans-serif",
   style: "neutral"
 };
+
+export const paletteVariants = [defaultPalette];
 
 export const defaultCta = {
   fr: "Nous contacter",

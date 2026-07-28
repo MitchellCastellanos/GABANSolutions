@@ -9,20 +9,30 @@
 
 import * as dentist from "./dentist/index.mjs";
 import * as carRepair from "./car-repair/index.mjs";
+import * as lawyer from "./lawyer/index.mjs";
+import * as generalContractor from "./general-contractor/index.mjs";
+import * as spa from "./spa/index.mjs";
+import * as restaurant from "./restaurant/index.mjs";
+import * as realEstate from "./real-estate/index.mjs";
+import * as gym from "./gym/index.mjs";
+import * as veterinary from "./veterinary/index.mjs";
 import * as generic from "./generic/index.mjs";
 
-export const registry = {
-  [dentist.categoryKey]: dentist,
-  [carRepair.categoryKey]: carRepair,
-  [generic.categoryKey]: generic
-};
+const CATEGORY_MODULES = [
+  dentist, carRepair, lawyer, generalContractor, spa,
+  restaurant, realEstate, gym, veterinary
+];
+
+export const registry = Object.fromEntries(
+  CATEGORY_MODULES.map((mod) => [mod.categoryKey, mod]).concat([[generic.categoryKey, generic]])
+);
 
 export const knownCategoryKeys = Object.keys(registry);
 
 /** @param {string} airtableCategoryLabel - e.g. "Dentistes" or "Ateliers automobiles" */
 export function guessCategoryKey(airtableCategoryLabel) {
   const normalized = (airtableCategoryLabel || "").toLowerCase();
-  for (const mod of [dentist, carRepair]) {
+  for (const mod of CATEGORY_MODULES) {
     if (mod.categoryLabels.some((label) => normalized.includes(label))) {
       return mod.categoryKey;
     }

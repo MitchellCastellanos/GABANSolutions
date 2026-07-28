@@ -6,15 +6,15 @@
     { "label": "Longueuil, QC", "query": "Longueuil, QC, Canada" }
   ],
   "categories": [
-    { "label": "Dentistes", "placeType": "dentist" },
-    { "label": "Avocats", "placeType": "lawyer" },
-    { "label": "Entrepreneurs / rénovation", "placeType": "general_contractor" },
-    { "label": "Cliniques esthétiques / spas", "placeType": "spa" },
-    { "label": "Restaurants", "placeType": "restaurant" },
-    { "label": "Agents immobiliers", "placeType": "real_estate_agency" },
-    { "label": "Gyms / studios", "placeType": "gym" },
-    { "label": "Vétérinaires", "placeType": "veterinary_care" },
-    { "label": "Ateliers automobiles", "placeType": "car_repair" }
+    { "label": "Dentistes", "placeType": "dentist", "templateCategory": "dentist" },
+    { "label": "Avocats", "placeType": "lawyer", "templateCategory": "lawyer" },
+    { "label": "Entrepreneurs / rénovation", "placeType": "general_contractor", "templateCategory": "general-contractor" },
+    { "label": "Cliniques esthétiques / spas", "placeType": "spa", "templateCategory": "spa" },
+    { "label": "Restaurants", "placeType": "restaurant", "templateCategory": "restaurant" },
+    { "label": "Agents immobiliers", "placeType": "real_estate_agency", "templateCategory": "real-estate" },
+    { "label": "Gyms / studios", "placeType": "gym", "templateCategory": "gym" },
+    { "label": "Vétérinaires", "placeType": "veterinary_care", "templateCategory": "veterinary" },
+    { "label": "Ateliers automobiles", "placeType": "car_repair", "templateCategory": "car-repair" }
   ],
   "excludedNamesContains": [
     "mcdonald", "tim hortons", "starbucks", "subway", "burger king",
