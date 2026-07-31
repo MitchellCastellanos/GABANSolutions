@@ -25,25 +25,6 @@
     {
       "source": "/preview/:segments*",
       "destination": "/api/preview/:segments*"
-    },
-    {
-      "source": "/admin",
-      "destination": "/admin/index.html"
-    },
-    {
-      "source": "/admin/bookings",
-      "destination": "/admin/bookings.html"
-    },
-    {
-      "source": "/admin/previews",
-      "destination": "/admin/previews.html"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/leadgen-admin.html",
-      "destination": "/admin/previews",
-      "permanent": false
     }
   ],
   "headers": [
@@ -54,7 +35,7 @@
       ]
     },
     {
-      "source": "/admin/:path*",
+      "source": "/leadgen-admin.html",
       "headers": [
         { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
       ]
