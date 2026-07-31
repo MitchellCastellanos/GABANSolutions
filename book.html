@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Schedule Your Free Consultation | GABAN Solutions</title>
+  <meta name="description" content="Pick a time that works for you and lock in a free consultation with GABAN Solutions — no back-and-forth emails required.">
+  <meta name="keywords" content="book a consultation, schedule a call, GABAN Solutions appointment, free consultation Montréal">
+  <meta name="author" content="GABAN Solutions">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#111111">
+
+  <link rel="canonical" href="https://gabansolutions.ca/book.html">
+  <link rel="manifest" href="./site.webmanifest">
+
+  <link rel="icon" href="./Images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="./Images/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./Images/favicon-16.png">
+  <link rel="apple-touch-icon" href="./Images/apple-touch-icon.png">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_CA">
+  <meta property="og:site_name" content="GABAN Solutions">
+  <meta property="og:title" content="Schedule Your Free Consultation | GABAN Solutions">
+  <meta property="og:description" content="Pick a time that works for you and lock in a free consultation with GABAN Solutions.">
+  <meta property="og:url" content="https://gabansolutions.ca/book.html">
+  <meta property="og:image" content="https://gabansolutions.ca/Images/og/gaban-home-preview.jpg">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Schedule Your Free Consultation | GABAN Solutions">
+  <meta name="twitter:image" content="https://gabansolutions.ca/Images/og/gaban-home-preview.jpg">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" href="./MyCSS.css" as="style">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="./MyCSS.css">
+
+  <style>
+    .book-date-btn { min-width: 84px; }
+    .book-date-btn.active { background: #111; color: #fff; border-color: #111; }
+    .book-time-btn.active { background: #111; color: #fff; border-color: #111; }
+    #bookDatesRow, #bookTimesRow { scrollbar-width: thin; }
+  </style>
+</head>
+<body>
+
+<div id="site-navbar"></div>
+
+<header class="py-5 bg-light">
+  <div class="container">
+    <div class="row align-items-center g-3">
+      <div class="col-lg-8 reveal-left">
+        <div class="text-uppercase small fw-semibold text-warning mb-2" data-i18n="book_tag">Free consultation</div>
+        <h1 class="fw-bold mb-2" data-i18n="book_h1">Schedule Your Free Consultation Today</h1>
+        <p class="text-muted mb-0" data-i18n="book_sub">Pick a day and time that works for you — you'll get an instant confirmation by email, no back-and-forth required.</p>
+      </div>
+      <div class="col-lg-4 text-lg-end reveal-right">
+        <a class="btn btn-outline-dark" href="tel:15142580648" data-i18n="contact_call_btn">Call Now</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container">
+    <div class="row g-4">
+
+      <div class="col-lg-7">
+        <div class="card border-0 shadow-sm reveal-left">
+          <div class="card-body p-4">
+
+            <div id="bookLoading" class="text-center text-muted py-5">
+              <div class="spinner-border" role="status"></div>
+              <p class="mt-3 mb-0" data-i18n="book_loading">Loading available times…</p>
+            </div>
+
+            <div id="bookError" class="alert alert-danger d-none" role="alert">
+              <span data-i18n="book_error">Something went wrong loading the calendar. Please refresh, or reach us directly on WhatsApp below.</span>
+            </div>
+
+            <div id="bookPicker" class="d-none">
+              <h2 class="h6 fw-bold mb-2" data-i18n="book_pick_day">1. Pick a day</h2>
+              <div id="bookDatesRow" class="d-flex gap-2 mb-4 overflow-auto pb-2"></div>
+
+              <div id="bookTimesWrap" class="d-none">
+                <h2 class="h6 fw-bold mb-2" data-i18n="book_pick_time">2. Pick a time</h2>
+                <div id="bookTimesRow" class="d-flex flex-wrap gap-2 mb-2"></div>
+                <div id="bookNoSlots" class="text-muted small d-none" data-i18n="book_no_slots">No open times this day — try another date.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <div id="bookFormWrap" class="d-none">
+          <div class="reveal-right">
+            <h2 class="h5 fw-bold mb-1" data-i18n="book_form_t">Your details</h2>
+            <p class="text-muted small mb-3" data-i18n="book_form_sub">We'll send your confirmation here.</p>
+          </div>
+
+          <form id="bookForm" class="card border-0 shadow-sm reveal-right" novalidate>
+            <div class="card-body p-4">
+
+              <div id="bookSelectedSummary" class="alert alert-light border mb-3 small fw-semibold"></div>
+
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label" for="bookName" data-i18n="form_name">Name</label>
+                  <input id="bookName" name="name" type="text" class="form-control" autocomplete="name" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="bookEmail" data-i18n="book_email">Email</label>
+                  <input id="bookEmail" name="email" type="email" class="form-control" autocomplete="email" required>
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="bookPhone" data-i18n="book_phone">Phone (optional)</label>
+                  <input id="bookPhone" name="phone" type="tel" class="form-control" autocomplete="tel">
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="bookBusiness" data-i18n="form_business">Business name (optional)</label>
+                  <input id="bookBusiness" name="business" type="text" class="form-control" autocomplete="organization">
+                </div>
+                <div class="col-12">
+                  <label class="form-label" for="bookNotes" data-i18n="book_notes">What would you like to talk about? (optional)</label>
+                  <textarea id="bookNotes" name="notes" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="d-none" aria-hidden="true">
+                  <label for="bookCompanyWebsite">Leave this field empty</label>
+                  <input id="bookCompanyWebsite" name="company_website" type="text" tabindex="-1" autocomplete="off">
+                </div>
+              </div>
+
+              <button class="btn btn-dark w-100 mt-4" type="submit" id="bookSubmitBtn" data-i18n="book_submit">
+                Confirm Appointment
+              </button>
+
+              <div id="bookFormError" class="alert alert-danger mt-3 d-none" role="alert"></div>
+            </div>
+          </form>
+        </div>
+
+        <div id="bookSuccess" class="d-none text-center card border-0 shadow-sm p-4">
+          <div class="display-6 mb-2"><i class="bi bi-check-circle-fill text-success"></i></div>
+          <h2 class="h5 fw-bold mb-2" data-i18n="book_success_t">You're booked!</h2>
+          <p class="text-muted mb-0" id="bookSuccessDetail"></p>
+          <p class="small text-muted mt-3 mb-0" data-i18n="book_success_note">Check your inbox for a confirmation email with a calendar invite.</p>
+        </div>
+
+        <div class="p-4 bg-light border rounded-4 mt-4 reveal-up">
+          <h3 class="h6 fw-bold mb-2" data-i18n="contact_help_t">Prefer to skip the form?</h3>
+          <p class="small mb-0" data-i18n="contact_help_b1">Message us directly on WhatsApp and we'll pick it up from there — no form required.</p>
+          <a class="btn btn-outline-dark btn-sm mt-3" href="https://wa.me/15142580648?text=Hi%2C%20I%27d%20like%20to%20book%20a%20free%20consultation" target="_blank" rel="noopener" data-i18n="contact_help_wa_btn">
+            <i class="bi bi-whatsapp me-1"></i>Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div id="site-footer"></div>
+
+<script src="./js/components.js"></script>
+<script src="./js/i18n.js"></script>
+<script src="./js/scroll-reveal.js"></script>
+<script>
+  registerPageI18n("book", {
+    en: {
+      contact_call_btn: "Call Now",
+      contact_help_t: "Prefer to skip the form?",
+      contact_help_b1: "Message us directly on WhatsApp and we'll pick it up from there — no form required.",
+      contact_help_wa_btn: "Chat on WhatsApp",
+      form_name: "Name",
+      form_business: "Business name",
+      book_tag: "Free consultation",
+      book_h1: "Schedule Your Free Consultation Today",
+      book_sub: "Pick a day and time that works for you — you'll get an instant confirmation by email, no back-and-forth required.",
+      book_loading: "Loading available times…",
+      book_error: "Something went wrong loading the calendar. Please refresh, or reach us directly on WhatsApp below.",
+      book_pick_day: "1. Pick a day",
+      book_pick_time: "2. Pick a time",
+      book_no_slots: "No open times this day — try another date.",
+      book_form_t: "Your details",
+      book_form_sub: "We'll send your confirmation here.",
+      book_email: "Email",
+      book_phone: "Phone (optional)",
+      book_notes: "What would you like to talk about? (optional)",
+      book_submit: "Confirm Appointment",
+      book_success_t: "You're booked!",
+      book_success_note: "Check your inbox for a confirmation email with a calendar invite."
+    },
+    fr: {
+      contact_call_btn: "Appeler maintenant",
+      contact_help_t: "Vous préférez éviter le formulaire ?",
+      contact_help_b1: "Écrivez-nous directement sur WhatsApp et nous prendrons le relais à partir de là — aucun formulaire requis.",
+      contact_help_wa_btn: "Discuter sur WhatsApp",
+      form_name: "Nom",
+      form_business: "Nom de l'entreprise",
+      book_tag: "Consultation gratuite",
+      book_h1: "Réservez votre consultation gratuite aujourd'hui",
+      book_sub: "Choisissez un jour et une heure qui vous conviennent — vous recevrez une confirmation instantanée par courriel, sans aller-retour.",
+      book_loading: "Chargement des disponibilités…",
+      book_error: "Une erreur est survenue lors du chargement du calendrier. Veuillez actualiser la page ou nous contacter directement sur WhatsApp ci-dessous.",
+      book_pick_day: "1. Choisissez un jour",
+      book_pick_time: "2. Choisissez une heure",
+      book_no_slots: "Aucune disponibilité ce jour-là — essayez une autre date.",
+      book_form_t: "Vos coordonnées",
+      book_form_sub: "Nous enverrons votre confirmation ici.",
+      book_email: "Courriel",
+      book_phone: "Téléphone (optionnel)",
+      book_notes: "De quoi aimeriez-vous parler ? (optionnel)",
+      book_submit: "Confirmer le rendez-vous",
+      book_success_t: "C'est réservé !",
+      book_success_note: "Consultez votre boîte de réception pour la confirmation avec invitation calendrier."
+    },
+    es: {
+      contact_call_btn: "Llamar ahora",
+      contact_help_t: "¿Prefieres saltarte el formulario?",
+      contact_help_b1: "Escríbenos directo por WhatsApp y seguimos desde ahí — sin necesidad de formulario.",
+      contact_help_wa_btn: "Chatear por WhatsApp",
+      form_name: "Nombre",
+      form_business: "Nombre del negocio",
+      book_tag: "Consulta gratis",
+      book_h1: "Agenda tu consulta gratuita hoy",
+      book_sub: "Elige un día y una hora que te funcione — recibirás una confirmación instantánea por correo, sin ida y vuelta de mensajes.",
+      book_loading: "Cargando horarios disponibles…",
+      book_error: "Algo salió mal cargando el calendario. Por favor recarga la página o contáctanos directamente por WhatsApp abajo.",
+      book_pick_day: "1. Elige un día",
+      book_pick_time: "2. Elige una hora",
+      book_no_slots: "No hay horarios disponibles ese día — prueba otra fecha.",
+      book_form_t: "Tus datos",
+      book_form_sub: "Enviaremos tu confirmación aquí.",
+      book_email: "Correo",
+      book_phone: "Teléfono (opcional)",
+      book_notes: "¿De qué te gustaría hablar? (opcional)",
+      book_submit: "Confirmar cita",
+      book_success_t: "¡Cita agendada!",
+      book_success_note: "Revisa tu correo para la confirmación con invitación de calendario."
+    }
+  });
+  mountSharedLayout("book");
+  initI18n("book");
+
+  (function () {
+    const loadingEl = document.getElementById("bookLoading");
+    const errorEl = document.getElementById("bookError");
+    const pickerEl = document.getElementById("bookPicker");
+    const datesRow = document.getElementById("bookDatesRow");
+    const timesWrap = document.getElementById("bookTimesWrap");
+    const timesRow = document.getElementById("bookTimesRow");
+    const noSlotsEl = document.getElementById("bookNoSlots");
+    const formWrap = document.getElementById("bookFormWrap");
+    const form = document.getElementById("bookForm");
+    const submitBtn = document.getElementById("bookSubmitBtn");
+    const formErrorEl = document.getElementById("bookFormError");
+    const summaryEl = document.getElementById("bookSelectedSummary");
+    const successEl = document.getElementById("bookSuccess");
+    const successDetailEl = document.getElementById("bookSuccessDetail");
+
+    const LOCALE_MAP = { en: "en-US", fr: "fr-CA", es: "es-MX" };
+    function currentLocale() {
+      return LOCALE_MAP[localStorage.getItem("siteLang")] || "en-US";
+    }
+
+    let availability = null;
+    let selectedDate = null;
+    let selectedSlot = null;
+
+    function dateChipLabel(dateStr) {
+      const [y, m, d] = dateStr.split("-").map(Number);
+      const dt = new Date(Date.UTC(y, m - 1, d, 12));
+      const weekday = dt.toLocaleDateString(currentLocale(), { weekday: "short", timeZone: "UTC" });
+      const dayMonth = dt.toLocaleDateString(currentLocale(), { day: "numeric", month: "short", timeZone: "UTC" });
+      return { weekday, dayMonth };
+    }
+
+    async function loadAvailability() {
+      try {
+        const res = await fetch("/api/booking/availability?days=30");
+        if (!res.ok) throw new Error("bad response");
+        const data = await res.json();
+        availability = data;
+        renderDates();
+        loadingEl.classList.add("d-none");
+        pickerEl.classList.remove("d-none");
+      } catch (err) {
+        loadingEl.classList.add("d-none");
+        errorEl.classList.remove("d-none");
+      }
+    }
+
+    function renderDates() {
+      const dateStrs = Object.keys(availability.days).sort();
+      datesRow.innerHTML = "";
+      dateStrs.forEach((dateStr, i) => {
+        const { weekday, dayMonth } = dateChipLabel(dateStr);
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn btn-outline-dark book-date-btn text-center flex-shrink-0";
+        btn.innerHTML = `<div class="small text-uppercase">${weekday}</div><div class="fw-semibold">${dayMonth}</div>`;
+        btn.addEventListener("click", () => selectDate(dateStr, btn));
+        datesRow.appendChild(btn);
+        if (i === 0) selectDate(dateStr, btn);
+      });
+    }
+
+    function selectDate(dateStr, btnEl) {
+      selectedDate = dateStr;
+      selectedSlot = null;
+      [...datesRow.children].forEach(b => b.classList.remove("active"));
+      btnEl.classList.add("active");
+      renderTimes();
+      formWrap.classList.add("d-none");
+      successEl.classList.add("d-none");
+    }
+
+    function renderTimes() {
+      const slots = availability.days[selectedDate] || [];
+      timesWrap.classList.remove("d-none");
+      timesRow.innerHTML = "";
+      if (!slots.length) {
+        noSlotsEl.classList.remove("d-none");
+        return;
+      }
+      noSlotsEl.classList.add("d-none");
+      slots.forEach(slot => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn btn-outline-dark btn-sm book-time-btn";
+        btn.textContent = slot.label;
+        btn.addEventListener("click", () => selectSlot(slot, btn));
+        timesRow.appendChild(btn);
+      });
+    }
+
+    function selectSlot(slot, btnEl) {
+      selectedSlot = slot;
+      [...timesRow.children].forEach(b => b.classList.remove("active"));
+      btnEl.classList.add("active");
+
+      const { weekday, dayMonth } = dateChipLabel(selectedDate);
+      summaryEl.textContent = `${weekday}, ${dayMonth} — ${slot.label} (${availability.timezone.replace("_", " ")})`;
+
+      formWrap.classList.remove("d-none");
+      successEl.classList.add("d-none");
+      formErrorEl.classList.add("d-none");
+      formWrap.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!selectedSlot) return;
+
+      formErrorEl.classList.add("d-none");
+      const data = Object.fromEntries(new FormData(form).entries());
+      if (!data.name?.trim() || !data.email?.trim()) {
+        form.reportValidity();
+        return;
+      }
+
+      data.start = selectedSlot.start;
+      data.lang = localStorage.getItem("siteLang") || "en";
+      data.ref = new URLSearchParams(window.location.search).get("ref") || "book-page";
+
+      submitBtn.disabled = true;
+      const originalLabel = submitBtn.textContent;
+      submitBtn.textContent = "…";
+
+      try {
+        const res = await fetch("/api/booking/book", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json().catch(() => ({}));
+
+        if (res.ok && result.ok) {
+          formWrap.classList.add("d-none");
+          successDetailEl.textContent = `${result.dateLabel} at ${result.timeLabel} (${result.timezoneLabel})`;
+          successEl.classList.remove("d-none");
+          successEl.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else if (res.status === 409) {
+          formErrorEl.textContent = result.error || "That time was just taken — please pick another slot.";
+          formErrorEl.classList.remove("d-none");
+          await loadAvailability();
+        } else {
+          formErrorEl.textContent = result.error || "Something went wrong. Please try again or use WhatsApp below.";
+          formErrorEl.classList.remove("d-none");
+        }
+      } catch (err) {
+        formErrorEl.textContent = "Something went wrong. Please try again or use WhatsApp below.";
+        formErrorEl.classList.remove("d-none");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalLabel;
+      }
+    });
+
+    loadAvailability();
+  })();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

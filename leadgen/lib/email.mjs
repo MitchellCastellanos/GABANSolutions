@@ -93,7 +93,7 @@ export function followUpThree({ businessName, previewUrl, unsubscribeUrl }) {
   };
 }
 
-export async function sendEmail({ to, subject, html }) {
+export async function sendEmail({ to, subject, html, attachments, replyTo }) {
   const apiKey = requireEnv("RESEND_API_KEY");
   const from = requireEnv("LEADGEN_FROM_EMAIL");
 
@@ -103,7 +103,14 @@ export async function sendEmail({ to, subject, html }) {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ from, to, subject, html })
+    body: JSON.stringify({
+      from,
+      to,
+      subject,
+      html,
+      ...(attachments ? { attachments } : {}),
+      ...(replyTo ? { reply_to: replyTo } : {})
+    })
   });
 
   if (!res.ok) {

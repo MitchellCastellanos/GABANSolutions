@@ -58,8 +58,8 @@ const NAV_LINKS = {
 
 // Primary CTA per context.
 const NAV_CTA = {
-  home: { href: "/contact.html", i18n: "nav_cta", label: "Book a Free Consultation" },
-  digital: { href: "/contact.html", i18n: "nav_cta", label: "Book a Free Consultation" },
+  home: { href: "/book.html", i18n: "nav_cta", label: "Make an Appointment" },
+  digital: { href: "/book.html", i18n: "nav_cta", label: "Make an Appointment" },
   software: { href: "/contact.html", i18n: "nav_cta_demo", label: "Request a Demo" }
 };
 
@@ -131,7 +131,7 @@ function footerHome() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_cta_title">Ready to talk?</h2>
           <p class="small text-muted" data-i18n="foot_cta_text">Start with a clear conversation about what your business needs next.</p>
-          <a class="btn btn-dark btn-sm" href="/contact.html" data-i18n="nav_cta">Book a Free Consultation</a>
+          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Make an Appointment</a>
         </div>`;
 }
 
@@ -165,7 +165,7 @@ function footerDigital() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_cta_title">Ready to talk?</h2>
           <p class="small text-muted" data-i18n="foot_cta_text_digital">Tell us about your business and we will point you to the right next step.</p>
-          <a class="btn btn-dark btn-sm" href="/contact.html" data-i18n="nav_cta">Book a Free Consultation</a>
+          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Make an Appointment</a>
         </div>`;
 }
 
