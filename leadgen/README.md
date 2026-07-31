@@ -77,7 +77,7 @@ the old flat shape) renders as a single page with no nav bar, exactly
 as it always did. Nothing already in the pipeline breaks; see "Legacy
 previews" below.
 
-**From a phone, no terminal**: open `https://gabansolutions.ca/leadgen-admin.html`
+**From a phone, no terminal**: open `https://gabansolutions.ca/admin/previews` (password-gated behind the shared /admin login — see docs/ADMIN.md)
 — paste your access token once (it's the same value as the `CRON_SECRET`
 env var in Vercel; get it from whoever set up the project, it's saved on
 the device after the first time), paste the prospect's `Slug`, and work
@@ -87,13 +87,13 @@ happens in the Airtable mobile app — no code editor needed there either.
 ```
 1. Generate the draft
      npm run leadgen:generate-preview -- --slug=<slug>
-     (or the "Generate preview" button on leadgen-admin.html)
+     (or the "Generate preview" button on /admin/previews)
      -> reads Name/Phone/Address/City/Category/Rating/Review Count/Signals
         from Airtable, guesses a template category (leadgen/templates/registry.mjs),
         writes a draft "Preview Config JSON" + Preview Status = "draft"
 
 2. Write the content — the fast way (no design/writing work):
-     leadgen-admin.html builds **one prompt that covers all 3 pages at
+     /admin/previews builds **one prompt that covers all 3 pages at
      once** — pre-filled with the business's real data (name, category,
      city, rating, detected site problems) and the category's actual
      middle-page label (e.g. "Menu" for a restaurant) — and asks for
@@ -124,7 +124,7 @@ happens in the Airtable mobile app — no code editor needed there either.
 
 4. Validate & approve
      npm run leadgen:validate-preview -- --slug=<slug> --approve
-     (or the "Validate & approve" button on leadgen-admin.html)
+     (or the "Validate & approve" button on /admin/previews)
      -> checks every page (home/services/contact), printing errors
         (lorem ipsum, dead CTA links, fake phone numbers, a page
         missing its headline, etc. — prefixed with which page when
@@ -206,7 +206,7 @@ you want a URL starting with `i.imgur.com` and ending in
 `.jpg`/`.jpeg`/`.png`/`.gif` — no surrounding page UI when you open it
 directly.
 
-**Reopening `leadgen-admin.html` after closing it / switching
+**Reopening `/admin/previews` after closing it / switching
 prospects**: your token and last-used slug are remembered
 (`localStorage`), and the page automatically re-loads whatever's
 already saved for that slug — a per-page summary (headline/
@@ -380,7 +380,7 @@ real usage data first, which doesn't exist yet.
 - **Photo proxy**: a server-side route that fetches Google Places
   photos without putting the API key in the page's HTML, so
   `business.photos` could populate automatically instead of by hand.
-- **Richer content editor**: `leadgen-admin.html` covers the common
+- **Richer content editor**: `/admin/previews` covers the common
   case (ChatGPT-drafted headline/subheadline/about/services + logo +
   colors + photos). It doesn't expose everything the JSON supports
   (reviews, section order, hero variant) — a fuller form is still a
@@ -393,7 +393,7 @@ real usage data first, which doesn't exist yet.
   or actual reply/conversion rates to influence which variant gets
   picked, instead of a fixed hash of the slug. Needs real conversion
   data to mean anything.
-- **Direct LLM API instead of copy-paste**: `leadgen-admin.html`'s
+- **Direct LLM API instead of copy-paste**: `/admin/previews`'s
   ChatGPT step is manual copy/paste on purpose — wiring a model API
   directly into `generate-preview.mjs` would remove that step, at the
   cost of an API key/cost to manage and one less human glance at the

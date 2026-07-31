@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>GABAN Admin — Bookings</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, sans-serif; background: #f6f6f4;
+      color: #1a1a1a; padding: 1.25rem; max-width: 640px; margin: 0 auto;
+    }
+    h1 { font-size: 1.3rem; margin: 1rem 0 0.25rem; }
+    h2 { font-size: 0.95rem; margin: 1.5rem 0 0.5rem; color: #666; }
+    p.sub { color: #666; font-size: 0.9rem; margin: 0 0 1rem; }
+    a { color: #0b3d63; }
+    label { display: block; font-weight: 600; font-size: 0.85rem; margin: 0.85rem 0 0.35rem; }
+    input, textarea {
+      width: 100%; padding: 0.65rem; border: 1px solid #ddd; border-radius: 8px;
+      font-size: 0.92rem; background: #fff; font-family: inherit;
+    }
+    textarea { resize: vertical; }
+    button {
+      padding: 0.7rem 1rem; margin-top: 0.75rem; border: none; border-radius: 8px;
+      font-size: 0.92rem; font-weight: 700; cursor: pointer;
+    }
+    .btn-primary { background: #111; color: #fff; width: 100%; }
+    .btn-danger { background: #fff; color: #b3261e; border: 1px solid #f0c2be !important; padding: 0.4rem 0.7rem; font-weight: 600; font-size: 0.82rem; }
+    button:disabled { opacity: 0.5; cursor: default; }
+    .checkbox-row { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.85rem; }
+    .checkbox-row input { width: auto; }
+    .checkbox-row label { margin: 0; font-weight: 500; }
+    .card {
+      padding: 0.9rem 1rem; margin-bottom: 0.6rem; border-radius: 10px;
+      background: #fff; border: 1px solid #eee;
+    }
+    .card .when { font-weight: 700; font-size: 0.95rem; }
+    .card .who { font-size: 0.88rem; margin-top: 0.15rem; }
+    .card .meta { font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
+    .card .row { display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
+    .empty { color: #888; font-size: 0.9rem; padding: 1rem 0; }
+    .msg { font-size: 0.85rem; margin-top: 0.5rem; }
+    .msg.error { color: #b3261e; }
+    .msg.ok { color: #1a7f37; }
+    details { margin-top: 2rem; }
+    summary { cursor: pointer; font-weight: 700; font-size: 0.95rem; }
+  </style>
+</head>
+<body>
+  <p class="sub"><a href="/admin">&larr; Admin home</a></p>
+  <h1>Bookings</h1>
+  <p class="sub">Live from the /book.html calendar. Cancel frees the slot immediately.</p>
+
+  <div id="list">Loading…</div>
+
+  <details>
+    <summary>+ Add / block a time manually</summary>
+    <form id="addForm">
+      <label for="addName">Name (use "Blocked" to just hold a slot)</label>
+      <input id="addName" required>
+
+      <label for="addStart">Start (your local time, converts automatically)</label>
+      <input id="addStart" type="datetime-local" required>
+
+      <label for="addDuration">Duration (minutes)</label>
+      <input id="addDuration" type="number" min="5" step="5" value="30">
+
+      <label for="addEmail">Email (optional)</label>
+      <input id="addEmail" type="email">
+
+      <label for="addPhone">Phone (optional)</label>
+      <input id="addPhone" type="tel">
+
+      <label for="addBusiness">Business (optional)</label>
+      <input id="addBusiness">
+
+      <label for="addNotes">Notes (optional)</label>
+      <textarea id="addNotes" rows="2"></textarea>
+
+      <div class="checkbox-row">
+        <input id="addNotify" type="checkbox">
+        <label for="addNotify">Email this person a confirmation</label>
+      </div>
+
+      <button class="btn-primary" type="submit" id="addSubmitBtn">Save</button>
+      <div class="msg" id="addMsg"></div>
+    </form>
+  </details>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const listEl = $("list");
+
+    async function loadBookings() {
+      listEl.textContent = "Loading…";
+      try {
+        const res = await fetch("/api/admin/bookings/list?days=90");
+        const data = await res.json();
+        if (!data.ok) {
+          listEl.innerHTML = `<p class="msg error">${data.error || "Could not load bookings."}</p>`;
+          return;
+        }
+        render(data.bookings, data.timezone);
+      } catch (err) {
+        listEl.innerHTML = `<p class="msg error">${err.message}</p>`;
+      }
+    }
+
+    function render(bookings, timezone) {
+      if (!bookings.length) {
+        listEl.innerHTML = '<p class="empty">Nothing booked yet.</p>';
+        return;
+      }
+      const groups = {};
+      for (const b of bookings) {
+        const d = new Date(b.start);
+        const dateKey = new Intl.DateTimeFormat("en-CA", { timeZone: timezone, year: "numeric", month: "2-digit", day: "2-digit" }).format(d);
+        groups[dateKey] = groups[dateKey] || [];
+        groups[dateKey].push(b);
+      }
+      const dateFmt = new Intl.DateTimeFormat("en-US", { timeZone: timezone, weekday: "long", month: "long", day: "numeric" });
+      const timeFmt = new Intl.DateTimeFormat("en-US", { timeZone: timezone, hour: "numeric", minute: "2-digit", hour12: true });
+
+      listEl.innerHTML = Object.keys(groups).sort().map(dateKey => {
+        const items = groups[dateKey];
+        const heading = `<h2>${dateFmt.format(new Date(items[0].start))}</h2>`;
+        const cards = items.map(b => {
+          const time = timeFmt.format(new Date(b.start));
+          const contactBits = [b.email, b.phone].filter(Boolean).join(" · ");
+          return `
+            <div class="card" data-id="${b.id}">
+              <div class="row">
+                <div>
+                  <div class="when">${time}${b.business ? " — " + escapeHtml(b.business) : ""}</div>
+                  <div class="who">${escapeHtml(b.name)}${contactBits ? " · " + escapeHtml(contactBits) : ""}</div>
+                  ${b.notes ? `<div class="meta">${escapeHtml(b.notes)}</div>` : ""}
+                  <div class="meta">source: ${escapeHtml(b.source || "-")}</div>
+                </div>
+                <button class="btn-danger" data-cancel="${b.id}">Cancel</button>
+              </div>
+            </div>`;
+        }).join("");
+        return heading + cards;
+      }).join("");
+
+      listEl.querySelectorAll("[data-cancel]").forEach(btn => {
+        btn.addEventListener("click", () => cancelBooking(btn.getAttribute("data-cancel"), btn));
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value || "").replace(/[&<>"']/g, (ch) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+
+    async function cancelBooking(id, btn) {
+      if (!confirm("Cancel this booking? This frees the slot right away.")) return;
+      btn.disabled = true;
+      btn.textContent = "…";
+      try {
+        const res = await fetch("/api/admin/bookings/cancel", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id })
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          alert(data.error || "Could not cancel.");
+          btn.disabled = false;
+          btn.textContent = "Cancel";
+          return;
+        }
+        loadBookings();
+      } catch (err) {
+        alert(err.message);
+        btn.disabled = false;
+        btn.textContent = "Cancel";
+      }
+    }
+
+    $("addForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const submitBtn = $("addSubmitBtn");
+      const msgEl = $("addMsg");
+      msgEl.textContent = "";
+      msgEl.className = "msg";
+
+      const startLocal = $("addStart").value; // "YYYY-MM-DDTHH:MM" in the browser's local zone
+      if (!startLocal) return;
+      const startIso = new Date(startLocal).toISOString();
+      const durationMin = Number($("addDuration").value) || 30;
+      const endIso = new Date(new Date(startLocal).getTime() + durationMin * 60000).toISOString();
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Saving…";
+      try {
+        const res = await fetch("/api/admin/bookings/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: $("addName").value.trim(),
+            start: startIso,
+            end: endIso,
+            email: $("addEmail").value.trim(),
+            phone: $("addPhone").value.trim(),
+            business: $("addBusiness").value.trim(),
+            notes: $("addNotes").value.trim(),
+            notifyClient: $("addNotify").checked
+          })
+        });
+        const data = await res.json();
+        if (!data.ok) {
+          msgEl.textContent = data.error || "Could not save.";
+          msgEl.className = "msg error";
+          return;
+        }
+        msgEl.textContent = "Saved.";
+        msgEl.className = "msg ok";
+        $("addForm").reset();
+        loadBookings();
+      } catch (err) {
+        msgEl.textContent = err.message;
+        msgEl.className = "msg error";
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Save";
+      }
+    });
+
+    loadBookings();
+  </script>
+</body>
+</html>

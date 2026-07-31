@@ -65,9 +65,13 @@ fields:
 | Lang | Single line text |
 | Submitted At | Date (include time) |
 
-To cancel/reschedule a booking today: open the record in Airtable and set
-`Status` to `Cancelled` (or change `Start`/`End`) — the availability
-endpoint re-reads Airtable on every request, so the slot frees up
+To cancel a booking, use **`/admin/bookings`** (password-gated, see
+`docs/ADMIN.md`) — it lists everything upcoming with a Cancel button. That
+same page also lets you add a booking manually (someone booked over the
+phone/WhatsApp) or block off a slot (name it "Blocked"). Under the hood
+both just write to the same Airtable table, so opening the record there
+and setting `Status` to `Cancelled` works too. The availability endpoint
+re-reads Airtable on every request, so freed/blocked slots take effect
 immediately. A cancellation-confirmation email isn't wired up yet; for now
 that's a manual message to the client.
 

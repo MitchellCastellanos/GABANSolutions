@@ -39,13 +39,16 @@ async function airtableFetch(url, options = {}) {
   return res.json();
 }
 
-/** List booking records whose Start falls within [fromIso, toIso) and aren't cancelled. */
-export async function listBookingsBetween(fromIso, toIso) {
-  const formula = `AND({Status} != "Cancelled", IS_AFTER({Start}, "${fromIso}"), IS_BEFORE({Start}, "${toIso}"))`;
+/** List booking records whose Start falls within [fromIso, toIso), optionally including cancelled ones. */
+export async function listBookingsBetween(fromIso, toIso, { includeCancelled = false } = {}) {
+  const statusClause = includeCancelled ? "TRUE()" : `{Status} != "Cancelled"`;
+  const formula = `AND(${statusClause}, IS_AFTER({Start}, "${fromIso}"), IS_BEFORE({Start}, "${toIso}"))`;
   const records = [];
   let offset;
   do {
     const params = new URLSearchParams({ filterByFormula: formula, pageSize: "100" });
+    params.append("sort[0][field]", "Start");
+    params.append("sort[0][direction]", "asc");
     if (offset) params.set("offset", offset);
     const page = await airtableFetch(`${tableUrl()}?${params.toString()}`);
     records.push(...page.records);
@@ -57,6 +60,14 @@ export async function listBookingsBetween(fromIso, toIso) {
 export async function createBooking(fields) {
   const result = await airtableFetch(tableUrl(), {
     method: "POST",
+    body: JSON.stringify({ fields, typecast: true })
+  });
+  return result;
+}
+
+export async function updateBooking(id, fields) {
+  const result = await airtableFetch(`${tableUrl()}/${id}`, {
+    method: "PATCH",
     body: JSON.stringify({ fields, typecast: true })
   });
   return result;
