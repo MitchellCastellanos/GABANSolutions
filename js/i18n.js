@@ -18,7 +18,6 @@ const globalI18n = {
     nav_about: "About",
     nav_contact: "Contact",
     nav_cta: "Make an Appointment",
-    nav_cta_demo: "Request a Demo",
     // Footer
     foot_tagline_home: "Digital presence and business software for local businesses.",
     foot_tagline_digital: "Websites, local SEO and automation for businesses that want to be found and trusted.",
@@ -55,7 +54,6 @@ const globalI18n = {
     nav_about: "À propos",
     nav_contact: "Contact",
     nav_cta: "Prendre rendez-vous",
-    nav_cta_demo: "Demander une démo",
     // Footer
     foot_tagline_home: "Présence numérique et logiciels d’affaires pour les entreprises locales.",
     foot_tagline_digital: "Sites web, SEO local et automatisation pour les entreprises qui veulent être trouvées et inspirer confiance.",
@@ -92,7 +90,6 @@ const globalI18n = {
     nav_about: "Nosotros",
     nav_contact: "Contacto",
     nav_cta: "Agenda tu cita",
-    nav_cta_demo: "Solicitar demo",
     // Footer
     foot_tagline_home: "Presencia digital y software de negocio para negocios locales.",
     foot_tagline_digital: "Sitios web, SEO local y automatización para negocios que quieren ser encontrados y generar confianza.",

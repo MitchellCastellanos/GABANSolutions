@@ -60,7 +60,7 @@ const NAV_LINKS = {
 const NAV_CTA = {
   home: { href: "/book.html", i18n: "nav_cta", label: "Make an Appointment" },
   digital: { href: "/book.html", i18n: "nav_cta", label: "Make an Appointment" },
-  software: { href: "/contact.html", i18n: "nav_cta_demo", label: "Request a Demo" }
+  software: { href: "/book.html", i18n: "nav_cta", label: "Make an Appointment" }
 };
 
 function renderNavbar(activePage = "", context = "home") {
@@ -196,7 +196,7 @@ function footerSoftware() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_cta_title_demo">Want a demo?</h2>
           <p class="small text-muted" data-i18n="foot_cta_text_software">Tell us how your business runs today and we will show you the platform that fits.</p>
-          <a class="btn btn-dark btn-sm" href="/contact.html" data-i18n="nav_cta_demo">Request a Demo</a>
+          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Make an Appointment</a>
         </div>`;
 }
 
