@@ -8,14 +8,15 @@ function footer() {
     <p style="font-size:0.8rem;color:#888;">GABAN Solutions — Montreal, QC, Canada · hello@gabansolutions.ca</p>`;
 }
 
-export function clientConfirmationEmail({ name, dateLabel, timeLabel, timezoneLabel, notes }) {
+export function clientConfirmationEmail({ name, dateLabel, timeLabel, timezoneLabel, notes, meetLink }) {
   return {
     subject: `Confirmed: your free consultation with GABAN Solutions — ${dateLabel} at ${timeLabel}`,
     html: `
       <p>Hi ${name},</p>
       <p>Your free consultation is confirmed for:</p>
       <p style="font-size:1.1rem;font-weight:600;">${dateLabel} at ${timeLabel} (${timezoneLabel})</p>
-      <p>We'll call you at the number/contact you provided, or you're welcome to reply to this email with a preferred method (phone, WhatsApp, video call).</p>
+      ${meetLink ? `<p>We'll meet on Google Meet: <a href="${meetLink}">${meetLink}</a></p>` : ""}
+      <p>You're welcome to reply to this email if you'd prefer a call or WhatsApp instead.</p>
       ${notes ? `<p><strong>What you told us:</strong> ${notes}</p>` : ""}
       <p>Need to reschedule? Just reply to this email.</p>
       <p>Talk soon,<br>GABAN Solutions</p>
@@ -23,7 +24,7 @@ export function clientConfirmationEmail({ name, dateLabel, timeLabel, timezoneLa
   };
 }
 
-export function ownerNotificationEmail({ name, email, phone, business, notes, dateLabel, timeLabel, timezoneLabel }) {
+export function ownerNotificationEmail({ name, email, phone, business, notes, dateLabel, timeLabel, timezoneLabel, meetLink }) {
   return {
     subject: `New booking: ${name} — ${dateLabel} at ${timeLabel}`,
     html: `
@@ -35,6 +36,7 @@ export function ownerNotificationEmail({ name, email, phone, business, notes, da
         <li><strong>Business:</strong> ${business || "-"}</li>
         <li><strong>When:</strong> ${dateLabel} at ${timeLabel} (${timezoneLabel})</li>
         <li><strong>Notes:</strong> ${notes || "-"}</li>
+        ${meetLink ? `<li><strong>Meet link:</strong> <a href="${meetLink}">${meetLink}</a></li>` : ""}
       </ul>`
   };
 }

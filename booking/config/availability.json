@@ -1,6 +1,7 @@
 {
   "_comment": "Edit this file whenever your schedule changes — no code changes needed. Weekday hours are in `timezone` (handles EST/EDT automatically). Add one-off dates you're out to blockedDates (YYYY-MM-DD). Add one-off extra openings to extraDates the same way availability rules work per weekday.",
   "timezone": "America/New_York",
+  "meetLink": "https://meet.google.com/fdf-kcnt-iem",
   "slotMinutes": 30,
   "minNoticeHours": 4,
   "bookingHorizonDays": 45,

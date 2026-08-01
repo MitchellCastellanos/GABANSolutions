@@ -148,6 +148,7 @@
           <div class="display-6 mb-2"><i class="bi bi-check-circle-fill text-success"></i></div>
           <h2 class="h5 fw-bold mb-2" data-i18n="book_success_t">You're booked!</h2>
           <p class="text-muted mb-0" id="bookSuccessDetail"></p>
+          <p class="mt-3 mb-0" id="bookSuccessMeetLink"></p>
           <p class="small text-muted mt-3 mb-0" data-i18n="book_success_note">Check your inbox for a confirmation email with a calendar invite.</p>
         </div>
 
@@ -262,6 +263,7 @@
     const summaryEl = document.getElementById("bookSelectedSummary");
     const successEl = document.getElementById("bookSuccess");
     const successDetailEl = document.getElementById("bookSuccessDetail");
+    const successMeetLinkEl = document.getElementById("bookSuccessMeetLink");
 
     const LOCALE_MAP = { en: "en-US", fr: "fr-CA", es: "es-MX" };
     function currentLocale() {
@@ -383,6 +385,9 @@
         if (res.ok && result.ok) {
           formWrap.classList.add("d-none");
           successDetailEl.textContent = `${result.dateLabel} at ${result.timeLabel} (${result.timezoneLabel})`;
+          successMeetLinkEl.innerHTML = result.meetLink
+            ? `<a href="${result.meetLink}" target="_blank" rel="noopener"><i class="bi bi-camera-video me-1"></i>${result.meetLink}</a>`
+            : "";
           successEl.classList.remove("d-none");
           successEl.scrollIntoView({ behavior: "smooth", block: "center" });
         } else if (res.status === 409) {

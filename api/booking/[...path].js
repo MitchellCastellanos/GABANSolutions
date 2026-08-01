@@ -141,11 +141,12 @@ async function handleBook(req, res) {
       endIso: endDate.toISOString(),
       summary: "Free consultation — GABAN Solutions",
       description: `Free consultation with GABAN Solutions.${notes ? ` Notes: ${notes}` : ""}`,
-      organizerEmail: "hello@gabansolutions.ca"
+      organizerEmail: "hello@gabansolutions.ca",
+      meetLink: config.meetLink
     });
     const icsBase64 = Buffer.from(ics, "utf8").toString("base64");
 
-    const confirmation = clientConfirmationEmail({ name, dateLabel, timeLabel, timezoneLabel, notes });
+    const confirmation = clientConfirmationEmail({ name, dateLabel, timeLabel, timezoneLabel, notes, meetLink: config.meetLink });
     await sendEmail({
       to: email,
       subject: confirmation.subject,
@@ -154,13 +155,13 @@ async function handleBook(req, res) {
     });
 
     const notifyTo = process.env.BOOKING_NOTIFY_EMAIL || "hello@gabansolutions.ca";
-    const notification = ownerNotificationEmail({ name, email, phone, business, notes, dateLabel, timeLabel, timezoneLabel });
+    const notification = ownerNotificationEmail({ name, email, phone, business, notes, dateLabel, timeLabel, timezoneLabel, meetLink: config.meetLink });
     await sendEmail({ to: notifyTo, subject: notification.subject, html: notification.html, replyTo: email });
   } catch {
     // booking already saved
   }
 
-  return res.status(200).json({ ok: true, dateLabel, timeLabel, timezoneLabel });
+  return res.status(200).json({ ok: true, dateLabel, timeLabel, timezoneLabel, meetLink: config.meetLink });
 }
 
 export default async function handler(req, res) {

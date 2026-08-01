@@ -2,7 +2,8 @@
 
 A self-hosted Calendly-style scheduler — no third-party booking tool, no
 per-booking fee. Visitors pick an open slot, get an instant confirmation
-email with a calendar invite (.ics), and GABAN gets a notification email.
+email with a calendar invite (.ics) that includes the Google Meet link,
+and GABAN gets a notification email.
 
 ## How the pieces fit
 
@@ -40,6 +41,9 @@ Open `booking/config/availability.json`:
   overrides the weekly rule for that date.
 - `extraDates`: add one-off extra availability the same shape as `weekly`
   (e.g. opening a Saturday) — also overrides the weekly rule for that date.
+- `meetLink`: the Google Meet (or any video call) link included in the
+  confirmation email, the .ics invite, and the booking success screen.
+  Same link every time — change it here if you switch rooms.
 - `slotMinutes`: length of each bookable slot (default 30).
 - `minNoticeHours`: how much lead time is required before the next open
   slot (default 4) — stops someone booking 5 minutes from now.

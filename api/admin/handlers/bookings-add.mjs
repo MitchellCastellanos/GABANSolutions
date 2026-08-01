@@ -78,9 +78,10 @@ export async function handleBookingsAdd(req, res) {
           endIso: endDate.toISOString(),
           summary: "Free consultation — GABAN Solutions",
           description: `Free consultation with GABAN Solutions.${notes ? ` Notes: ${notes}` : ""}`,
-          organizerEmail: "hello@gabansolutions.ca"
+          organizerEmail: "hello@gabansolutions.ca",
+          meetLink: config.meetLink
         });
-        const confirmation = clientConfirmationEmail({ name, dateLabel, timeLabel, timezoneLabel, notes });
+        const confirmation = clientConfirmationEmail({ name, dateLabel, timeLabel, timezoneLabel, notes, meetLink: config.meetLink });
         await sendEmail({
           to: email,
           subject: confirmation.subject,
