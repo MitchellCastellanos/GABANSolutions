@@ -1,10 +1,7 @@
-// POST /api/admin/bookings/cancel  { id }
-// Protected by api/admin/lib/auth.mjs session cookie.
-
 import { requireAdmin } from "../lib/auth.mjs";
 import { updateBooking } from "../../../booking/lib/airtable.mjs";
 
-export default async function handler(req, res) {
+export async function handleBookingsCancel(req, res) {
   if (!requireAdmin(req, res)) return;
 
   if (req.method !== "POST") {

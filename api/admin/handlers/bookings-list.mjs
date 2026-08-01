@@ -1,12 +1,8 @@
-// GET /api/admin/bookings/list?days=60
-// Protected by api/admin/lib/auth.mjs session cookie. Returns upcoming,
-// non-cancelled bookings for the admin calendar view.
-
 import { requireAdmin } from "../lib/auth.mjs";
 import { listBookingsBetween } from "../../../booking/lib/airtable.mjs";
 import { loadAvailabilityConfig } from "../../../booking/lib/schedule.mjs";
 
-export default async function handler(req, res) {
+export async function handleBookingsList(req, res) {
   if (!requireAdmin(req, res)) return;
 
   if (req.method !== "GET") {
@@ -15,7 +11,7 @@ export default async function handler(req, res) {
   }
 
   const days = Math.min(Number(req.query?.days) || 60, 365);
-  const from = new Date(Date.now() - 6 * 3600000).toISOString(); // small lookback so "today" doesn't drop off right after it starts
+  const from = new Date(Date.now() - 6 * 3600000).toISOString();
   const to = new Date(Date.now() + days * 86400000).toISOString();
 
   try {

@@ -6,9 +6,9 @@ import {
   clearSessionCookie,
   createSessionCookie,
   verifySessionCookie
-} from "./lib/auth.mjs";
+} from "../lib/auth.mjs";
 
-export default async function handler(req, res) {
+export async function handleCheck(req, res) {
   if (req.method === "GET") {
     try {
       if (!verifySessionCookie(req.headers.cookie)) {

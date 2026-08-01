@@ -1,23 +1,17 @@
-// ============================================================
-// POST /api/booking/book
-//
-// Confirms a slot on the self-hosted booking calendar: re-validates
-// the slot is still open (best-effort double-booking guard), writes
-// a record to the Airtable "Bookings" table, and emails a
-// confirmation (with a .ics invite) to the visitor plus a
-// notification to GABAN.
-//
-// Required env vars: AIRTABLE_API_KEY, AIRTABLE_BASE_ID,
-// RESEND_API_KEY, LEADGEN_FROM_EMAIL.
-// Optional: AIRTABLE_BOOKINGS_TABLE (defaults "Bookings"),
-// BOOKING_NOTIFY_EMAIL (defaults to LEADGEN_FROM_EMAIL's address).
-// ============================================================
+// Single serverless entry for /api/booking/* (Hobby plan function limit).
 
-import { loadAvailabilityConfig, isSlotAvailable } from "../../booking/lib/schedule.mjs";
+import { loadAvailabilityConfig, generateAvailability, isSlotAvailable } from "../../booking/lib/schedule.mjs";
 import { listBookingsBetween, createBooking } from "../../booking/lib/airtable.mjs";
 import { clientConfirmationEmail, ownerNotificationEmail } from "../../booking/lib/emails.mjs";
 import { buildBookingIcs } from "../../booking/lib/ics.mjs";
 import { sendEmail } from "../../leadgen/lib/email.mjs";
+
+function extractPath(query) {
+  const raw = query?.["...path"] ?? query?.path;
+  if (Array.isArray(raw)) return raw.filter(Boolean);
+  if (typeof raw === "string" && raw) return raw.split("/").filter(Boolean);
+  return [];
+}
 
 function clean(value, max = 300) {
   return (typeof value === "string" ? value : "").trim().slice(0, max);
@@ -46,7 +40,32 @@ function timezoneAbbrev(date, timeZone) {
   return part ? part.value : timeZone;
 }
 
-export default async function handler(req, res) {
+async function handleAvailability(req, res) {
+  if (req.method !== "GET") {
+    res.setHeader("Allow", "GET");
+    return res.status(405).json({ ok: false, error: "Method not allowed" });
+  }
+
+  const config = loadAvailabilityConfig();
+  const days = Math.min(Number(req.query?.days) || config.bookingHorizonDays || 30, 90);
+
+  const bookedStartIsoSet = new Set();
+  try {
+    const from = new Date().toISOString();
+    const to = new Date(Date.now() + (days + 1) * 86400000).toISOString();
+    const records = await listBookingsBetween(from, to);
+    for (const record of records) {
+      if (record.fields?.Start) bookedStartIsoSet.add(record.fields.Start);
+    }
+  } catch {
+    // fall back to showing every configured slot as open
+  }
+
+  const availability = generateAvailability(config, { days, bookedStartIsoSet });
+  return res.status(200).json({ ok: true, ...availability });
+}
+
+async function handleBook(req, res) {
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ ok: false, error: "Method not allowed" });
@@ -54,7 +73,6 @@ export default async function handler(req, res) {
 
   const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
 
-  // Honeypot, same pattern as /api/lead.
   if (clean(body.company_website)) {
     return res.status(200).json({ ok: true });
   }
@@ -86,7 +104,7 @@ export default async function handler(req, res) {
     const to = new Date(startDate.getTime() + 86400000).toISOString();
     const records = await listBookingsBetween(from, to);
     bookedStartIsoSet = new Set(records.map(r => r.fields?.Start).filter(Boolean));
-  } catch (err) {
+  } catch {
     return res.status(502).json({ ok: false, error: "Could not verify availability. Please try again." });
   }
 
@@ -108,7 +126,7 @@ export default async function handler(req, res) {
       Lang: clean(body.lang, 5),
       "Submitted At": new Date().toISOString()
     });
-  } catch (err) {
+  } catch {
     return res.status(502).json({ ok: false, error: "Could not save the booking. Please try again or contact us directly." });
   }
 
@@ -116,8 +134,6 @@ export default async function handler(req, res) {
   const timeLabel = formatTimeLabel(startDate, config.timezone);
   const timezoneLabel = timezoneAbbrev(startDate, config.timezone);
 
-  // Email delivery is best-effort — the booking is already saved above,
-  // so a Resend hiccup shouldn't turn a real booking into a visitor-facing error.
   try {
     const ics = buildBookingIcs({
       uid: `${startDate.getTime()}-${email}@gabansolutions.ca`,
@@ -140,9 +156,22 @@ export default async function handler(req, res) {
     const notifyTo = process.env.BOOKING_NOTIFY_EMAIL || "hello@gabansolutions.ca";
     const notification = ownerNotificationEmail({ name, email, phone, business, notes, dateLabel, timeLabel, timezoneLabel });
     await sendEmail({ to: notifyTo, subject: notification.subject, html: notification.html, replyTo: email });
-  } catch (err) {
-    // swallow — booking already confirmed and stored
+  } catch {
+    // booking already saved
   }
 
   return res.status(200).json({ ok: true, dateLabel, timeLabel, timezoneLabel });
+}
+
+export default async function handler(req, res) {
+  const route = extractPath(req.query).join("/");
+
+  if (route === "availability") {
+    return handleAvailability(req, res);
+  }
+  if (route === "book") {
+    return handleBook(req, res);
+  }
+
+  return res.status(404).json({ ok: false, error: "Not found" });
 }
