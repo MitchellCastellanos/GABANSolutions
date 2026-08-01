@@ -1,11 +1,14 @@
 // GET /api/admin/bookings/list?days=60
-// Protected by middleware.js (Basic Auth on /api/admin/:path*). Returns
-// upcoming, non-cancelled bookings for the admin calendar view.
+// Protected by api/admin/lib/auth.mjs session cookie. Returns upcoming,
+// non-cancelled bookings for the admin calendar view.
 
+import { requireAdmin } from "../lib/auth.mjs";
 import { listBookingsBetween } from "../../../booking/lib/airtable.mjs";
 import { loadAvailabilityConfig } from "../../../booking/lib/schedule.mjs";
 
 export default async function handler(req, res) {
+  if (!requireAdmin(req, res)) return;
+
   if (req.method !== "GET") {
     res.setHeader("Allow", "GET");
     return res.status(405).json({ ok: false, error: "Method not allowed" });

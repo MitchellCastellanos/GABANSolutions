@@ -1,9 +1,12 @@
 // POST /api/admin/bookings/cancel  { id }
-// Protected by middleware.js (Basic Auth on /api/admin/:path*).
+// Protected by api/admin/lib/auth.mjs session cookie.
 
+import { requireAdmin } from "../lib/auth.mjs";
 import { updateBooking } from "../../../booking/lib/airtable.mjs";
 
 export default async function handler(req, res) {
+  if (!requireAdmin(req, res)) return;
+
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ ok: false, error: "Method not allowed" });

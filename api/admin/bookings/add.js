@@ -1,12 +1,13 @@
 // POST /api/admin/bookings/add
 // { name, start, end?, email?, phone?, business?, notes?, notifyClient? }
-// Protected by middleware.js (Basic Auth on /api/admin/:path*).
+// Protected by api/admin/lib/auth.mjs session cookie.
 //
 // For manually adding a booking taken over phone/WhatsApp, or for
 // blocking off time (just set name to "Blocked" and skip email/phone) —
 // unlike /api/booking/book, this never re-checks availability since the
 // admin is trusted to override the calendar directly.
 
+import { requireAdmin } from "../lib/auth.mjs";
 import { loadAvailabilityConfig } from "../../../booking/lib/schedule.mjs";
 import { createBooking } from "../../../booking/lib/airtable.mjs";
 import { clientConfirmationEmail } from "../../../booking/lib/emails.mjs";
@@ -31,6 +32,8 @@ function timezoneAbbrev(date, timeZone) {
 }
 
 export default async function handler(req, res) {
+  if (!requireAdmin(req, res)) return;
+
   if (req.method !== "POST") {
     res.setHeader("Allow", "POST");
     return res.status(405).json({ ok: false, error: "Method not allowed" });

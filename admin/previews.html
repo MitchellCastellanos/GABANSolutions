@@ -43,6 +43,7 @@
     .color-row > div { flex: 1; }
     details { margin-top: 1.5rem; font-size: 0.85rem; color: #888; }
   </style>
+  <script src="/admin/auth.js"></script>
 </head>
 <body>
   <p class="sub"><a href="/admin">&larr; Admin home</a></p>
@@ -365,9 +366,11 @@ INTRO: (1-2 frases invitando a contactar o visitar)`;
     // Reopening the page with a token+slug already saved from last time?
     // Load quietly so the form isn't blank, but don't show an error if
     // there's nothing to load yet or the token's gone stale.
-    if (tokenEl.value && slugEl.value) {
-      loadExistingContent({ silent: true });
-    }
+    adminReady.then(() => {
+      if (tokenEl.value && slugEl.value) {
+        loadExistingContent({ silent: true });
+      }
+    });
 
     $("generateBtn").addEventListener("click", async () => {
       $("generateBtn").disabled = true;

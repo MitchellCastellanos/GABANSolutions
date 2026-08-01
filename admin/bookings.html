@@ -46,6 +46,7 @@
     details { margin-top: 2rem; }
     summary { cursor: pointer; font-weight: 700; font-size: 0.95rem; }
   </style>
+  <script src="/admin/auth.js"></script>
 </head>
 <body>
   <p class="sub"><a href="/admin">&larr; Admin home</a></p>
@@ -95,7 +96,7 @@
     async function loadBookings() {
       listEl.textContent = "Loading…";
       try {
-        const res = await fetch("/api/admin/bookings/list?days=90");
+        const res = await fetch("/api/admin/bookings/list?days=90", { credentials: "include" });
         const data = await res.json();
         if (!data.ok) {
           listEl.innerHTML = `<p class="msg error">${data.error || "Could not load bookings."}</p>`;
@@ -162,6 +163,7 @@
       try {
         const res = await fetch("/api/admin/bookings/cancel", {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id })
         });
@@ -198,6 +200,7 @@
       try {
         const res = await fetch("/api/admin/bookings/add", {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             name: $("addName").value.trim(),
@@ -229,7 +232,7 @@
       }
     });
 
-    loadBookings();
+    adminReady.then(loadBookings);
   </script>
 </body>
 </html>
