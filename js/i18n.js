@@ -17,7 +17,7 @@ const globalI18n = {
     nav_work: "Work",
     nav_about: "About",
     nav_contact: "Contact",
-    nav_cta: "Make an Appointment",
+    nav_cta: "Book Your Free Consultation",
     // Footer
     foot_tagline_home: "Digital presence and business software for local businesses.",
     foot_tagline_digital: "Websites, local SEO and automation for businesses that want to be found and trusted.",
@@ -53,7 +53,7 @@ const globalI18n = {
     nav_work: "Réalisations",
     nav_about: "À propos",
     nav_contact: "Contact",
-    nav_cta: "Prendre rendez-vous",
+    nav_cta: "Réservez votre consultation gratuite",
     // Footer
     foot_tagline_home: "Présence numérique et logiciels d’affaires pour les entreprises locales.",
     foot_tagline_digital: "Sites web, SEO local et automatisation pour les entreprises qui veulent être trouvées et inspirer confiance.",
@@ -89,7 +89,7 @@ const globalI18n = {
     nav_work: "Portafolio",
     nav_about: "Nosotros",
     nav_contact: "Contacto",
-    nav_cta: "Agenda tu cita",
+    nav_cta: "Agenda tu consulta gratuita",
     // Footer
     foot_tagline_home: "Presencia digital y software de negocio para negocios locales.",
     foot_tagline_digital: "Sitios web, SEO local y automatización para negocios que quieren ser encontrados y generar confianza.",
@@ -771,7 +771,7 @@ const pageI18n = {
       grow_p2_b6: "Instagram optimization",
       grow_p2_b7: "Smart link page",
       grow_p2_b8: "30-minute growth guidance call",
-      grow_p2_btn: "Make an Appointment",
+      grow_p2_btn: "Book Your Free Consultation",
 
       grow_diff_tag: "Why it’s different",
       grow_diff_title: "We focus on growth, not just design",
@@ -796,7 +796,7 @@ const pageI18n = {
 
       grow_bottom_title: "Ready to grow your business with a stronger digital setup?",
       grow_bottom_text: "Tell us what you do, where you are now, and what kind of help you need. We’ll guide you to the right version of the Grow Package.",
-      grow_bottom_btn: "Make an Appointment"
+      grow_bottom_btn: "Book Your Free Consultation"
     },
 
     fr: {
@@ -894,7 +894,7 @@ const pageI18n = {
       grow_p2_b6: "Optimisation Instagram",
       grow_p2_b7: "Page de liens intelligents",
       grow_p2_b8: "Appel de guidance croissance de 30 minutes",
-      grow_p2_btn: "Prendre rendez-vous",
+      grow_p2_btn: "Réservez votre consultation gratuite",
 
       grow_diff_tag: "Pourquoi c’est différent",
       grow_diff_title: "Nous nous concentrons sur la croissance, pas seulement sur le design",
@@ -919,7 +919,7 @@ const pageI18n = {
 
       grow_bottom_title: "Prêt à faire grandir votre entreprise avec une meilleure structure numérique ?",
       grow_bottom_text: "Dites-nous ce que vous faites, où vous en êtes et quel type d’aide vous cherchez. Nous vous guiderons vers la bonne version du Grow Package.",
-      grow_bottom_btn: "Prendre rendez-vous"
+      grow_bottom_btn: "Réservez votre consultation gratuite"
     },
 
     es: {
@@ -1017,7 +1017,7 @@ const pageI18n = {
       grow_p2_b6: "Optimización de Instagram",
       grow_p2_b7: "Smart link page",
       grow_p2_b8: "Llamada de guía de crecimiento de 30 minutos",
-      grow_p2_btn: "Agenda tu cita",
+      grow_p2_btn: "Agenda tu consulta gratuita",
 
       grow_diff_tag: "Por qué es diferente",
       grow_diff_title: "Nos enfocamos en crecimiento, no solo en diseño",
@@ -1042,7 +1042,7 @@ const pageI18n = {
 
       grow_bottom_title: "¿Listo para hacer crecer tu negocio con una estructura digital más fuerte?",
       grow_bottom_text: "Cuéntanos qué haces, dónde estás hoy y qué tipo de ayuda necesitas. Te guiaremos a la versión correcta del Grow Package.",
-      grow_bottom_btn: "Agenda tu cita"
+      grow_bottom_btn: "Agenda tu consulta gratuita"
     }
   },
 
@@ -1054,7 +1054,7 @@ const pageI18n = {
       contact_call_btn: "Call Now",
       contact_book_banner_t: "Prefer to skip the back-and-forth?",
       contact_book_banner_d: "See our real-time calendar and lock in a free consultation instantly.",
-      contact_book_banner_btn: "Make an Appointment",
+      contact_book_banner_btn: "Book Your Free Consultation",
 
       contact_info_t: "Contact information",
       contact_phone_t: "Phone",
@@ -1125,7 +1125,7 @@ const pageI18n = {
       contact_call_btn: "Appeler maintenant",
       contact_book_banner_t: "Vous préférez éviter les allers-retours ?",
       contact_book_banner_d: "Consultez notre calendrier en temps réel et réservez une consultation gratuite instantanément.",
-      contact_book_banner_btn: "Prendre rendez-vous",
+      contact_book_banner_btn: "Réservez votre consultation gratuite",
 
       contact_info_t: "Informations de contact",
       contact_phone_t: "Téléphone",
@@ -1196,7 +1196,7 @@ const pageI18n = {
       contact_call_btn: "Llamar ahora",
       contact_book_banner_t: "¿Prefieres evitar el ida y vuelta?",
       contact_book_banner_d: "Consulta nuestro calendario en tiempo real y agenda tu consulta gratuita al instante.",
-      contact_book_banner_btn: "Agenda tu cita",
+      contact_book_banner_btn: "Agenda tu consulta gratuita",
 
       contact_info_t: "Información de contacto",
       contact_phone_t: "Teléfono",
