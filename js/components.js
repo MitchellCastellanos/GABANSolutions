@@ -58,9 +58,9 @@ const NAV_LINKS = {
 
 // Primary CTA per context.
 const NAV_CTA = {
-  home: { href: "/book.html", i18n: "nav_cta", label: "Make an Appointment" },
-  digital: { href: "/book.html", i18n: "nav_cta", label: "Make an Appointment" },
-  software: { href: "/book.html", i18n: "nav_cta", label: "Make an Appointment" }
+  home: { href: "/book.html", i18n: "nav_cta", label: "Book Your Free Consultation" },
+  digital: { href: "/book.html", i18n: "nav_cta", label: "Book Your Free Consultation" },
+  software: { href: "/book.html", i18n: "nav_cta", label: "Book Your Free Consultation" }
 };
 
 function renderNavbar(activePage = "", context = "home") {
@@ -131,7 +131,7 @@ function footerHome() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_cta_title">Ready to talk?</h2>
           <p class="small text-muted" data-i18n="foot_cta_text">Start with a clear conversation about what your business needs next.</p>
-          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Make an Appointment</a>
+          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Book Your Free Consultation</a>
         </div>`;
 }
 
@@ -165,7 +165,7 @@ function footerDigital() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_cta_title">Ready to talk?</h2>
           <p class="small text-muted" data-i18n="foot_cta_text_digital">Tell us about your business and we will point you to the right next step.</p>
-          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Make an Appointment</a>
+          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Book Your Free Consultation</a>
         </div>`;
 }
 
@@ -196,7 +196,7 @@ function footerSoftware() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_cta_title_demo">Want a demo?</h2>
           <p class="small text-muted" data-i18n="foot_cta_text_software">Tell us how your business runs today and we will show you the platform that fits.</p>
-          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Make an Appointment</a>
+          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Book Your Free Consultation</a>
         </div>`;
 }
 
