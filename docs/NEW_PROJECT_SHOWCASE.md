@@ -117,9 +117,24 @@ como null y explica qué falta.
   `recommended_if_not_captured` — take those manually (desktop hero shot is
   the minimum; add more if the project has a distinct catalog/checkout flow
   worth showing).
-- Save the cover image as `Images/portfolio/Cover<ProjectName>.jpg` (or
-  `.png`) — see `CoverRCR.jpg`, `CoverAcaEntreNos.jpg` for naming precedent.
-  Keep it web-optimized (the existing covers are ~120-170KB).
+- **Only one image is actually wired into the templates**: the cover image,
+  reused for both the `work.html` card and the `portfolio.html` section.
+  Pick the single best shot from the recommended list (usually the homepage
+  or the most distinctive page — e.g. the live catalog for an e-commerce
+  project) unless asked to build a small gallery instead.
+- **Where to save it**: drop the file straight into `Images/portfolio/` in
+  this repo, named `Cover<ProjectName>.jpg` (PascalCase, no spaces — see
+  `CoverRCR.jpg`, `CoverAcaEntreNos.jpg`, `CoverReptilesConcept.jpg`). That
+  exact path is what gets hardcoded into the `<img src>` in both
+  `work.html` and `portfolio.html`, so the filename has to match what's
+  referenced there (check the section for the project to confirm the exact
+  name expected).
+- Keep it web-optimized: landscape, ~1200px wide, JPG, under ~200KB (the
+  existing covers run 120-170KB).
+- If a screenshot can't be captured yet (e.g. the site is gated behind a
+  staff/coming-soon password), the `<img>` tag is added anyway with the
+  expected filename — it'll just render broken until the file lands at that
+  path. Drop the file in later with no other changes needed.
 
 ## 3) Wire it into `work.html`
 
