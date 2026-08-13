@@ -9,6 +9,8 @@ separate ungated pages like the old `leadgen-admin.html`.
 - **`/admin/previews`** — the outbound Lead Radar tool (generate/write/
   approve prospect website previews), formerly at `/leadgen-admin.html`.
   Old bookmarks to that URL redirect here automatically.
+- **`/admin/blog`** — write/validate/publish blog posts, rendered live
+  from Airtable at `/blog/<slug>`. See `blog/README.md`.
 
 ## How the gate works
 

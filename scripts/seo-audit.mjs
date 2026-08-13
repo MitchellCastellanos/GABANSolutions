@@ -16,7 +16,11 @@ const pages = readdirSync(rootDir)
   .filter((f) => !SKIP.has(f))
   .sort();
 
-const sitemapXml = readFileSync(path.join(rootDir, "sitemap.xml"), "utf8");
+// sitemap.xml is now a <sitemapindex> (see blog/README.md, "Sitemap")
+// pointing at sitemap-pages.xml (the static page list this audit
+// checks against) and the dynamic /blog-sitemap.xml (Airtable-backed
+// blog posts — not something this static-file audit can see).
+const sitemapXml = readFileSync(path.join(rootDir, "sitemap-pages.xml"), "utf8");
 const sitemapUrls = [...sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
 
 function extract(html, re) {

@@ -12,6 +12,8 @@
     "leadgen:generate-preview": "node leadgen/scripts/generate-preview.mjs",
     "leadgen:validate-preview": "node leadgen/scripts/validate-preview.mjs",
     "leadgen:archive-previews": "node leadgen/scripts/archive-previews.mjs",
-    "seo:audit": "node scripts/seo-audit.mjs"
+    "seo:audit": "node scripts/seo-audit.mjs",
+    "blog:new": "node blog/scripts/new-post.mjs",
+    "blog:validate": "node blog/scripts/validate-post.mjs"
   }
 }
