@@ -49,9 +49,13 @@ blog posts follow the identical pattern:
 
 - **`BlogPosts`** Airtable table stores every post (draft or
   published).
-- **`api/blog/[...segments].js`** renders `/blog` (listing) and
-  `/blog/:slug` (one post) on every request, straight from Airtable —
-  the blog's equivalent of `api/preview/[...segments].js`.
+- **`api/blog/index.js`** (listing) and **`api/blog/[...segments].js`**
+  (`/blog/:slug`, one post) render on every request, straight from
+  Airtable — the blog's equivalent of `api/preview/[...segments].js`.
+  Split into two files because Vercel's `[...segments].js` catch-all
+  only matches one-or-more path segments, never the bare parent path —
+  `index.js` handles that case (standard directory-index convention),
+  reusing `[...segments].js`'s exported `handleIndex`.
 - **`blog/scripts/*.mjs`** are local CLI scripts that read/write
   Airtable — never the filesystem — same as `leadgen/scripts/*.mjs`.
 

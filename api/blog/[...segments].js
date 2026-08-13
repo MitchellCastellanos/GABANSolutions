@@ -1,6 +1,21 @@
 // ============================================================
-// GET /blog or /blog/:slug (rewritten from /api/blog/:path* in
-// vercel.json).
+// GET /blog/:slug (rewritten from /api/blog/:segments* in
+// vercel.json). Renders one post (renderBlogPost) — draft/in_review/
+// archived posts still render (so a human can review the real page
+// before publishing, same as leadgen previews) but with an
+// "INTERNAL REVIEW" banner and X-Robots-Tag: noindex, nofollow set
+// per-request; only "published" posts are indexable. This is why
+// there is no static noindex rule for /blog/:segments* in
+// vercel.json the way there is for /preview and /admin — indexability
+// here depends on the individual post's Status, not the route.
+//
+// The bare /blog listing lives in the sibling ./index.js, NOT here —
+// [...segments].js is a "required" catch-all that only ever matches
+// ONE OR MORE path segments on Vercel's zero-config Node builder, it
+// never matches the parent path with zero segments (confirmed live:
+// gabansolutions.ca/blog 404'd until index.js was added). handleIndex
+// is exported so index.js can reuse it instead of duplicating the
+// Airtable query + render call.
 //
 // Renders the blog dynamically from Airtable's BlogPosts table — the
 // same architectural pattern as api/preview/[...segments].js, and for
@@ -8,16 +23,6 @@
 // production, so there is no way for an admin "Publish" button to
 // write a static .html file that would show up on the live site.
 // Posts live in Airtable and are rendered on every request instead.
-//
-// - /blog          -> listing of published posts (renderBlogIndex)
-// - /blog/:slug    -> one post (renderBlogPost) — draft/in_review/
-//   archived posts still render (so a human can review the real page
-//   before publishing, same as leadgen previews) but with an
-//   "INTERNAL REVIEW" banner and X-Robots-Tag: noindex, nofollow set
-//   per-request; only "published" posts are indexable. This is why
-//   there is no static noindex rule for /blog/:segments* in
-//   vercel.json the way there is for /preview and /admin — indexability
-//   here depends on the individual post's Status, not the route.
 //
 // Records a best-effort view (Views / Last Viewed) on every real
 // (non-bot) post visit — never blocks the response on that write.
@@ -62,7 +67,7 @@ async function recordView(record) {
   });
 }
 
-async function handleIndex(req, res) {
+export async function handleIndex(req, res) {
   const records = await listRecords({ filterByFormula: `{${F.STATUS}} = "${POST_STATUS.PUBLISHED}"` });
   const posts = records
     .map((r) => {
