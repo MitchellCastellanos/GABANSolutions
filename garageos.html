@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>GarageOS | Auto Repair Shop Management Software | GABAN Software</title>
-  <meta name="description" content="GarageOS is management software for auto repair shops: customers, vehicles, quotes, invoices, appointments, service history and reminders.">
-  <meta name="keywords" content="GarageOS, auto repair software, garage management, shop management software, invoices, appointments">
+  <meta name="description" content="GarageOS is management software for auto repair shops: customers, vehicles, quotes, PDF invoices with GST/QST, appointments, service history, reminders and email campaigns.">
+  <meta name="keywords" content="GarageOS, auto repair software, garage management, shop management software, GST QST invoicing Quebec, invoices, appointments">
   <meta name="author" content="GABAN Software">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#111111">
@@ -69,7 +69,7 @@
         <div class="text-uppercase small fw-semibold text-warning mb-2">GarageOS</div>
         <h1 class="display-5 fw-bold mb-3" data-i18n="go_h1">Run your auto repair shop without the paperwork chaos.</h1>
         <p class="lead mb-4 text-white-50" data-i18n="go_lead">
-          GarageOS keeps customers, vehicles, quotes, invoices, appointments and service history in one place — so your shop spends less time on admin and more time on cars.
+          GarageOS keeps customers, vehicles, quotes, PDF invoices with GST/QST, appointments and service history in one place — plus email campaigns to your customer list — so your shop spends less time on admin and more time on cars.
         </p>
         <div class="d-flex gap-2 flex-wrap">
           <a class="btn btn-warning btn-lg" href="/book.html" data-i18n="go_cta1">Book Your Free Consultation</a>
@@ -109,8 +109,8 @@
       <div class="col-md-6 col-lg-4">
         <div class="card h-100 border-0 shadow-sm project-card reveal-up"><div class="card-body p-4">
           <div class="icon-circle mb-3"><i class="bi bi-receipt"></i></div>
-          <h3 class="h6 fw-bold" data-i18n="go_f2t">Quotes &amp; invoices</h3>
-          <p class="text-muted small mb-0" data-i18n="go_f2d">Turn a quote into an invoice in one click, with parts and labour lines.</p>
+          <h3 class="h6 fw-bold" data-i18n="go_f2t">Quotes &amp; PDF invoices</h3>
+          <p class="text-muted small mb-0" data-i18n="go_f2d">Turn a quote into a PDF invoice in one click — parts, labour and GST/QST calculated automatically.</p>
         </div></div>
       </div>
       <div class="col-md-6 col-lg-4">
@@ -139,6 +139,13 @@
           <div class="icon-circle mb-3"><i class="bi bi-graph-up"></i></div>
           <h3 class="h6 fw-bold" data-i18n="go_f6t">Reports</h3>
           <p class="text-muted small mb-0" data-i18n="go_f6d">Know your revenue, top services and busiest days without a spreadsheet.</p>
+        </div></div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm project-card reveal-up"><div class="card-body p-4">
+          <div class="icon-circle mb-3"><i class="bi bi-envelope-paper"></i></div>
+          <h3 class="h6 fw-bold" data-i18n="go_f7t">Email campaigns</h3>
+          <p class="text-muted small mb-0" data-i18n="go_f7d">Send a campaign to your customer list straight from GarageOS — no separate email tool to pay for.</p>
         </div></div>
       </div>
     </div>
@@ -191,7 +198,7 @@
   registerPageI18n("garageos", {
     en: {
       go_h1: "Run your auto repair shop without the paperwork chaos.",
-      go_lead: "GarageOS keeps customers, vehicles, quotes, invoices, appointments and service history in one place — so your shop spends less time on admin and more time on cars.",
+      go_lead: "GarageOS keeps customers, vehicles, quotes, PDF invoices with GST/QST, appointments and service history in one place — plus email campaigns to your customer list — so your shop spends less time on admin and more time on cars.",
       go_cta1: "Book Your Free Consultation",
       go_cta2: "All products",
       go_card_t: "Built for shops, not accountants",
@@ -199,11 +206,12 @@
       go_feat_tag: "Features",
       go_feat_title: "Everything a busy shop needs",
       go_f1t: "Customers & vehicles", go_f1d: "Full history per customer and per vehicle, including VIN, plate and notes.",
-      go_f2t: "Quotes & invoices", go_f2d: "Turn a quote into an invoice in one click, with parts and labour lines.",
+      go_f2t: "Quotes & PDF invoices", go_f2d: "Turn a quote into a PDF invoice in one click — parts, labour and GST/QST calculated automatically.",
       go_f3t: "Appointment calendar", go_f3d: "See the day at a glance and avoid double-booking the bay.",
       go_f4t: "Service history", go_f4d: "Every job on a vehicle stays on record for warranties and follow-ups.",
       go_f5t: "Reminders", go_f5d: "Email/SMS-ready reminders for maintenance, inspections and pick-ups.",
       go_f6t: "Reports", go_f6d: "Know your revenue, top services and busiest days without a spreadsheet.",
+      go_f7t: "Email campaigns", go_f7d: "Send a campaign to your customer list straight from GarageOS — no separate email tool to pay for.",
       go_for_tag: "Who it's for",
       go_for_title: "Made for independent repair shops",
       go_for_sub: "Whether you run a general garage, a tire shop or a specialized mechanic, GarageOS adapts to the way your shop already works.",
@@ -216,7 +224,7 @@
     },
     fr: {
       go_h1: "Gérez votre atelier de réparation sans le chaos de la paperasse.",
-      go_lead: "GarageOS regroupe clients, véhicules, devis, factures, rendez-vous et historique d'entretien au même endroit — pour passer moins de temps en administration et plus de temps sur les voitures.",
+      go_lead: "GarageOS regroupe clients, véhicules, devis, factures PDF avec TPS/TVQ, rendez-vous et historique d'entretien au même endroit — plus des campagnes de courriel à vos clients — pour passer moins de temps en administration et plus de temps sur les voitures.",
       go_cta1: "Réservez votre consultation gratuite",
       go_cta2: "Tous les produits",
       go_card_t: "Conçu pour les ateliers, pas pour les comptables",
@@ -224,11 +232,12 @@
       go_feat_tag: "Fonctionnalités",
       go_feat_title: "Tout ce dont un atelier occupé a besoin",
       go_f1t: "Clients et véhicules", go_f1d: "Historique complet par client et par véhicule, incluant NIV, plaque et notes.",
-      go_f2t: "Devis et factures", go_f2d: "Transformez un devis en facture en un clic, avec lignes de pièces et de main-d'œuvre.",
+      go_f2t: "Devis et factures PDF", go_f2d: "Transformez un devis en facture PDF en un clic — pièces, main-d'œuvre et TPS/TVQ calculées automatiquement.",
       go_f3t: "Calendrier de rendez-vous", go_f3d: "Visualisez la journée d'un coup d'œil et évitez les doubles réservations de baie.",
       go_f4t: "Historique d'entretien", go_f4d: "Chaque intervention sur un véhicule est conservée pour les garanties et les suivis.",
       go_f5t: "Rappels", go_f5d: "Rappels prêts par courriel/SMS pour l'entretien, les inspections et les ramassages.",
       go_f6t: "Rapports", go_f6d: "Connaissez vos revenus, vos services populaires et vos journées les plus chargées sans tableur.",
+      go_f7t: "Campagnes de courriel", go_f7d: "Envoyez une campagne à vos clients directement depuis GarageOS — pas besoin d'un autre outil de courriel payant.",
       go_for_tag: "Pour qui",
       go_for_title: "Pensé pour les ateliers indépendants",
       go_for_sub: "Que vous teniez un garage général, un centre de pneus ou un mécanicien spécialisé, GarageOS s'adapte à votre façon de travailler.",
@@ -241,7 +250,7 @@
     },
     es: {
       go_h1: "Opera tu taller mecánico sin el caos del papeleo.",
-      go_lead: "GarageOS reúne clientes, vehículos, cotizaciones, facturas, citas e historial de servicio en un solo lugar — para dedicar menos tiempo a la administración y más a los autos.",
+      go_lead: "GarageOS reúne clientes, vehículos, cotizaciones, facturas PDF con TPS/TVQ, citas e historial de servicio en un solo lugar — más campañas de correo a tus clientes — para dedicar menos tiempo a la administración y más a los autos.",
       go_cta1: "Agenda tu consulta gratuita",
       go_cta2: "Todos los productos",
       go_card_t: "Hecho para talleres, no para contadores",
@@ -249,11 +258,12 @@
       go_feat_tag: "Funciones",
       go_feat_title: "Todo lo que un taller ocupado necesita",
       go_f1t: "Clientes y vehículos", go_f1d: "Historial completo por cliente y por vehículo, incluyendo VIN, placa y notas.",
-      go_f2t: "Cotizaciones y facturas", go_f2d: "Convierte una cotización en factura con un clic, con líneas de piezas y mano de obra.",
+      go_f2t: "Cotizaciones y facturas PDF", go_f2d: "Convierte una cotización en factura PDF con un clic — piezas, mano de obra y TPS/TVQ calculados automáticamente.",
       go_f3t: "Calendario de citas", go_f3d: "Ve el día de un vistazo y evita empalmar citas en la bahía.",
       go_f4t: "Historial de servicio", go_f4d: "Cada trabajo en un vehículo queda registrado para garantías y seguimientos.",
       go_f5t: "Recordatorios", go_f5d: "Recordatorios listos por correo/SMS para mantenimiento, inspecciones y entregas.",
       go_f6t: "Reportes", go_f6d: "Conoce tus ingresos, servicios top y días más ocupados sin una hoja de cálculo.",
+      go_f7t: "Campañas de correo", go_f7d: "Envía una campaña a tus clientes directo desde GarageOS — sin pagar otra herramienta de correo aparte.",
       go_for_tag: "Para quién es",
       go_for_title: "Hecho para talleres independientes",
       go_for_sub: "Ya sea un taller general, una llantera o un mecánico especializado, GarageOS se adapta a cómo ya trabaja tu taller.",
