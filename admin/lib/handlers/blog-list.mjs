@@ -2,7 +2,7 @@
 // first, so /admin/blog can show a picker instead of requiring you to
 // already know (or go find in Airtable) the slug you want to work on.
 
-import { requireAdmin } from "../lib/auth.mjs";
+import { requireAdmin } from "../auth.mjs";
 import { listRecords } from "../../../blog/lib/airtable.mjs";
 import { F } from "../../../blog/lib/fields.mjs";
 

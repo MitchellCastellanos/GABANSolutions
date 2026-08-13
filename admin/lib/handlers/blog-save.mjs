@@ -5,7 +5,7 @@
 // fields actually present in the body, same "safe to re-run" contract
 // as leadgen's update-preview-content.mjs.
 
-import { requireAdmin } from "../lib/auth.mjs";
+import { requireAdmin } from "../auth.mjs";
 import { updatePostContent } from "../../../blog/lib/post-content.mjs";
 
 export async function handleBlogSave(req, res) {

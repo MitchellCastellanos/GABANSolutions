@@ -5,7 +5,7 @@
 // warnings never block, only errors do, and nothing publishes
 // silently.
 
-import { requireAdmin } from "../lib/auth.mjs";
+import { requireAdmin } from "../auth.mjs";
 import { validatePostForSlug } from "../../../blog/scripts/validate-post.mjs";
 
 export async function handleBlogValidate(req, res) {

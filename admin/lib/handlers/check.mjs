@@ -6,7 +6,7 @@ import {
   clearSessionCookie,
   createSessionCookie,
   verifySessionCookie
-} from "../lib/auth.mjs";
+} from "../auth.mjs";
 
 export async function handleCheck(req, res) {
   if (req.method === "GET") {

@@ -10,7 +10,7 @@
 // leadgen/scripts/validate-preview.mjs exactly.
 //
 // The core logic is exported as validatePostForSlug() so
-// api/admin/handlers/blog-validate.mjs can call it directly for the
+// admin/lib/handlers/blog-validate.mjs can call it directly for the
 // /admin/blog "Validate & publish" button.
 //
 // Usage:

@@ -1,4 +1,4 @@
-import { requireAdmin } from "../lib/auth.mjs";
+import { requireAdmin } from "../auth.mjs";
 import { updateBooking } from "../../../booking/lib/airtable.mjs";
 
 export async function handleBookingsCancel(req, res) {

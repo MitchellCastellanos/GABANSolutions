@@ -2,12 +2,12 @@
 // blog post draft, so /admin/blog can re-populate its form after the
 // page is closed/reopened. Mirrors api/cron/preview-content (the
 // leadgen equivalent), but cookie-gated like every other
-// api/admin/* handler (see api/admin/lib/auth.mjs) instead of the
+// api/admin/* handler (see admin/lib/auth.mjs) instead of the
 // bearer-token CRON_SECRET leadgen's /admin/previews uses — the
 // admin/blog.html page is already behind the same session cookie via
 // admin/auth.js, so a second manual token isn't needed here.
 
-import { requireAdmin } from "../lib/auth.mjs";
+import { requireAdmin } from "../auth.mjs";
 import { getPostContent } from "../../../blog/lib/post-content.mjs";
 
 export async function handleBlogContent(req, res) {

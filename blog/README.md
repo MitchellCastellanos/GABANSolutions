@@ -214,7 +214,7 @@ into the page once and remembered in `localStorage`, because those
 routes are shared with Vercel Cron itself. `/admin/blog`'s API calls
 (`/api/admin/blog/*`) live under `api/admin/*` instead, gated by the
 same session-cookie `requireAdmin()` guard every other `/admin/*` API
-already uses (`api/admin/lib/auth.mjs`) — the page is already behind
+already uses (`admin/lib/auth.mjs`) — the page is already behind
 that cookie via `admin/auth.js`, so a second manual token would be
 redundant. Only the post `slug` is remembered in `localStorage`.
 

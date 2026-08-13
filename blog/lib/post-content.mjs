@@ -7,8 +7,8 @@
 // preview's "Preview Config JSON" — there's no page tree to walk, so
 // the read/merge logic is much smaller and doesn't need splitting.
 //
-// getPostContent()   -> api/admin/handlers/blog-content.mjs (GET)
-// updatePostContent()-> api/admin/handlers/blog-save.mjs (POST)
+// getPostContent()   -> admin/lib/handlers/blog-content.mjs (GET)
+// updatePostContent()-> admin/lib/handlers/blog-save.mjs (POST)
 //
 // Required env vars: AIRTABLE_API_KEY, AIRTABLE_BASE_ID.
 // ============================================================

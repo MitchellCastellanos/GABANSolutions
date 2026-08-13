@@ -21,8 +21,9 @@ digital/software subdomain rewrites). Instead:
   cookie on success; `GET` verifies it; `DELETE` clears it.
 - **`admin/auth.js`** — included on every `/admin/*.html` page; shows a
   login form until the session cookie is valid.
-- **`api/admin/lib/auth.mjs`** — shared `requireAdmin()` guard used at
-  the top of each `/api/admin/*` handler.
+- **`admin/lib/auth.mjs`** — shared `requireAdmin()` guard used at the
+  top of each `/api/admin/*` handler (lives outside `api/` on purpose —
+  see the comment at the top of `api/admin/[...path].js`).
 
 The password comes **only** from the `ADMIN_PASSWORD` environment
 variable — there is no hardcoded fallback in code. Set it in Vercel

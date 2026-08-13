@@ -1,4 +1,4 @@
-import { requireAdmin } from "../lib/auth.mjs";
+import { requireAdmin } from "../auth.mjs";
 import { loadAvailabilityConfig } from "../../../booking/lib/schedule.mjs";
 import { createBooking } from "../../../booking/lib/airtable.mjs";
 import { clientConfirmationEmail } from "../../../booking/lib/emails.mjs";
