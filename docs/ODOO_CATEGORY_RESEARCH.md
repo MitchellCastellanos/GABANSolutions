@@ -78,7 +78,23 @@ Esto cambia el catálogo: cada tarjeta no lleva un botón de "Instalar", lleva *
 
 ---
 
-## 6. Lenguaje: del término técnico al beneficio del dueño de negocio
+## 6. Nuevas ofertas de bajo esfuerzo (no son ajustes de copy, son productos que hoy no existen)
+
+A diferencia de la sección 5 (reordenar/corregir lo que ya se vende), esto son **productos que hoy no aparecen en ningún catálogo de GABAN**, pero que reutilizan un motor que ya corre en producción — solo que hoy solo lo usa GABAN internamente, no un cliente.
+
+1. **Sistema de citas propio para clientes** — esfuerzo bajo, impacto alto, reutiliza el motor de `book.html`/`booking/`. Ya es un Calendly self-hosted en producción (disponibilidad configurable, confirmación con .ics, notificaciones por correo, panel de cancelar/bloquear) — solo se usa para las consultas de GABAN. Reconfigurarlo con la marca y horario de un cliente es casi el mismo trabajo ya hecho. *Pitch: "Deja de pagarle $30–50/mes a Calendly — te damos tu propio sistema de citas."*
+2. **Blog / contenido SEO como add-on de Presencia Digital** — esfuerzo bajo, impacto medio, reutiliza el motor de `blog/` + `admin/blog.html`. Ya funciona para el contenido propio de GABAN; conectarlo al dominio de un cliente es configuración, no desarrollo desde cero.
+3. **Botón de pago o depósito en línea sin tienda completa** — esfuerzo bajo-medio, impacto alto, reutiliza la integración Stripe/Klarna de Reptiles Concept. No hace falta un e-commerce entero para reutilizar solo el checkout — útil para depósitos de cita o pago de facturas de cualquier cliente de servicio.
+4. **Catálogo digital ligero — "Ver y pedir por WhatsApp"** — esfuerzo medio, impacto alto, reutiliza el componente de catálogo de Reptiles Concept/RCR sin el checkout ni el sync de POS. Mucho más barato que un e-commerce completo.
+5. **Recordatorios y confirmaciones automáticas, sueltos** — esfuerzo bajo, impacto medio, reutiliza los recordatorios ya listos de GarageOS. Vendible a cualquier negocio que solo quiere reducir ausencias, sin comprar un sistema de gestión completo.
+6. **Digitalización de inventario con código de barras — servicio único** — esfuerzo bajo, impacto medio, reutiliza el generador de barcode construido para RCR. Vendible como servicio de una sola visita, sin suscripción.
+7. **Pedidos en línea para recoger en tienda** — esfuerzo medio, impacto alto, reutiliza el patrón de pickup + seguimiento de estado de Reptiles Concept. Ideal para panaderías, restaurantes y tiendas de barrio sin logística de envío.
+
+**Idea grande, no quick win:** el motor de `leadgen/` (prospección en Google Maps, scoring, propuesta personalizada) hoy es "herramienta interna" según su propio README. Ofrecerlo como servicio de generación de leads a negocios B2B sería un producto nuevo real — no una reconfiguración de algo existente, así que no cuenta como bajo esfuerzo, pero vale la pena anotarlo.
+
+---
+
+## 7. Lenguaje: del término técnico al beneficio del dueño de negocio
 
 | Categoría técnica | Cómo lo dice Odoo | Cómo debería sonar en GABAN |
 |---|---|---|
@@ -92,7 +108,7 @@ Esto cambia el catálogo: cada tarjeta no lleva un botón de "Instalar", lleva *
 
 ---
 
-## 7. Por qué esta estructura ayuda al SEO
+## 8. Por qué esta estructura ayuda al SEO
 
 - **Más puertas de entrada (long-tail):** hoy GABAN no tiene página para búsquedas como "tienda en línea sincronizada con caja Clover" o "software de punto de venta con código de barras" — categorías nuevas que antes no existían en el sitio.
 - **Autoridad temática:** la jerarquía categoría → subcategoría → servicio le muestra a Google cómo se relaciona todo.
@@ -101,10 +117,11 @@ Esto cambia el catálogo: cada tarjeta no lleva un botón de "Instalar", lleva *
 
 ---
 
-## 8. Roadmap sugerido
+## 9. Roadmap sugerido
 
 1. **Quick wins primero** (sección 5) — sin construir nada nuevo.
-2. **Reetiquetar:** reorganizar `services.html`/`digital.html`/`software.html` en las categorías de la sección 4, con URL propia por subcategoría.
-3. **Extraer CRM y Facturación** como producto propio, vendible fuera de un vertical completo.
-4. **Evaluar Marketing como oferta** con nombre y precio propio, si hay demanda.
-5. **Equipo interno, solo si lo piden** — horarios y ausencias quedan en el radar, no en el roadmap.
+2. **Lanzar 1-2 ofertas de bajo esfuerzo** (sección 6) — empezar por citas propias y blog SEO, que son configuración sobre motores que ya corren en producción.
+3. **Reetiquetar:** reorganizar `services.html`/`digital.html`/`software.html` en las categorías de la sección 4, con URL propia por subcategoría.
+4. **Extraer CRM y Facturación** como producto propio, vendible fuera de un vertical completo.
+5. **Evaluar Marketing como oferta** con nombre y precio propio, si hay demanda.
+6. **Equipo interno, solo si lo piden** — horarios y ausencias quedan en el radar, no en el roadmap.
