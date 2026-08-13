@@ -1,11 +1,17 @@
 # Investigación: estructura de categorías de Odoo aplicada a GABAN
 
-**Fecha:** agosto 2026 (v2 — corregida con información real del negocio)
+**Fecha:** agosto 2026 (v3 — corregida con auditoría directa de los 7 repos de GitHub)
 **Objetivo:** investigar cómo Odoo organiza su tienda de apps (apps.odoo.com) en un formato tipo "shopping cart", identificar qué de eso ya construyó GABAN en proyectos reales, y proponer una estructura de catálogo más amigable para clientes y mejor para SEO.
 
-Maqueta visual interactiva de la propuesta: ver artefacto publicado en la conversación ("Catálogo GABAN").
+Maqueta visual interactiva de la propuesta: ver artefacto publicado en la conversación ("Catálogo GABAN") — construida sobre la v2; los hallazgos de la v3 (abajo) todavía no están reflejados ahí.
 
-> **Corrección sobre la v1 de este documento:** la primera versión trataba a FieldOS como un producto "disponible" equivalente a GarageOS. **FieldOS no existe** — solo GarageOS es real. A cambio, GarageOS ya cubre más terreno del que el sitio muestra hoy (finanzas completas, envío de campañas de email), y dos capacidades probadas en proyectos de cliente reales — e-commerce con pagos/POS y un admin de catálogo con código de barras — no se habían detectado porque solo viven dentro de `portfolio.html`, desconectadas de la oferta de venta.
+> **Corrección v2:** la v1 trataba a FieldOS como un producto "disponible" equivalente a GarageOS. **FieldOS no existe** — solo GarageOS es real. A cambio, GarageOS ya cubre más terreno del que el sitio muestra hoy, y dos capacidades probadas en proyectos de cliente reales no se habían detectado porque solo viven dentro de `portfolio.html`, desconectadas de la oferta de venta.
+>
+> **Corrección v3:** una auditoría directa de los 7 repos de GitHub confirma y profundiza lo anterior, y suma dos proyectos que no se habían considerado:
+> - El repo real de "GarageOS" se llama **`Mecanico_Management`** en GitHub. Su alcance es mayor al documentado: genera **facturas PDF con numeración automática y cálculo de TPS/TVQ** (impuestos de Quebec), y sus recordatorios de citas/mantenimiento son **multilingües (ES/EN/FR) por email y SMS**, con confirmaciones y cancelaciones automáticas.
+> - **Montreal Spider Co.** — e-commerce bilingüe para un criador de tarántulas, con operación de **consignación con distribuidores, inventario por ejemplar, ubicaciones de almacén y códigos QR**. Storefront completo, pero pagos/autenticación/persistencia de órdenes **aún no están conectados a producción** — es capacidad construida, no capacidad probada en vivo como GarageOS/RCR/Reptiles Concept.
+> - **Taller Arquitectura Regional** — sitio institucional para un estudio de arquitectura. Abre un tipo de cliente (consultoría/estudio de alto valor) que hoy no aparece en ningún lado del portafolio de GABAN.
+> - El módulo real que se construyó para RCR es más amplio de lo que su nombre de marketing sugiere — ver nota en la sección 2.
 
 ---
 
@@ -30,20 +36,22 @@ Fuentes: [apps.odoo.com/apps](https://apps.odoo.com/apps), [odoo.com/page/all-ap
 
 ## 2. Qué construyó GABAN realmente (diagnóstico corregido)
 
-Basado en GarageOS (el único producto real de software), el e-commerce de **Reptiles Concept** (catálogo bilingüe, checkout, pagos Stripe/Klarna, cuentas de cliente, sync en tiempo real con terminal Clover POS, ledger financiero, campañas de email — ver `portfolio.html`), y el admin de **RCR Barbería** (catálogo estático, generador de códigos de barra, finanzas y transacciones diarias — sin documentar aún en el sitio):
+Basado en **Mecanico_Management** (el repo real detrás de "GarageOS"), el e-commerce de **Reptiles Concept** (catálogo bilingüe, checkout, pagos Stripe/Klarna, cuentas de cliente, sync en tiempo real con terminal Clover POS, ledger financiero, campañas de email), el módulo de **RCR Barbería** (Firebase/Firestore: catálogo de productos, transacciones, generación y lectura de QR, generación de códigos de barra), y **Montreal Spider Co.** (e-commerce bilingüe + operación de consignación con distribuidores, construido pero con integraciones de producción pendientes):
 
 | Categoría Odoo | Estado en GABAN | Dónde vive hoy |
 |---|---|---|
 | Sitios web | ✅ Cubierto | Núcleo de GABAN Digital: Websites, Landing Pages, Launch 72H, Grow Package |
-| Sitios web → eCommerce | ✅ Probado | Reptiles Concept. Solo existe como caso de portafolio, no como servicio ofertado |
-| Finanzas | ✅ Probado | GarageOS ya factura y hace finanzas completas; Reptiles Concept tiene ledger unificado con cálculo de impuestos |
-| Marketing → Email Marketing | ✅ Probado | GarageOS y Reptiles Concept ya envían campañas de email reales, no solo "automatización ligera" |
-| Ventas → CRM | 🟡 Parcial | Base de clientes embebida en GarageOS y Reptiles Concept; no se vende como CRM aparte |
-| Ventas → TPV / Inventario | 🟡 Parcial | RCR: catálogo + código de barras + transacciones diarias. Reptiles Concept: sync con Clover. Ninguno se llama "punto de venta" en el sitio |
-| Servicios → Citas | 🟡 Parcial | Citas reales dentro de GarageOS. "Servicio de campo" (FieldOS) es concepto, no producto |
+| Sitios web → eCommerce | ✅ Probado | Reptiles Concept (producción). Montreal Spider Co. (construido, integraciones pendientes). Ninguno se ofrece como servicio, solo como caso de portafolio |
+| Finanzas | ✅ Probado, más fuerte de lo pensado | Mecanico_Management genera **facturas PDF con numeración automática y TPS/TVQ**, más métricas de ingresos/facturas pendientes y documentos para el contador. Reptiles Concept tiene ledger unificado con cálculo de impuestos |
+| Marketing → Email Marketing | ✅ Probado | Mecanico_Management y Reptiles Concept ya envían campañas/recordatorios reales — Mecanico_Management además es **multilingüe (ES/EN/FR)** por email y SMS |
+| Ventas → CRM | 🟡 Parcial | Base de clientes embebida en Mecanico_Management y Reptiles Concept; búsqueda por nombre/correo/teléfono ya existe. No se vende como CRM aparte |
+| Ventas → TPV / Inventario | 🟡 Parcial (RCR en producción) / ⚪ Construido sin conectar (Montreal Spider Co.) | RCR: catálogo + código de barras + QR + transacciones, en producción. Montreal Spider Co.: inventario por ejemplar, ubicaciones de almacén, consignación con socios, propuestas de reabastecimiento — construido, no en producción todavía |
+| Servicios → Citas | 🟡 Parcial | Citas reales dentro de Mecanico_Management, con confirmaciones/cancelaciones automáticas. "Servicio de campo" (FieldOS) es concepto, no producto |
 | Recursos Humanos / Productividad | ⚪ No cubierto | Sin cambios; no es prioridad para el modelo actual |
 
-**El patrón importa más que cada fila:** GABAN ya construyó, en al menos un proyecto real, piezas de 6 de las 8 categorías de Odoo — solo que quedaron enterradas dentro de tres entregas de cliente en vez de mostrarse como capacidades propias.
+**El patrón importa más que cada fila:** GABAN ya construyó, en al menos un proyecto real, piezas de 6 de las 8 categorías de Odoo — solo que quedaron enterradas dentro de cuatro entregas de cliente en vez de mostrarse como capacidades propias.
+
+**Nota — "Smart Links" se queda corto:** lo que GABAN vende hoy como "Smart Links" (un lugar para contacto, redes y mapa) es mucho menos de lo que realmente se construyó para RCR: ese módulo real incluye generación y lectura de códigos QR, generación de códigos de barra, catálogo de productos y transacciones sobre Firebase/Firestore. El nombre de marketing no refleja la capacidad real.
 
 ---
 
@@ -75,6 +83,8 @@ Esto cambia el catálogo: cada tarjeta no lleva un botón de "Instalar", lleva *
 3. **Corregir el estatus de FieldOS** — esfuerzo bajo, impacto alto. El badge "Founder clients / demo available" en `software.html` aplica igual a GarageOS (real) que a FieldOS (concepto); si un lead agenda esperando ver FieldOS, no hay nada que mostrar. Cambiar a algo tipo "Próxima industria — cuéntanos tu caso".
 4. **Subirle a la descripción real de GarageOS** — esfuerzo bajo, impacto medio. Hoy no menciona explícitamente finanzas completas ni campañas de email, escondidas dentro de "Payments-ready workflow".
 5. **Renombrar "GABAN Software: SaaS Platforms"** — esfuerzo bajo, impacto medio. "SaaS" suena a auto-configuración estilo Odoo; el modelo real es "te lo construimos y lo operamos contigo".
+6. **Documentar Taller Arquitectura Regional en el portafolio** — esfuerzo bajo, impacto medio. Abre un tipo de cliente (estudio/consultoría de alto valor) que hoy no aparece en ningún lado del sitio — buen contrapeso a los casos de retail y servicio local que ya existen.
+7. **Ampliar el copy de "Smart Links"** — esfuerzo bajo, impacto medio. Hoy se describe como "un lugar para contacto, redes y mapa"; lo construido para RCR incluye QR, códigos de barra, catálogo y transacciones. El nombre y la descripción deberían reflejar eso, no una versión reducida.
 
 ---
 
@@ -91,6 +101,8 @@ A diferencia de la sección 5 (reordenar/corregir lo que ya se vende), esto son 
 7. **Pedidos en línea para recoger en tienda** — esfuerzo medio, impacto alto, reutiliza el patrón de pickup + seguimiento de estado de Reptiles Concept. Ideal para panaderías, restaurantes y tiendas de barrio sin logística de envío.
 
 **Idea grande, no quick win:** el motor de `leadgen/` (prospección en Google Maps, scoring, propuesta personalizada) hoy es "herramienta interna" según su propio README. Ofrecerlo como servicio de generación de leads a negocios B2B sería un producto nuevo real — no una reconfiguración de algo existente, así que no cuenta como bajo esfuerzo, pero vale la pena anotarlo.
+
+**Otra idea para el radar, no quick win todavía:** Montreal Spider Co. demuestra inventario con seguimiento por unidad + QR + consignación con distribuidores — un patrón que podría convertirse en oferta para negocios de consignación (arte, plantas, coleccionables). Pero como sus integraciones de pago/autenticación/persistencia todavía no están conectadas a producción, no califica como "ya lo construimos y funciona" igual que RCR o Reptiles Concept — primero necesita salir en vivo para su propio cliente antes de revenderse como capacidad de GABAN.
 
 ---
 
