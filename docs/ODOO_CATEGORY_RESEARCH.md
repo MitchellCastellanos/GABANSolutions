@@ -117,11 +117,34 @@ A diferencia de la sección 5 (reordenar/corregir lo que ya se vende), esto son 
 
 ---
 
-## 9. Roadmap sugerido
+## 9. Roadmap sugerido — orden de implementación
 
-1. **Quick wins primero** (sección 5) — sin construir nada nuevo.
-2. **Lanzar 1-2 ofertas de bajo esfuerzo** (sección 6) — empezar por citas propias y blog SEO, que son configuración sobre motores que ya corren en producción.
-3. **Reetiquetar:** reorganizar `services.html`/`digital.html`/`software.html` en las categorías de la sección 4, con URL propia por subcategoría.
-4. **Extraer CRM y Facturación** como producto propio, vendible fuera de un vertical completo.
-5. **Evaluar Marketing como oferta** con nombre y precio propio, si hay demanda.
-6. **Equipo interno, solo si lo piden** — horarios y ausencias quedan en el radar, no en el roadmap.
+El orden no es por sección del documento, es por **riesgo, dependencia y a quién le vendes**. Regla general: primero lo que es solo escritura y cero riesgo, después lo que se vende a la base de clientes que ya existe (sin nueva página de marketing), después lo que abre un segmento de cliente nuevo, y solo al final la reestructura grande del sitio — porque para entonces ya se sabe qué categorías tuvieron demanda real y vale la pena documentar con su propia URL. `leadgen/` como producto queda fuera de este roadmap a propósito (ver nota al final de la sección 6).
+
+**Fase 0 — Higiene de confianza (horas, no días)**
+- Corregir el badge de FieldOS en `software.html`. Va primero y solo porque es el único ítem con riesgo activo: cada día que sigue así, un lead puede agendar esperando ver algo que no existe.
+
+**Fase 1 — Documentar y conectar lo que ya se vende (misma semana)**
+- Caso de RCR en `portfolio.html` (plantilla ya existe)
+- Cross-link de Reptiles Concept como servicio, no solo caso de estudio
+- Descripción real de GarageOS (finanzas + email marketing)
+- Renombrar "GABAN Software: SaaS Platforms"
+- Todo esto es solo escritura — cero decisiones de producto nuevo, cero riesgo técnico. Sirve además como validación: mejor corregir la percepción de lo que ya existe antes de anunciar algo nuevo encima.
+
+**Fase 2 — Upsell a la base actual, no lanzamiento nuevo (2-4 semanas, 1-2 ofertas a la vez, no las 7)**
+- Empezar por **blog/SEO** y **botón de pago o depósito** — ambas se venden al mismo cliente que ya existe (Grow Package, GarageOS), sin página de marketing nueva, casi un correo o llamada de upsell.
+- Recordatorios sueltos como tercera opción si hay ancho de banda — mismo patrón de upsell.
+- Por qué antes que las demás: no requieren abrir un segmento de cliente nuevo ni una landing page nueva, solo activar algo que ya funciona con quien ya paga.
+
+**Fase 3 — Un solo producto para segmento nuevo, no los tres a la vez**
+- De las opciones que sí abren un cliente nuevo (citas propias, catálogo ligero "pide por WhatsApp", pickup en tienda, digitalización con barcode), elegir **una** para pilotar — recomendado: **citas propias**, porque es la de menor fricción real (cero integración nueva, ya en producción, solo reconfigurar marca/horario) y el dolor que resuelve ("deja de pagarle a Calendly") se explica en una frase.
+- Requiere: una landing page nueva, precio definido, 1-2 clientes piloto antes de anunciarlo ampliamente.
+
+**Fase 4 — Recién ahora, la reestructura grande del catálogo**
+- Con datos reales de qué se vendió en las fases 2-3, reorganizar `services.html`/`digital.html`/`software.html` en las categorías de la sección 4, con URL propia por subcategoría. Hacerlo antes sería adivinar qué categorías merecen su propia página; hacerlo ahora es documentar demanda ya probada.
+
+**Fase 5 — Productizar CRM y Facturación como standalone**
+- El trabajo más grande: extraer de GarageOS/Reptiles Concept la parte genérica (sin lo específico de taller o e-commerce) para venderla sola. Solo tiene sentido si las fases 2-4 muestran que hay negocios pidiendo "solo quiero el CRM/la facturación, no todo el vertical".
+
+**Fase 6 — Equipo interno / RRHH**
+- Sin fecha. Solo si un cliente de FieldOS-concepto o GarageOS lo pide directamente.
