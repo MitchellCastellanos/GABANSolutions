@@ -104,21 +104,51 @@ export function suggestCategoryCityTopics() {
   return out;
 }
 
+// Same angles, but country-wide instead of tied to one leadgen city — GABAN
+// serves clients across Canada even though outbound prospecting (leadgen)
+// is still Montreal-area only for now. These posts target searches like
+// "local SEO for dentists Canada" that a Montreal-only post wouldn't rank for.
+const CATEGORY_NATIONAL_ANGLES = [
+  ({ category }) => `How ${category} Across Canada Can Get Found on Google (and ChatGPT)`,
+  ({ category }) => `5 Ways ${category} Across Canada Can Win More Local Customers Online`,
+  ({ category }) => `Local SEO for ${category}: A Practical Guide for Canadian Businesses`,
+  ({ category }) => `Why ${category} Are Losing Customers to Competitors With Better Websites`
+];
+
+export function categoryNationalTopic(categoryKey, angleIndex = 0) {
+  const cat = categoryByKey(categoryKey);
+  if (!cat) throw new Error(`Unknown category key "${categoryKey}" — see leadgen/config/targets.json`);
+  const category = categoryDisplayLabel(categoryKey);
+  const angleFn = CATEGORY_NATIONAL_ANGLES[angleIndex % CATEGORY_NATIONAL_ANGLES.length];
+  return {
+    title: angleFn({ category }),
+    categoryKey,
+    categoryLabel: category,
+    city: null,
+    kind: "category-national"
+  };
+}
+
+/** One national (no-city) topic per category, one angle each (deterministic, not random). */
+export function suggestCategoryNationalTopics() {
+  return getCategories().map((cat, i) => categoryNationalTopic(cat.templateCategory, i % CATEGORY_NATIONAL_ANGLES.length));
+}
+
 // General GABAN-service topics, not tied to one category — top-of-
 // funnel content about what GABAN actually sells (websites, local
 // SEO, automations, GarageOS/FieldOS).
 export const GENERAL_TOPICS = [
-  { title: "Why Every Local Business in Montreal Needs a Real Website in 2026 (Not Just a Google Business Profile)", kind: "general" },
-  { title: "Local SEO 101: How Small Businesses in Montreal, Laval, and Longueuil Get Found on Google Maps", kind: "general" },
+  { title: "Why Every Local Business in Canada Needs a Real Website in 2026 (Not Just a Google Business Profile)", kind: "general" },
+  { title: "Local SEO 101: How Small Businesses Across Canada Get Found on Google Maps", kind: "general" },
   { title: "What Business Automation Actually Looks Like for a Small Local Business", kind: "general" },
-  { title: "How Much Should a Small Business Website Cost in Montreal? A Practical Guide", kind: "general" },
+  { title: "How Much Should a Small Business Website Cost in Canada? A Practical Guide", kind: "general" },
   { title: "GarageOS: Why Auto Repair Shops Are Ditching Spreadsheets for Real Shop Management Software", kind: "general" },
   { title: "FieldOS: Scheduling, Quotes, and Invoicing for Field Service Businesses That Outgrew Paper", kind: "general" },
   { title: "Google Business Profile vs. a Real Website: Why Local Businesses Need Both", kind: "general" },
   { title: "How to Get More Google Reviews Without Being Pushy", kind: "general" }
 ];
 
-/** Combined list for a CLI --list picker: category x city topics first, then general ones. */
+/** Combined list for a CLI --list picker: category x city topics, then category x Canada topics, then general ones. */
 export function suggestTopics() {
-  return [...suggestCategoryCityTopics(), ...GENERAL_TOPICS];
+  return [...suggestCategoryCityTopics(), ...suggestCategoryNationalTopics(), ...GENERAL_TOPICS];
 }

@@ -15,9 +15,13 @@
 // Usage:
 //   node blog/scripts/new-post.mjs --list
 //     -> print numbered topic suggestions (category x city, then
-//        general GABAN-service topics), pick one with --pick=<n>
+//        category x Canada, then general GABAN-service topics),
+//        pick one with --pick=<n>
 //   node blog/scripts/new-post.mjs --pick=<n> [--dry-run]
 //   node blog/scripts/new-post.mjs --category=<key> --city="Laval, QC" [--angle=<0-3>] [--dry-run]
+//     -> Montreal-area local-SEO post, matches leadgen's outbound cities
+//   node blog/scripts/new-post.mjs --category=<key> [--angle=<0-3>] [--dry-run]
+//     -> Canada-wide post for that category (no --city)
 //   node blog/scripts/new-post.mjs --topic="Freeform title" [--category=<key>] [--city="..."] [--dry-run]
 //
 // Required env vars: AIRTABLE_API_KEY, AIRTABLE_BASE_ID
@@ -28,7 +32,7 @@ import { fileURLToPath } from "node:url";
 import crypto from "node:crypto";
 import { createRecord } from "../lib/airtable.mjs";
 import { F, POST_STATUS } from "../lib/fields.mjs";
-import { suggestTopics, categoryCityTopic } from "../lib/topics.mjs";
+import { suggestTopics, categoryCityTopic, categoryNationalTopic } from "../lib/topics.mjs";
 import { buildBlogPrompt } from "../lib/prompt.mjs";
 
 function slugify(text) {
@@ -82,9 +86,11 @@ export async function createDraftPost({ title, categoryKey, city, dryRun = false
 
 function printSuggestions() {
   const topics = suggestTopics();
-  console.log(`\n${topics.length} topic suggestions (category x city topics first, then general GABAN-service topics):\n`);
+  console.log(`\n${topics.length} topic suggestions (category x city topics, then category x Canada topics, then general GABAN-service topics):\n`);
   topics.forEach((t, i) => {
-    const tag = t.kind === "category-city" ? `[${t.categoryKey} / ${t.city}]` : "[general]";
+    const tag = t.kind === "category-city" ? `[${t.categoryKey} / ${t.city}]`
+      : t.kind === "category-national" ? `[${t.categoryKey} / Canada]`
+      : "[general]";
     console.log(`  ${i}. ${t.title} ${tag}`);
   });
   console.log(`\nPick one: node blog/scripts/new-post.mjs --pick=<n>\n`);
@@ -118,9 +124,14 @@ async function main() {
     categoryKey = categoryArg;
     city = cityArg;
   } else if (categoryArg) {
-    if (!cityArg) throw new Error("Usage: --category=<key> also needs --city=\"Laval, QC\" (see leadgen/config/targets.json for valid areas).");
+    // --city given -> a Montreal-area local-SEO post (matches leadgen's
+    // outbound prospecting area). No --city -> a Canada-wide post for
+    // that category, since GABAN's marketing/SEO reach isn't limited to
+    // leadgen's current outbound cities.
     const angle = angleArg !== undefined ? Number(angleArg) : 0;
-    const picked = categoryCityTopic(categoryArg, cityArg, angle);
+    const picked = cityArg
+      ? categoryCityTopic(categoryArg, cityArg, angle)
+      : categoryNationalTopic(categoryArg, angle);
     title = picked.title;
     categoryKey = picked.categoryKey;
     city = picked.city;
@@ -129,7 +140,7 @@ async function main() {
       "Usage:\n" +
       "  node blog/scripts/new-post.mjs --list\n" +
       "  node blog/scripts/new-post.mjs --pick=<n> [--dry-run]\n" +
-      "  node blog/scripts/new-post.mjs --category=<key> --city=\"Laval, QC\" [--angle=0-3] [--dry-run]\n" +
+      "  node blog/scripts/new-post.mjs --category=<key> [--city=\"Laval, QC\"] [--angle=0-3] [--dry-run]\n" +
       "  node blog/scripts/new-post.mjs --topic=\"Freeform title\" [--category=<key>] [--city=\"...\"] [--dry-run]"
     );
   }

@@ -173,8 +173,10 @@ npm run blog:new -- --pick=&lt;n&gt;</pre>
     function buildPrompt(topic, categoryKey, city) {
       const audience = categoryKey && city
         ? `owners of ${(CATEGORY_LABELS[categoryKey] || categoryKey).toLowerCase()} in ${(city || "").split(",")[0].trim()}, QC`
-        : "local business owners in the Montreal, Laval, and Longueuil area";
-      return `You are writing a blog article for GABAN Solutions, a Montreal digital agency that builds websites, local SEO, business automations, and practical software (GarageOS, FieldOS) for small local businesses in the Montreal / Laval / Longueuil area.
+        : categoryKey
+          ? `owners of ${(CATEGORY_LABELS[categoryKey] || categoryKey).toLowerCase()} across Canada`
+          : "local business owners across Canada";
+      return `You are writing a blog article for GABAN Solutions, a Canadian digital agency based in Montreal that builds websites, local SEO, business automations, and practical software (GarageOS, FieldOS) for small local businesses across Canada.
 
 Topic: ${topic}
 Target audience: ${audience}

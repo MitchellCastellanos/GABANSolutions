@@ -130,13 +130,16 @@ function metaBadge(post) {
   if (post.categoryLabel && post.city) {
     return `${escapeHtml(post.categoryLabel)} &middot; ${escapeHtml(post.city.split(",")[0].trim())}`;
   }
+  if (post.categoryLabel) {
+    return `${escapeHtml(post.categoryLabel)} &middot; Canada`;
+  }
   return "GABAN Solutions";
 }
 
 export function renderBlogIndex(posts) {
   const canonical = `${SITE_URL}/blog`;
-  const title = "Blog | GABAN Solutions — Local SEO, Websites & Growth for Montreal Businesses";
-  const description = "Practical guides on websites, local SEO, Google visibility, and business automation for small businesses in Montreal, Laval, and Longueuil.";
+  const title = "Blog | GABAN Solutions — Local SEO, Websites & Growth for Canadian Businesses";
+  const description = "Practical guides on websites, local SEO, Google visibility, and business automation for small businesses across Canada.";
 
   const jsonLd = [
     {
@@ -171,7 +174,7 @@ export function renderBlogIndex(posts) {
     <div class="text-center">
       <div class="text-uppercase small fw-semibold text-warning mb-2">GABAN Solutions</div>
       <h1 class="fw-bold mb-2">Blog</h1>
-      <p class="text-muted mb-0">Practical guides on websites, local SEO, and growth for small businesses in Montreal, Laval, and Longueuil.</p>
+      <p class="text-muted mb-0">Practical guides on websites, local SEO, and growth for small businesses across Canada.</p>
     </div>
   </div>
 </header>

@@ -1,16 +1,40 @@
 # Blog — Content Engine
 
-GABAN's inbound content marketing pillar: SEO-oriented blog posts
-targeting the same local-business niches leadgen already prospects
-(`leadgen/config/targets.json` — 9 categories x 3 Montreal-area
-cities), plus general posts about GABAN's own services. Built the same
-way BabyLoveGrowth-style "AI SEO/GEO" tools work conceptually (publish
-content aimed at both Google ranking and being cited by AI answer
-engines like ChatGPT/Perplexity/Gemini), but with **no LLM API key** —
-content authoring is manual copy/paste into ChatGPT/Claude, exactly
-like `/admin/previews` already does for prospect website mockups. See
-`leadgen/README.md`'s "Generating a real, navigable preview" section
-for the UX pattern this mirrors.
+GABAN's inbound content marketing pillar: SEO-oriented blog posts. Two
+angles, both driven by `leadgen/config/targets.json`'s 9 business
+categories:
+
+- **Category x city** (3 Montreal-area cities) — hyper-local posts
+  matching the same niches leadgen prospects outbound.
+- **Category x Canada** — the same categories with no city, for
+  searches like "local SEO for dentists Canada". GABAN's marketing/SEO
+  reach isn't limited to leadgen's current outbound cities (see the
+  "Why category x Canada topics exist" note below), even though
+  outbound prospecting itself still is, for now.
+
+Plus general posts about GABAN's own services, not tied to a category.
+Built the same way BabyLoveGrowth-style "AI SEO/GEO" tools work
+conceptually (publish content aimed at both Google ranking and being
+cited by AI answer engines like ChatGPT/Perplexity/Gemini), but with
+**no LLM API key** — content authoring is manual copy/paste into
+ChatGPT/Claude, exactly like `/admin/previews` already does for
+prospect website mockups. See `leadgen/README.md`'s "Generating a real,
+navigable preview" section for the UX pattern this mirrors.
+
+## Why category x Canada topics exist
+
+GABAN's site-wide positioning is national (`areaServed: Canada` in the
+JSON-LD on every page, see `scripts/seo-audit.mjs`'s sibling site audit)
+even though outbound prospecting (`leadgen/config/targets.json`'s
+`areas`) is still Montreal/Laval/Longueuil only — expanding outbound
+cold-calling is a separate, bigger operational decision (call volume,
+time zones) that hasn't been made yet. The blog doesn't need to wait on
+that: content marketing can target the whole country today without
+adding any outbound cost, which is exactly why `blog/lib/topics.mjs`
+has both a city-scoped and a Canada-scoped angle per category — run
+`npm run blog:new -- --category=<key> --city="Laval, QC"` for the
+former, `npm run blog:new -- --category=<key>` (no `--city`) for the
+latter.
 
 ## Why posts live in Airtable, not `.html` files
 
@@ -37,7 +61,8 @@ blog posts follow the identical pattern:
 1. Pick a topic and start the draft (terminal, once per post):
      npm run blog:new -- --list
      npm run blog:new -- --pick=<n>
-     (or npm run blog:new -- --category=<key> --city="Laval, QC")
+     (or npm run blog:new -- --category=<key> --city="Laval, QC" for a Montreal-area post)
+     (or npm run blog:new -- --category=<key> for a Canada-wide post, no city)
      (or npm run blog:new -- --topic="Freeform title")
      -> writes a draft row to Airtable (Status: draft, everything
         else blank except Topic/Category Key/City) and prints the
@@ -169,7 +194,8 @@ blanket static header on top would risk two conflicting
 ```bash
 npm run blog:new -- --list
 npm run blog:new -- --pick=<n> [--dry-run]
-npm run blog:new -- --category=<key> --city="Laval, QC" [--angle=0-3] [--dry-run]
+npm run blog:new -- --category=<key> --city="Laval, QC" [--angle=0-3] [--dry-run]   # Montreal-area
+npm run blog:new -- --category=<key> [--angle=0-3] [--dry-run]                      # Canada-wide
 npm run blog:new -- --topic="Freeform title" [--category=<key>] [--city="..."] [--dry-run]
 npm run blog:validate -- --slug=<slug> [--publish]
 ```

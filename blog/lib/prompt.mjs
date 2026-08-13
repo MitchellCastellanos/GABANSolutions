@@ -12,9 +12,11 @@ import { categoryDisplayLabel, cityShort } from "./topics.mjs";
 export function buildBlogPrompt({ topic, categoryKey, city }) {
   const audience = categoryKey && city
     ? `owners of ${categoryDisplayLabel(categoryKey).toLowerCase()} in ${cityShort(city)}, QC`
-    : "local business owners in the Montreal, Laval, and Longueuil area";
+    : categoryKey
+      ? `owners of ${categoryDisplayLabel(categoryKey).toLowerCase()} across Canada`
+      : "local business owners across Canada";
 
-  return `You are writing a blog article for GABAN Solutions, a Montreal digital agency that builds websites, local SEO, business automations, and practical software (GarageOS, FieldOS) for small local businesses in the Montreal / Laval / Longueuil area.
+  return `You are writing a blog article for GABAN Solutions, a Canadian digital agency based in Montreal that builds websites, local SEO, business automations, and practical software (GarageOS, FieldOS) for small local businesses across Canada.
 
 Topic: ${topic}
 Target audience: ${audience}
