@@ -57,6 +57,47 @@
       }
   }
   </script>
+  <script type="application/ld+json">
+  {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://software.gabansolutions.ca/#faq",
+      "mainEntity": [
+          {
+              "@type": "Question",
+              "name": "Is GABAN Software off-the-shelf or custom-built?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "It's built and operated with you, not a self-serve SaaS tool. Setup is done by the GABAN team around how your business already works."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "What if my industry doesn't have a product yet?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "GarageOS (for auto repair shops) and the standalone booking system are the current products. If your industry isn't covered yet, tell us how your business runs — the underlying patterns (customers, jobs, invoicing, appointments) can often be adapted."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "What's included in the pricing?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A one-time setup fee plus a flat monthly subscription that includes hosting, updates and support — see Pricing for exact numbers."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "Can I try it before committing?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Book a free consultation and we'll walk you through a demo tailored to how your business actually operates."
+              }
+          }
+      ]
+  }
+  </script>
 </head>
 <body>
 
@@ -278,6 +319,68 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold" data-i18n="sw_faq_title">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="accordion" id="faqSoftware">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#swfaq1" data-i18n="sw_faq_1q">
+            Is GABAN Software off-the-shelf or custom-built?
+          </button>
+        </h2>
+        <div id="swfaq1" class="accordion-collapse collapse show" data-bs-parent="#faqSoftware">
+          <div class="accordion-body" data-i18n="sw_faq_1a">
+            It's built and operated with you, not a self-serve SaaS tool. Setup is done by the GABAN team around how your business already works.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#swfaq2" data-i18n="sw_faq_2q">
+            What if my industry doesn't have a product yet?
+          </button>
+        </h2>
+        <div id="swfaq2" class="accordion-collapse collapse" data-bs-parent="#faqSoftware">
+          <div class="accordion-body" data-i18n="sw_faq_2a">
+            GarageOS (for auto repair shops) and the standalone booking system are the current products. If your industry isn't covered yet, tell us how your business runs — the underlying patterns (customers, jobs, invoicing, appointments) can often be adapted.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#swfaq3" data-i18n="sw_faq_3q">
+            What's included in the pricing?
+          </button>
+        </h2>
+        <div id="swfaq3" class="accordion-collapse collapse" data-bs-parent="#faqSoftware">
+          <div class="accordion-body" data-i18n="sw_faq_3a">
+            A one-time setup fee plus a flat monthly subscription that includes hosting, updates and support — see Pricing for exact numbers.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#swfaq4" data-i18n="sw_faq_4q">
+            Can I try it before committing?
+          </button>
+        </h2>
+        <div id="swfaq4" class="accordion-collapse collapse" data-bs-parent="#faqSoftware">
+          <div class="accordion-body" data-i18n="sw_faq_4a">
+            Book a free consultation and we'll walk you through a demo tailored to how your business actually operates.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div id="site-footer"></div>
 
 <script src="./js/components.js"></script>
@@ -331,7 +434,16 @@
       sw_tst_2q: '"We finally see every recurring job and route in one place instead of a notebook."',
       sw_tst_2a: "— Landscaping & snow removal",
       sw_tst_3q: '"Setup was quick and the team actually listened to how we work."',
-      sw_tst_3a: "— Founder client"
+      sw_tst_3a: "— Founder client",
+      sw_faq_title: "Frequently Asked Questions",
+      sw_faq_1q: "Is GABAN Software off-the-shelf or custom-built?",
+      sw_faq_1a: "It's built and operated with you, not a self-serve SaaS tool. Setup is done by the GABAN team around how your business already works.",
+      sw_faq_2q: "What if my industry doesn't have a product yet?",
+      sw_faq_2a: "GarageOS (for auto repair shops) and the standalone booking system are the current products. If your industry isn't covered yet, tell us how your business runs — the underlying patterns (customers, jobs, invoicing, appointments) can often be adapted.",
+      sw_faq_3q: "What's included in the pricing?",
+      sw_faq_3a: "A one-time setup fee plus a flat monthly subscription that includes hosting, updates and support — see Pricing for exact numbers.",
+      sw_faq_4q: "Can I try it before committing?",
+      sw_faq_4a: "Book a free consultation and we'll walk you through a demo tailored to how your business actually operates."
     },
     fr: {
       sw_h1: "Des plateformes logicielles conçues pour de vraies petites entreprises.",
@@ -379,7 +491,16 @@
       sw_tst_2q: "« Nous voyons enfin chaque travail récurrent et chaque itinéraire au même endroit plutôt que dans un carnet. »",
       sw_tst_2a: "— Aménagement paysager et déneigement",
       sw_tst_3q: "« L'installation a été rapide et l'équipe a vraiment écouté notre façon de travailler. »",
-      sw_tst_3a: "— Client fondateur"
+      sw_tst_3a: "— Client fondateur",
+      sw_faq_title: "Questions fréquentes",
+      sw_faq_1q: "GABAN Software est-il prêt à l'emploi ou construit sur mesure?",
+      sw_faq_1a: "C'est construit et opéré avec vous, pas un outil SaaS en libre-service. La mise en place est faite par l'équipe GABAN autour de la façon dont votre entreprise fonctionne déjà.",
+      sw_faq_2q: "Et si mon industrie n'a pas encore de produit?",
+      sw_faq_2a: "GarageOS (pour les ateliers de réparation auto) et le système de réservation autonome sont les produits actuels. Si votre industrie n'est pas encore couverte, dites-nous comment fonctionne votre entreprise — les mêmes modèles (clients, travaux, facturation, rendez-vous) peuvent souvent être adaptés.",
+      sw_faq_3q: "Qu'est-ce qui est inclus dans le prix?",
+      sw_faq_3a: "Des frais de mise en place uniques plus un abonnement mensuel fixe qui inclut l'hébergement, les mises à jour et le soutien — voir la page Tarification pour les chiffres exacts.",
+      sw_faq_4q: "Puis-je l'essayer avant de m'engager?",
+      sw_faq_4a: "Réservez une consultation gratuite et nous vous présenterons une démo adaptée à la façon dont votre entreprise fonctionne réellement."
     },
     es: {
       sw_h1: "Plataformas de software hechas para negocios pequeños reales.",
@@ -427,7 +548,16 @@
       sw_tst_2q: "«Por fin vemos cada trabajo recurrente y cada ruta en un solo lugar en vez de en una libreta.»",
       sw_tst_2a: "— Jardinería y remoción de nieve",
       sw_tst_3q: "«La instalación fue rápida y el equipo de verdad escuchó cómo trabajamos.»",
-      sw_tst_3a: "— Cliente fundador"
+      sw_tst_3a: "— Cliente fundador",
+      sw_faq_title: "Preguntas frecuentes",
+      sw_faq_1q: "¿GABAN Software es listo para usar o hecho a la medida?",
+      sw_faq_1a: "Se construye y se opera contigo, no es una herramienta SaaS de autoservicio. La configuración la hace el equipo de GABAN según cómo ya funciona tu negocio.",
+      sw_faq_2q: "¿Y si mi industria todavía no tiene un producto?",
+      sw_faq_2a: "GarageOS (para talleres mecánicos) y el sistema de citas independiente son los productos actuales. Si tu industria aún no está cubierta, cuéntanos cómo funciona tu negocio — los mismos patrones (clientes, trabajos, facturación, citas) suelen poder adaptarse.",
+      sw_faq_3q: "¿Qué incluye el precio?",
+      sw_faq_3a: "Una cuota de configuración única más una suscripción mensual fija que incluye hosting, actualizaciones y soporte — ve Precios para los montos exactos.",
+      sw_faq_4q: "¿Puedo probarlo antes de comprometerme?",
+      sw_faq_4a: "Agenda una consulta gratuita y te mostramos una demo hecha a la medida de cómo opera realmente tu negocio."
     }
   });
   mountSharedLayout("home", "software");

@@ -57,6 +57,47 @@
       }
   }
   </script>
+  <script type="application/ld+json">
+  {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://software.gabansolutions.ca/garageos.html#faq",
+      "mainEntity": [
+          {
+              "@type": "Question",
+              "name": "Does GarageOS calculate taxes automatically?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Turn a quote into a PDF invoice in one click, with parts, labour and GST/QST calculated automatically."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "Can GarageOS send appointment reminders?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, email/SMS-ready reminders for maintenance, inspections and pick-ups."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "Does it replace spreadsheets completely?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "It's built to. Customers, vehicles, quotes, PDF invoices, appointments and service history all live in one place instead of scattered spreadsheets."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "Can I email my customer list from GarageOS?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, it includes email campaigns to your existing customer list."
+              }
+          }
+      ]
+  }
+  </script>
 </head>
 <body>
 
@@ -175,6 +216,68 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold" data-i18n="go_faq_title">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="accordion" id="faqGarageos">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#gofaq1" data-i18n="go_faq_1q">
+            Does GarageOS calculate taxes automatically?
+          </button>
+        </h2>
+        <div id="gofaq1" class="accordion-collapse collapse show" data-bs-parent="#faqGarageos">
+          <div class="accordion-body" data-i18n="go_faq_1a">
+            Yes. Turn a quote into a PDF invoice in one click, with parts, labour and GST/QST calculated automatically.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#gofaq2" data-i18n="go_faq_2q">
+            Can GarageOS send appointment reminders?
+          </button>
+        </h2>
+        <div id="gofaq2" class="accordion-collapse collapse" data-bs-parent="#faqGarageos">
+          <div class="accordion-body" data-i18n="go_faq_2a">
+            Yes, email/SMS-ready reminders for maintenance, inspections and pick-ups.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#gofaq3" data-i18n="go_faq_3q">
+            Does it replace spreadsheets completely?
+          </button>
+        </h2>
+        <div id="gofaq3" class="accordion-collapse collapse" data-bs-parent="#faqGarageos">
+          <div class="accordion-body" data-i18n="go_faq_3a">
+            It's built to. Customers, vehicles, quotes, PDF invoices, appointments and service history all live in one place instead of scattered spreadsheets.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#gofaq4" data-i18n="go_faq_4q">
+            Can I email my customer list from GarageOS?
+          </button>
+        </h2>
+        <div id="gofaq4" class="accordion-collapse collapse" data-bs-parent="#faqGarageos">
+          <div class="accordion-body" data-i18n="go_faq_4a">
+            Yes, it includes email campaigns to your existing customer list.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section bg-dark text-white">
   <div class="container">
     <div class="row align-items-center g-3 reveal-up">
@@ -220,7 +323,16 @@
       go_for_3: "Specialized mechanics and detailing",
       go_bottom_t: "See GarageOS with your own shop in mind.",
       go_bottom_d: "Tell us how your shop runs today and we'll walk you through a demo tailored to it.",
-      go_bottom_btn: "Book Your Free Consultation"
+      go_bottom_btn: "Book Your Free Consultation",
+      go_faq_title: "Frequently Asked Questions",
+      go_faq_1q: "Does GarageOS calculate taxes automatically?",
+      go_faq_1a: "Yes. Turn a quote into a PDF invoice in one click, with parts, labour and GST/QST calculated automatically.",
+      go_faq_2q: "Can GarageOS send appointment reminders?",
+      go_faq_2a: "Yes, email/SMS-ready reminders for maintenance, inspections and pick-ups.",
+      go_faq_3q: "Does it replace spreadsheets completely?",
+      go_faq_3a: "It's built to. Customers, vehicles, quotes, PDF invoices, appointments and service history all live in one place instead of scattered spreadsheets.",
+      go_faq_4q: "Can I email my customer list from GarageOS?",
+      go_faq_4a: "Yes, it includes email campaigns to your existing customer list."
     },
     fr: {
       go_h1: "Gérez votre atelier de réparation sans le chaos de la paperasse.",
@@ -246,7 +358,16 @@
       go_for_3: "Mécaniciens spécialisés et esthétique",
       go_bottom_t: "Découvrez GarageOS pensé pour votre atelier.",
       go_bottom_d: "Dites-nous comment fonctionne votre atelier et nous vous présenterons une démo adaptée.",
-      go_bottom_btn: "Réservez votre consultation gratuite"
+      go_bottom_btn: "Réservez votre consultation gratuite",
+      go_faq_title: "Questions fréquentes",
+      go_faq_1q: "GarageOS calcule-t-il les taxes automatiquement?",
+      go_faq_1a: "Oui. Transformez un devis en facture PDF en un clic, avec pièces, main-d'œuvre et TPS/TVQ calculées automatiquement.",
+      go_faq_2q: "GarageOS peut-il envoyer des rappels de rendez-vous?",
+      go_faq_2a: "Oui, des rappels prêts par courriel/SMS pour l'entretien, les inspections et les ramassages.",
+      go_faq_3q: "Remplace-t-il complètement les tableurs?",
+      go_faq_3a: "C'est fait pour. Clients, véhicules, devis, factures PDF, rendez-vous et historique d'entretien sont tous au même endroit au lieu d'être éparpillés dans des tableurs.",
+      go_faq_4q: "Puis-je envoyer un courriel à ma liste de clients depuis GarageOS?",
+      go_faq_4a: "Oui, cela inclut des campagnes de courriel envoyées à votre liste de clients existante."
     },
     es: {
       go_h1: "Opera tu taller mecánico sin el caos del papeleo.",
@@ -272,7 +393,16 @@
       go_for_3: "Mecánicos especializados y detallado",
       go_bottom_t: "Conoce GarageOS pensando en tu taller.",
       go_bottom_d: "Cuéntanos cómo opera tu taller hoy y te mostramos una demo a tu medida.",
-      go_bottom_btn: "Agenda tu consulta gratuita"
+      go_bottom_btn: "Agenda tu consulta gratuita",
+      go_faq_title: "Preguntas frecuentes",
+      go_faq_1q: "¿GarageOS calcula los impuestos automáticamente?",
+      go_faq_1a: "Sí. Convierte una cotización en factura PDF con un clic, con piezas, mano de obra y TPS/TVQ calculados automáticamente.",
+      go_faq_2q: "¿GarageOS puede enviar recordatorios de citas?",
+      go_faq_2a: "Sí, recordatorios listos por correo/SMS para mantenimiento, inspecciones y entregas.",
+      go_faq_3q: "¿Reemplaza por completo las hojas de cálculo?",
+      go_faq_3a: "Está hecho para eso. Clientes, vehículos, cotizaciones, facturas PDF, citas e historial de servicio viven en un solo lugar en vez de estar dispersos en hojas de cálculo.",
+      go_faq_4q: "¿Puedo enviar correos a mi lista de clientes desde GarageOS?",
+      go_faq_4a: "Sí, incluye campañas de correo a tu lista de clientes existente."
     }
   });
   mountSharedLayout("products", "software");

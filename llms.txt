@@ -1,0 +1,30 @@
+# GABAN Solutions
+
+> GABAN Solutions is a Canadian digital agency and software company based in Montreal, serving small and local businesses across Canada. It operates two divisions — GABAN Digital (websites, local SEO, landing pages, custom e-commerce, automations, content) and GABAN Software (custom business management software, currently GarageOS for auto repair shops, plus a self-hosted booking system) — alongside a blog with practical guides for small business owners.
+
+## Digital services
+
+- [Websites](https://digital.gabansolutions.ca/websites.html): Custom websites for local businesses, built around trust, clarity and conversion.
+- [Local SEO](https://digital.gabansolutions.ca/seo.html): Local search structure, Google Business Profile optimization and review management.
+- [Landing Pages](https://digital.gabansolutions.ca/landing-pages.html): Focused pages for offers, campaigns and service launches.
+- [Automations](https://digital.gabansolutions.ca/automations.html): Lightweight workflow automation — smart forms, routing, notifications.
+- [Digital Pricing](https://digital.gabansolutions.ca/digital-pricing.html): Pricing for websites, SEO and digital services, in CAD and MXN.
+- [Launch 72H](https://gabansolutions.ca/express.html): A professional small-business website delivered in 72 hours for $399 CAD.
+- [Grow Package](https://gabansolutions.ca/grow-package.html): A launch-and-growth package (website, Google Business optimization, reviews, smart links) for local businesses.
+
+## Software
+
+- [GarageOS](https://software.gabansolutions.ca/garageos.html): Management software for auto repair shops — customers, vehicles, quotes, invoices, appointments, service history and reminders.
+- [Booking System](https://software.gabansolutions.ca/booking-system.html): A self-hosted appointment booking system a business can run under its own brand, instead of paying for a third-party scheduling tool.
+- [Software Pricing](https://software.gabansolutions.ca/pricing.html): One-time setup plus a flat monthly subscription including hosting, updates and support.
+
+## Content
+
+- [Blog](https://gabansolutions.ca/blog): Practical, no-fluff guides on websites, local SEO, business automation and growth for small businesses across Canada.
+
+## Company
+
+- [About](https://gabansolutions.ca/about.html): Who GABAN Solutions is and how the team works.
+- [Portfolio](https://gabansolutions.ca/portfolio.html): Real client projects, including custom e-commerce and management software builds.
+- [Contact](https://gabansolutions.ca/contact.html): Reach the team about a project.
+- [Book a free consultation](https://gabansolutions.ca/book.html): Schedule a call.

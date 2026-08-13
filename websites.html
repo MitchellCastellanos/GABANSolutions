@@ -57,6 +57,47 @@
       }
   }
   </script>
+  <script type="application/ld+json">
+  {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://digital.gabansolutions.ca/websites.html#faq",
+      "mainEntity": [
+          {
+              "@type": "Question",
+              "name": "How long does it take to get a website?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Timelines vary by scope. A fast, focused site can launch in as little as 72 hours (see Launch 72H); most standard multi-page websites take longer depending on how ready your content is."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "What pages are included?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "A typical website includes home, services, about and contact pages, built mobile-responsive with clear calls to action and on-page SEO basics."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "Do I need to provide the content myself?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You provide your business details, services and any photos you have. We handle structure, copy guidance, design and the technical setup."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "What happens after the site launches?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "You get guidance and support after launch, and pages can be extended later with more content, SEO work or additional features as your business grows."
+              }
+          }
+      ]
+  }
+  </script>
 </head>
 <body>
 
@@ -156,6 +197,68 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold" data-i18n="web_faq_title">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="accordion" id="faqWebsites">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#webfaq1" data-i18n="web_faq_1q">
+            How long does it take to get a website?
+          </button>
+        </h2>
+        <div id="webfaq1" class="accordion-collapse collapse show" data-bs-parent="#faqWebsites">
+          <div class="accordion-body" data-i18n="web_faq_1a">
+            Timelines vary by scope. A fast, focused site can launch in as little as 72 hours (see Launch 72H); most standard multi-page websites take longer depending on how ready your content is.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#webfaq2" data-i18n="web_faq_2q">
+            What pages are included?
+          </button>
+        </h2>
+        <div id="webfaq2" class="accordion-collapse collapse" data-bs-parent="#faqWebsites">
+          <div class="accordion-body" data-i18n="web_faq_2a">
+            A typical website includes home, services, about and contact pages, built mobile-responsive with clear calls to action and on-page SEO basics.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#webfaq3" data-i18n="web_faq_3q">
+            Do I need to provide the content myself?
+          </button>
+        </h2>
+        <div id="webfaq3" class="accordion-collapse collapse" data-bs-parent="#faqWebsites">
+          <div class="accordion-body" data-i18n="web_faq_3a">
+            You provide your business details, services and any photos you have. We handle structure, copy guidance, design and the technical setup.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#webfaq4" data-i18n="web_faq_4q">
+            What happens after the site launches?
+          </button>
+        </h2>
+        <div id="webfaq4" class="accordion-collapse collapse" data-bs-parent="#faqWebsites">
+          <div class="accordion-body" data-i18n="web_faq_4a">
+            You get guidance and support after launch, and pages can be extended later with more content, SEO work or additional features as your business grows.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section bg-dark text-white">
   <div class="container">
     <div class="row align-items-center g-3 reveal-up">
@@ -203,7 +306,16 @@
       web_inc_5: "Guidance and support after launch",
       web_bottom_t: "Ready for a website that works as hard as you do?",
       web_bottom_d: "Tell us about your business and we'll show you what a focused, professional website could look like.",
-      web_bottom_btn: "Book Your Free Consultation"
+      web_bottom_btn: "Book Your Free Consultation",
+      web_faq_title: "Frequently Asked Questions",
+      web_faq_1q: "How long does it take to get a website?",
+      web_faq_1a: "Timelines vary by scope. A fast, focused site can launch in as little as 72 hours (see Launch 72H); most standard multi-page websites take longer depending on how ready your content is.",
+      web_faq_2q: "What pages are included?",
+      web_faq_2a: "A typical website includes home, services, about and contact pages, built mobile-responsive with clear calls to action and on-page SEO basics.",
+      web_faq_3q: "Do I need to provide the content myself?",
+      web_faq_3a: "You provide your business details, services and any photos you have. We handle structure, copy guidance, design and the technical setup.",
+      web_faq_4q: "What happens after the site launches?",
+      web_faq_4a: "You get guidance and support after launch, and pages can be extended later with more content, SEO work or additional features as your business grows."
     },
     fr: {
       web_h1: "Des sites web professionnels qui inspirent confiance et convertissent.",
@@ -232,7 +344,16 @@
       web_inc_5: "Accompagnement et soutien après le lancement",
       web_bottom_t: "Prêt pour un site web qui travaille autant que vous?",
       web_bottom_d: "Parlez-nous de votre entreprise et nous vous montrerons à quoi pourrait ressembler un site professionnel et ciblé.",
-      web_bottom_btn: "Réservez votre consultation gratuite"
+      web_bottom_btn: "Réservez votre consultation gratuite",
+      web_faq_title: "Questions fréquentes",
+      web_faq_1q: "Combien de temps faut-il pour obtenir un site web?",
+      web_faq_1a: "Les délais varient selon l'ampleur du projet. Un site simple et ciblé peut être lancé en aussi peu que 72 heures (voir Lancement 72H); la plupart des sites multi-pages standards prennent plus de temps selon l'état de préparation de votre contenu.",
+      web_faq_2q: "Quelles pages sont incluses?",
+      web_faq_2a: "Un site web typique comprend les pages accueil, services, à propos et contact, conçues pour les mobiles avec des appels à l'action clairs et les bases du référencement sur page.",
+      web_faq_3q: "Dois-je fournir le contenu moi-même?",
+      web_faq_3a: "Vous fournissez les informations de votre entreprise, vos services et les photos que vous avez. Nous gérons la structure, l'orientation des textes, le design et la mise en place technique.",
+      web_faq_4q: "Que se passe-t-il après le lancement du site?",
+      web_faq_4a: "Vous bénéficiez d'un accompagnement et d'un soutien après le lancement, et les pages peuvent être étendues plus tard avec plus de contenu, du référencement ou des fonctionnalités additionnelles à mesure que votre entreprise grandit."
     },
     es: {
       web_h1: "Sitios web profesionales que generan confianza y convierten.",
@@ -261,7 +382,16 @@
       web_inc_5: "Acompañamiento y soporte después del lanzamiento",
       web_bottom_t: "¿Listo para un sitio web que trabaje tan duro como tú?",
       web_bottom_d: "Cuéntanos sobre tu negocio y te mostraremos cómo podría verse un sitio profesional y enfocado.",
-      web_bottom_btn: "Agenda tu consulta gratuita"
+      web_bottom_btn: "Agenda tu consulta gratuita",
+      web_faq_title: "Preguntas frecuentes",
+      web_faq_1q: "¿Cuánto tiempo toma tener un sitio web?",
+      web_faq_1a: "Los tiempos varían según el alcance. Un sitio rápido y enfocado puede lanzarse en tan solo 72 horas (ver Lanzamiento 72H); la mayoría de los sitios multi-página estándar toman más tiempo según qué tan listo esté tu contenido.",
+      web_faq_2q: "¿Qué páginas incluye?",
+      web_faq_2a: "Un sitio web típico incluye páginas de inicio, servicios, nosotros y contacto, construidas para móviles con llamados a la acción claros y bases de SEO en la página.",
+      web_faq_3q: "¿Necesito proporcionar el contenido yo mismo?",
+      web_faq_3a: "Tú aportas los datos de tu negocio, tus servicios y las fotos que tengas. Nosotros nos encargamos de la estructura, la guía de textos, el diseño y la configuración técnica.",
+      web_faq_4q: "¿Qué pasa después de que el sitio se publica?",
+      web_faq_4a: "Recibes acompañamiento y soporte después del lanzamiento, y las páginas se pueden ampliar más adelante con más contenido, trabajo de SEO o funciones adicionales a medida que tu negocio crece."
     }
   });
   mountSharedLayout("services", "digital");
