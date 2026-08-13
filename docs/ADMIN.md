@@ -11,6 +11,10 @@ separate ungated pages like the old `leadgen-admin.html`.
   Old bookmarks to that URL redirect here automatically.
 - **`/admin/blog`** — write/validate/publish blog posts, rendered live
   from Airtable at `/blog/<slug>`. See `blog/README.md`.
+- **`/admin/analytics`** — traffic summary (pageviews, top pages,
+  referrers, countries, devices) from Vercel Web Analytics. Needs two
+  one-time setup steps that can't be done from code — see
+  "Analytics setup" below.
 
 ## How the gate works
 
@@ -29,6 +33,24 @@ The password comes **only** from the `ADMIN_PASSWORD` environment
 variable — there is no hardcoded fallback in code. Set it in Vercel
 (Project Settings → Environment Variables) for Production, Preview, and
 Development. Changing it there takes effect on the next deploy.
+
+## Analytics setup
+
+`/admin/analytics` reads from Vercel Web Analytics, which needs two
+manual steps neither code nor this repo's CI can do for you:
+
+1. **Enable Web Analytics for the project** — Vercel dashboard →
+   Project Settings → Analytics → Enable. Until this is on,
+   `js/components.js`'s tracking script silently no-ops and
+   `/admin/analytics` shows a setup notice instead of data.
+2. **Create a `VERCEL_TOKEN`** — vercel.com/account/tokens → Create,
+   scoped to this team → add it to Vercel's Environment Variables for
+   this project. `admin/lib/handlers/analytics.mjs` uses it to call
+   Vercel's REST API server-side (the Vercel MCP tooling used to build
+   this feature is only available in an agent/developer session, not
+   to code running on the live site — the deployed handler needs its
+   own credential). The project ID and team ID are hardcoded in that
+   file (not secrets, just IDs).
 
 ## Adding another tool under /admin later
 

@@ -14,6 +14,7 @@ import { handleBlogList } from "../../admin/lib/handlers/blog-list.mjs";
 import { handleBlogContent } from "../../admin/lib/handlers/blog-content.mjs";
 import { handleBlogSave } from "../../admin/lib/handlers/blog-save.mjs";
 import { handleBlogValidate } from "../../admin/lib/handlers/blog-validate.mjs";
+import { handleAnalytics } from "../../admin/lib/handlers/analytics.mjs";
 
 function extractPath(query) {
   const raw = query?.["...path"] ?? query?.path;
@@ -49,6 +50,9 @@ export default async function handler(req, res) {
   }
   if (route === "blog/validate") {
     return handleBlogValidate(req, res);
+  }
+  if (route === "analytics") {
+    return handleAnalytics(req, res);
   }
 
   return res.status(404).json({ ok: false, error: "Not found" });

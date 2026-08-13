@@ -53,6 +53,10 @@
     {
       "source": "/admin/blog",
       "destination": "/admin/blog.html"
+    },
+    {
+      "source": "/admin/analytics",
+      "destination": "/admin/analytics.html"
     }
   ],
   "redirects": [
