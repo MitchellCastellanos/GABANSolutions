@@ -1,15 +1,17 @@
 # Investigación: estructura de categorías de Odoo aplicada a GABAN
 
-**Fecha:** agosto 2026
-**Objetivo:** investigar cómo Odoo organiza su tienda de apps (apps.odoo.com) en un formato tipo "shopping cart", identificar qué de eso ya ofrece GABAN, y proponer una estructura de catálogo más amigable para clientes y mejor para SEO.
+**Fecha:** agosto 2026 (v2 — corregida con información real del negocio)
+**Objetivo:** investigar cómo Odoo organiza su tienda de apps (apps.odoo.com) en un formato tipo "shopping cart", identificar qué de eso ya construyó GABAN en proyectos reales, y proponer una estructura de catálogo más amigable para clientes y mejor para SEO.
 
 Maqueta visual interactiva de la propuesta: ver artefacto publicado en la conversación ("Catálogo GABAN").
+
+> **Corrección sobre la v1 de este documento:** la primera versión trataba a FieldOS como un producto "disponible" equivalente a GarageOS. **FieldOS no existe** — solo GarageOS es real. A cambio, GarageOS ya cubre más terreno del que el sitio muestra hoy (finanzas completas, envío de campañas de email), y dos capacidades probadas en proyectos de cliente reales — e-commerce con pagos/POS y un admin de catálogo con código de barras — no se habían detectado porque solo viven dentro de `portfolio.html`, desconectadas de la oferta de venta.
 
 ---
 
 ## 1. Cómo categoriza Odoo su tienda de apps
 
-Odoo vende 80+ aplicaciones agrupadas en 8 categorías. Cada categoría agrupa varias "apps" (subcategorías/productos individuales) que el cliente puede activar por separado, como items en un carrito:
+Odoo vende 80+ aplicaciones agrupadas en 8 categorías, self-serve: el cliente activa la app y se configura solo, sin nadie construyéndosela a medida.
 
 | # | Categoría | Apps incluidas |
 |---|-----------|-----------------|
@@ -26,54 +28,83 @@ Fuentes: [apps.odoo.com/apps](https://apps.odoo.com/apps), [odoo.com/page/all-ap
 
 ---
 
-## 2. Qué de esto ya hace GABAN hoy
+## 2. Qué construyó GABAN realmente (diagnóstico corregido)
 
-Basado en el contenido actual de `digital.html`, `software.html`, `automations.html`, `garageos.html` y `fieldos.html`:
+Basado en GarageOS (el único producto real de software), el e-commerce de **Reptiles Concept** (catálogo bilingüe, checkout, pagos Stripe/Klarna, cuentas de cliente, sync en tiempo real con terminal Clover POS, ledger financiero, campañas de email — ver `portfolio.html`), y el admin de **RCR Barbería** (catálogo estático, generador de códigos de barra, finanzas y transacciones diarias — sin documentar aún en el sitio):
 
 | Categoría Odoo | Estado en GABAN | Dónde vive hoy |
 |---|---|---|
 | Sitios web | ✅ Cubierto | Núcleo de GABAN Digital: Websites, Landing Pages, Launch 72H, Grow Package |
-| Servicios (campo) | ✅ Cubierto | FieldOS = Servicio de Campo. Citas y Planificación dentro de FieldOS/GarageOS |
-| Ventas (CRM) | 🟡 Parcial | Clientes/vehículos/propiedades embebidos en GarageOS/FieldOS; no se vende como CRM aparte |
-| Finanzas | 🟡 Parcial | Cotización → factura embebido en GarageOS/FieldOS; no existe como producto standalone |
-| Marketing | 🟡 Parcial | Automatizaciones ligeras, flujo de reseñas y smart links tocan el tema, pero no hay email/SMS marketing como producto |
-| Recursos Humanos | ⚪ No cubierto | Solo un rastro en "Horario de equipo" de FieldOS |
-| Productividad | ⚪ No cubierto | No se ofrece como producto (uso interno, no oferta) |
-| Cadena de suministro | ⚪ No aplica | Fuera del enfoque de GABAN (negocios de servicio local, no manufactura/inventario) |
+| Sitios web → eCommerce | ✅ Probado | Reptiles Concept. Solo existe como caso de portafolio, no como servicio ofertado |
+| Finanzas | ✅ Probado | GarageOS ya factura y hace finanzas completas; Reptiles Concept tiene ledger unificado con cálculo de impuestos |
+| Marketing → Email Marketing | ✅ Probado | GarageOS y Reptiles Concept ya envían campañas de email reales, no solo "automatización ligera" |
+| Ventas → CRM | 🟡 Parcial | Base de clientes embebida en GarageOS y Reptiles Concept; no se vende como CRM aparte |
+| Ventas → TPV / Inventario | 🟡 Parcial | RCR: catálogo + código de barras + transacciones diarias. Reptiles Concept: sync con Clover. Ninguno se llama "punto de venta" en el sitio |
+| Servicios → Citas | 🟡 Parcial | Citas reales dentro de GarageOS. "Servicio de campo" (FieldOS) es concepto, no producto |
+| Recursos Humanos / Productividad | ⚪ No cubierto | Sin cambios; no es prioridad para el modelo actual |
 
-**Nota:** SEO Local + Perfil de Google Business + Reseñas es una fortaleza de GABAN que Odoo no cataloga de la misma forma — vale la pena darle su propia categoría en vez de esconderla dentro de "Marketing".
-
----
-
-## 3. Propuesta de catálogo GABAN
-
-En lugar de dos divisiones planas (Digital / Software) con un grid de iconos, aplicar el mismo principio de Odoo al tamaño real de GABAN: **categoría → subcategoría → tarjeta de servicio**, donde cada tarjeta puede convertirse en su propia página.
-
-1. **🌐 Presencia Digital** — *Disponible*: Sitios web, Landing Pages, SEO Local, Perfil de Google Business, Flujo de Reseñas, Smart Links
-2. **⚙️ Automatización y Seguimiento** — *Disponible*: Formularios y enrutamiento, Notificaciones, Secuencias de seguimiento, Integraciones · *Próximamente*: Email marketing, SMS marketing
-3. **🧰 Operación de Campo y Taller** — *Disponible*: GarageOS, FieldOS, Citas y calendario, Rutas y recurrencias, Historial y recordatorios
-4. **👥 Clientes y Ventas (CRM)** — *Por extraer*: hoy embebido en GarageOS/FieldOS; falta venderlo como producto standalone para cualquier negocio local
-5. **💳 Facturación y Cobros** — *Por extraer*: cotización → factura ya existe embebido; falta standalone + pagos en línea
-6. **🗂️ Equipo y Operación Interna** — *Fase 3, bajo demanda*: horario de equipo ya existe; ausencias/aprobaciones son ideas, no roadmap
+**El patrón importa más que cada fila:** GABAN ya construyó, en al menos un proyecto real, piezas de 6 de las 8 categorías de Odoo — solo que quedaron enterradas dentro de tres entregas de cliente en vez de mostrarse como capacidades propias.
 
 ---
 
-## 4. Por qué esta estructura ayuda al SEO
+## 3. Posicionamiento: Odoo es self-serve, GABAN es a la medida
 
-- **Más puertas de entrada (long-tail):** cada subcategoría = su propia URL indexable = su propia búsqueda ganada ("software para talleres mecánicos Montreal", "CRM para negocios locales Canadá"), en vez de competir todas por las mismas 3 palabras en una sola página.
-- **Autoridad temática:** la jerarquía categoría → subcategoría → servicio le muestra a Google cómo se relaciona todo, reforzando las páginas entre sí.
-- **Datos estructurados:** breadcrumbs + schema.org (`Service`/`ItemList`) por categoría habilitan resultados enriquecidos.
-- **Menos rebote:** un catálogo navegable como tienda reduce fricción — el visitante encuentra su categoría y decide más rápido que leyendo un párrafo largo.
+En Odoo el cliente se auto-configura; si algo no encaja, se adapta él al software. En GABAN nadie se auto-configura nada: cada capacidad nació de resolverle algo exacto a un negocio real. Eso es ventaja de venta, no limitación — no se vende "un módulo de CRM", se enseña "así resolvimos el seguimiento de clientes para RCR" y se ofrece lo mismo adaptado.
 
-Hoy `digital.html` es una sola página con 8 tarjetas de servicio y solo 3 tienen link propio (`websites.html`, `landing-pages.html`, `seo.html`, `automations.html`); el resto (Google Business Profile, Review flow, Smart links, Consulting) no tiene página ni URL indexable propia.
+Esto cambia el catálogo: cada tarjeta no lleva un botón de "Instalar", lleva **"Ver caso real"** + **"Cotizar para tu negocio"**. El catálogo funciona como embudo hacia la cita, no como tienda de autoservicio.
 
 ---
 
-## 5. Roadmap sugerido
+## 4. Propuesta de catálogo GABAN (con prueba real por categoría)
 
-1. **Fase 1 — Reetiquetar:** reorganizar `services.html` / `digital.html` en las categorías de arriba, sin construir nada nuevo, dando URL propia a cada subcategoría que hoy no la tiene.
-2. **Fase 2 — Extraer CRM y Facturación:** ofrecer como producto propio lo que ya funciona dentro de GarageOS/FieldOS, vendible a negocios locales que no necesiten el paquete vertical completo.
-3. **Fase 3 — Evaluar Marketing como oferta:** envolver las automatizaciones actuales en un servicio de email/SMS marketing con nombre y precio propio, si hay demanda.
-4. **Fase 4 — Equipo interno, solo si lo piden:** horarios, ausencias y aprobaciones quedan en el radar hasta que un cliente de FieldOS/GarageOS lo solicite directamente.
+1. **🌐 Presencia Digital** — *Negocio principal*: Sitios web, Landing Pages, SEO Local, Perfil de Google Business, Flujo de Reseñas, Smart Links
+2. **🛒 E-commerce a Medida** — *Ya lo construimos (Reptiles Concept)*: catálogo bilingüe, checkout + pagos, cuentas de cliente, sync POS en tiempo real, impuestos automáticos
+3. **🏷️ Punto de Venta y Catálogo** — *Ya lo construimos (RCR)*: catálogo estático, código de barras, transacciones diarias, segmento de finanzas — **caso sin documentar aún**
+4. **🧾 Finanzas y Facturación** — *Ya lo construimos*: cotización → factura y finanzas completas (GarageOS), ledger unificado (Reptiles) · *Por extraer*: facturación standalone
+5. **📣 Marketing y Campañas de Email** — *Ya lo construimos*: envío de campañas real (GarageOS/Reptiles), formularios, seguimiento · *Concepto*: SMS marketing
+6. **🧰 Software a Medida por Industria** — *Negocio principal*: GarageOS es el producto real; "el siguiente vertical" se vende como patrón replicable, no como FieldOS ya construido
+7. **👥 Clientes y Ventas (CRM)** — *Por extraer*: embebido en GarageOS y Reptiles Concept; falta venderlo standalone
+8. **🗂️ Equipo y Operación Interna** — *Fase futura, bajo demanda*: horario, ausencias — ideas, no roadmap
 
-Este documento y la maqueta visual son un punto de partida para decidir el alcance de la Fase 1 antes de tocar el sitio en vivo.
+---
+
+## 5. Quick wins (bajo esfuerzo, sin construir nada nuevo)
+
+1. **Documentar el admin de RCR en el portafolio** — esfuerzo bajo, impacto medio. Ya existe la plantilla (`docs/NEW_PROJECT_SHOWCASE.md`); es solo escribir el caso.
+2. **Convertir Reptiles Concept de "caso de estudio" a "servicio vendible"** — esfuerzo bajo-medio, impacto alto. Enlazarlo desde `digital.html`/`software.html`, no solo dejarlo en `portfolio.html`.
+3. **Corregir el estatus de FieldOS** — esfuerzo bajo, impacto alto. El badge "Founder clients / demo available" en `software.html` aplica igual a GarageOS (real) que a FieldOS (concepto); si un lead agenda esperando ver FieldOS, no hay nada que mostrar. Cambiar a algo tipo "Próxima industria — cuéntanos tu caso".
+4. **Subirle a la descripción real de GarageOS** — esfuerzo bajo, impacto medio. Hoy no menciona explícitamente finanzas completas ni campañas de email, escondidas dentro de "Payments-ready workflow".
+5. **Renombrar "GABAN Software: SaaS Platforms"** — esfuerzo bajo, impacto medio. "SaaS" suena a auto-configuración estilo Odoo; el modelo real es "te lo construimos y lo operamos contigo".
+
+---
+
+## 6. Lenguaje: del término técnico al beneficio del dueño de negocio
+
+| Categoría técnica | Cómo lo dice Odoo | Cómo debería sonar en GABAN |
+|---|---|---|
+| CRM | Customer Relationship Management | "Nunca más pierdas el rastro de un cliente" |
+| Facturación / Finanzas | Invoicing & Accounting | "Cobra rápido, sin Excel ni papeles sueltos" |
+| Email Marketing | Email Marketing Automation | "Que tus clientes vuelvan solos" |
+| eCommerce | eCommerce Platform | "Vende en línea mientras duermes" |
+| POS / Inventario | Point of Sale + Inventory | "Tu mostrador, ordenado y con código de barras" |
+| Servicio de campo | Field Service Management | "Tu equipo en la calle, coordinado desde el celular" |
+| Citas | Appointments / Scheduling | "Que agenden solos, sin llamadas de ida y vuelta" |
+
+---
+
+## 7. Por qué esta estructura ayuda al SEO
+
+- **Más puertas de entrada (long-tail):** hoy GABAN no tiene página para búsquedas como "tienda en línea sincronizada con caja Clover" o "software de punto de venta con código de barras" — categorías nuevas que antes no existían en el sitio.
+- **Autoridad temática:** la jerarquía categoría → subcategoría → servicio le muestra a Google cómo se relaciona todo.
+- **Prueba social por capacidad:** un enlace directo a "Ver caso real: Reptiles Concept" desde una página de servicio funciona como reseña, y refuerza el enlazado interno.
+- **Menos rebote:** un catálogo navegable como tienda reduce fricción.
+
+---
+
+## 8. Roadmap sugerido
+
+1. **Quick wins primero** (sección 5) — sin construir nada nuevo.
+2. **Reetiquetar:** reorganizar `services.html`/`digital.html`/`software.html` en las categorías de la sección 4, con URL propia por subcategoría.
+3. **Extraer CRM y Facturación** como producto propio, vendible fuera de un vertical completo.
+4. **Evaluar Marketing como oferta** con nombre y precio propio, si hay demanda.
+5. **Equipo interno, solo si lo piden** — horarios y ausencias quedan en el radar, no en el roadmap.
