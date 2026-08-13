@@ -136,16 +136,24 @@ export function suggestCategoryNationalTopics() {
 
 // General GABAN-service topics, not tied to one category — top-of-
 // funnel content about what GABAN actually sells (websites, local
-// SEO, automations, GarageOS/FieldOS).
+// SEO, automations, GarageOS, e-commerce, booking, payments). Kept in
+// sync by hand with the real catalog in digital.html/software.html —
+// see docs/ODOO_CATEGORY_RESEARCH.md for the catalog rationale.
+// "FieldOS" was removed: it's not a real product (see that doc's v2
+// correction), only GarageOS is.
 export const GENERAL_TOPICS = [
   { title: "Why Every Local Business in Canada Needs a Real Website in 2026 (Not Just a Google Business Profile)", kind: "general" },
   { title: "Local SEO 101: How Small Businesses Across Canada Get Found on Google Maps", kind: "general" },
   { title: "What Business Automation Actually Looks Like for a Small Local Business", kind: "general" },
   { title: "How Much Should a Small Business Website Cost in Canada? A Practical Guide", kind: "general" },
   { title: "GarageOS: Why Auto Repair Shops Are Ditching Spreadsheets for Real Shop Management Software", kind: "general" },
-  { title: "FieldOS: Scheduling, Quotes, and Invoicing for Field Service Businesses That Outgrew Paper", kind: "general" },
   { title: "Google Business Profile vs. a Real Website: Why Local Businesses Need Both", kind: "general" },
-  { title: "How to Get More Google Reviews Without Being Pushy", kind: "general" }
+  { title: "How to Get More Google Reviews Without Being Pushy", kind: "general" },
+  { title: "Stop Paying for Calendly: Why Small Businesses Are Switching to Their Own Booking System", kind: "general" },
+  { title: "How to Take Deposits and Get Paid Online Without Opening a Full Online Store", kind: "general" },
+  { title: "What a Custom E-Commerce Build Actually Includes (And When a Template Store Isn't Enough)", kind: "general" },
+  { title: "Beyond a Link in Bio: What a Real Smart Link Page Can Do for a Local Business", kind: "general" },
+  { title: "Why 'Just Get a Website' Isn't Enough Advice Anymore for Small Businesses in Canada", kind: "general" }
 ];
 
 /** Combined list for a CLI --list picker: category x city topics, then category x Canada topics, then general ones. */

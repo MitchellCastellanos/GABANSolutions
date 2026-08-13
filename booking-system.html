@@ -57,6 +57,47 @@
       }
   }
   </script>
+  <script type="application/ld+json">
+  {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "@id": "https://software.gabansolutions.ca/booking-system.html#faq",
+      "mainEntity": [
+          {
+              "@type": "Question",
+              "name": "How is pricing determined?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "There's no fixed self-serve tier. It's quoted based on your business, set up with your own branding, hours and booking rules during a consultation."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "Is this really different from Calendly or Square Appointments?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. It's self-hosted on your own site, so there's no per-booking cost or third-party monthly fee stacking up over time."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "What happens when a client books?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "They pick an open slot, get an instant confirmation with a calendar invite, and your calendar is automatically protected from double-booking."
+              }
+          },
+          {
+              "@type": "Question",
+              "name": "Is this a new, untested system?",
+              "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No, it's the same booking engine already running GABAN's own consultation bookings in production, reconfigured for your business."
+              }
+          }
+      ]
+  }
+  </script>
 </head>
 <body>
 
@@ -187,6 +228,68 @@
   </div>
 </section>
 
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold" data-i18n="bk_faq_title">Frequently Asked Questions</h2>
+    </div>
+
+    <div class="accordion" id="faqBooking">
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#bkfaq1" data-i18n="bk_faq_1q">
+            How is pricing determined?
+          </button>
+        </h2>
+        <div id="bkfaq1" class="accordion-collapse collapse show" data-bs-parent="#faqBooking">
+          <div class="accordion-body" data-i18n="bk_faq_1a">
+            There's no fixed self-serve tier. It's quoted based on your business, set up with your own branding, hours and booking rules during a consultation.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bkfaq2" data-i18n="bk_faq_2q">
+            Is this really different from Calendly or Square Appointments?
+          </button>
+        </h2>
+        <div id="bkfaq2" class="accordion-collapse collapse" data-bs-parent="#faqBooking">
+          <div class="accordion-body" data-i18n="bk_faq_2a">
+            Yes. It's self-hosted on your own site, so there's no per-booking cost or third-party monthly fee stacking up over time.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bkfaq3" data-i18n="bk_faq_3q">
+            What happens when a client books?
+          </button>
+        </h2>
+        <div id="bkfaq3" class="accordion-collapse collapse" data-bs-parent="#faqBooking">
+          <div class="accordion-body" data-i18n="bk_faq_3a">
+            They pick an open slot, get an instant confirmation with a calendar invite, and your calendar is automatically protected from double-booking.
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bkfaq4" data-i18n="bk_faq_4q">
+            Is this a new, untested system?
+          </button>
+        </h2>
+        <div id="bkfaq4" class="accordion-collapse collapse" data-bs-parent="#faqBooking">
+          <div class="accordion-body" data-i18n="bk_faq_4a">
+            No, it's the same booking engine already running GABAN's own consultation bookings in production, reconfigured for your business.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section bg-dark text-white">
   <div class="container">
     <div class="row align-items-center g-3 reveal-up">
@@ -236,7 +339,16 @@
       bk_pos_p: "We set it up with your branding, your hours and your booking rules — the same engine GABAN already runs in production, adapted to how your business actually works.",
       bk_bottom_t: "See it running with your own hours.",
       bk_bottom_d: "Tell us your schedule and how clients book you today — we'll show you what it looks like with your business in it.",
-      bk_bottom_btn: "Book Your Free Consultation"
+      bk_bottom_btn: "Book Your Free Consultation",
+      bk_faq_title: "Frequently Asked Questions",
+      bk_faq_1q: "How is pricing determined?",
+      bk_faq_1a: "There's no fixed self-serve tier. It's quoted based on your business, set up with your own branding, hours and booking rules during a consultation.",
+      bk_faq_2q: "Is this really different from Calendly or Square Appointments?",
+      bk_faq_2a: "Yes. It's self-hosted on your own site, so there's no per-booking cost or third-party monthly fee stacking up over time.",
+      bk_faq_3q: "What happens when a client books?",
+      bk_faq_3a: "They pick an open slot, get an instant confirmation with a calendar invite, and your calendar is automatically protected from double-booking.",
+      bk_faq_4q: "Is this a new, untested system?",
+      bk_faq_4a: "No, it's the same booking engine already running GABAN's own consultation bookings in production, reconfigured for your business."
     },
     fr: {
       bk_h1: "Votre propre système de réservation — sans frais mensuel à un outil tiers.",
@@ -266,7 +378,16 @@
       bk_pos_p: "Nous le configurons avec votre image de marque, vos heures et vos règles de réservation — le même moteur que GABAN utilise déjà en production, adapté à votre façon de travailler.",
       bk_bottom_t: "Voyez-le fonctionner avec vos propres heures.",
       bk_bottom_d: "Dites-nous votre horaire et comment vos clients réservent aujourd'hui — nous vous montrerons à quoi ça ressemble avec votre entreprise dedans.",
-      bk_bottom_btn: "Réservez votre consultation gratuite"
+      bk_bottom_btn: "Réservez votre consultation gratuite",
+      bk_faq_title: "Questions fréquentes",
+      bk_faq_1q: "Comment le prix est-il déterminé?",
+      bk_faq_1a: "Il n'y a pas de palier fixe en libre-service. C'est sur devis selon votre entreprise, configuré avec votre image de marque, vos heures et vos règles de réservation lors d'une consultation.",
+      bk_faq_2q: "Est-ce vraiment différent de Calendly ou Square Appointments?",
+      bk_faq_2a: "Oui. C'est hébergé sur votre propre site, donc aucun coût par réservation ni frais mensuel à un tiers qui s'accumule avec le temps.",
+      bk_faq_3q: "Que se passe-t-il quand un client réserve?",
+      bk_faq_3a: "Il choisit un créneau libre, reçoit une confirmation instantanée avec une invitation calendrier, et votre agenda est automatiquement protégé contre les doubles réservations.",
+      bk_faq_4q: "Est-ce un système nouveau et non éprouvé?",
+      bk_faq_4a: "Non, c'est le même moteur de réservation qui gère déjà les consultations de GABAN en production, reconfiguré pour votre entreprise."
     },
     es: {
       bk_h1: "Tu propio sistema de citas — sin cuota mensual a una app de terceros.",
@@ -296,7 +417,16 @@
       bk_pos_p: "Lo configuramos con tu marca, tus horarios y tus reglas de reserva — el mismo motor que GABAN ya opera en producción, adaptado a cómo trabaja tu negocio.",
       bk_bottom_t: "Míralo funcionando con tus propios horarios.",
       bk_bottom_d: "Cuéntanos tu horario y cómo agendan tus clientes hoy — te mostramos cómo se vería con tu negocio adentro.",
-      bk_bottom_btn: "Agenda tu consulta gratuita"
+      bk_bottom_btn: "Agenda tu consulta gratuita",
+      bk_faq_title: "Preguntas frecuentes",
+      bk_faq_1q: "¿Cómo se determina el precio?",
+      bk_faq_1a: "No hay un plan fijo de autoservicio. Se cotiza según tu negocio, configurado con tu marca, tus horarios y tus reglas de reserva durante una consulta.",
+      bk_faq_2q: "¿Es realmente diferente de Calendly o Square Appointments?",
+      bk_faq_2a: "Sí. Corre en tu propio sitio, así que no se acumula un costo por cada cita ni una cuota mensual a terceros.",
+      bk_faq_3q: "¿Qué pasa cuando un cliente agenda?",
+      bk_faq_3a: "Elige un horario disponible, recibe una confirmación instantánea con invitación de calendario, y tu agenda queda protegida automáticamente contra citas duplicadas.",
+      bk_faq_4q: "¿Es un sistema nuevo y sin probar?",
+      bk_faq_4a: "No, es el mismo motor de reservas que ya opera las consultas de GABAN en producción, reconfigurado para tu negocio."
     }
   });
   mountSharedLayout("products", "software");
