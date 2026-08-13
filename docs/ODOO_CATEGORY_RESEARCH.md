@@ -5,11 +5,13 @@
 
 Maqueta visual interactiva de la propuesta: ver artefacto publicado en la conversación ("Catálogo GABAN") — actualizada en esta misma revisión con todo lo de abajo.
 
+> **Estado de implementación:** Fase 0 (badge de FieldOS) y Fase 1 (los 7 quick wins, excepto los dos que requieren assets pendientes — ver nota) ya están implementados en el sitio, junto con `booking-system.html` como piloto de Fase 2 (Sistema de Citas), enlazado desde `software.html`. Documentar Taller Arquitectura Regional y Montreal Spider Co. como casos de portafolio completos queda pendiente de recibir sus URLs en vivo y capturas de pantalla.
+
 > **Corrección v2:** la v1 trataba a FieldOS como un producto "disponible" equivalente a GarageOS. **FieldOS no existe** — solo GarageOS es real. A cambio, GarageOS ya cubre más terreno del que el sitio muestra hoy, y dos capacidades probadas en proyectos de cliente reales no se habían detectado porque solo viven dentro de `portfolio.html`, desconectadas de la oferta de venta.
 >
 > **Corrección v3:** una auditoría directa de los 7 repos de GitHub confirma y profundiza lo anterior, y suma dos proyectos que no se habían considerado:
 > - El repo real de "GarageOS" se llama **`Mecanico_Management`** en GitHub. Su alcance es mayor al documentado: genera **facturas PDF con numeración automática y cálculo de TPS/TVQ** (impuestos de Quebec), y sus recordatorios de citas/mantenimiento son **multilingües (ES/EN/FR) por email y SMS**, con confirmaciones y cancelaciones automáticas.
-> - **Montreal Spider Co.** — e-commerce bilingüe para un criador de tarántulas, con operación de **consignación con distribuidores, inventario por ejemplar, ubicaciones de almacén y códigos QR**. Storefront completo, pero pagos/autenticación/persistencia de órdenes **aún no están conectados a producción** — es capacidad construida, no capacidad probada en vivo como GarageOS/RCR/Reptiles Concept.
+> - **Montreal Spider Co.** — e-commerce bilingüe para un criador de tarántulas, con operación de **consignación con distribuidores, inventario por ejemplar, ubicaciones de almacén y códigos QR**. *Actualización: ya está en producción/live* — se corrige el estatus "construido, sin conectar" de la auditoría original.
 > - **Taller Arquitectura Regional** — sitio institucional para un estudio de arquitectura. Abre un tipo de cliente (consultoría/estudio de alto valor) que hoy no aparece en ningún lado del portafolio de GABAN.
 > - El módulo real que se construyó para RCR es más amplio de lo que su nombre de marketing sugiere — ver nota en la sección 2.
 
@@ -36,16 +38,16 @@ Fuentes: [apps.odoo.com/apps](https://apps.odoo.com/apps), [odoo.com/page/all-ap
 
 ## 2. Qué construyó GABAN realmente (diagnóstico corregido)
 
-Basado en **Mecanico_Management** (el repo real detrás de "GarageOS"), el e-commerce de **Reptiles Concept** (catálogo bilingüe, checkout, pagos Stripe/Klarna, cuentas de cliente, sync en tiempo real con terminal Clover POS, ledger financiero, campañas de email), el módulo de **RCR Barbería** (Firebase/Firestore: catálogo de productos, transacciones, generación y lectura de QR, generación de códigos de barra), y **Montreal Spider Co.** (e-commerce bilingüe + operación de consignación con distribuidores, construido pero con integraciones de producción pendientes):
+Basado en **Mecanico_Management** (el repo real detrás de "GarageOS"), el e-commerce de **Reptiles Concept** (catálogo bilingüe, checkout, pagos Stripe/Klarna, cuentas de cliente, sync en tiempo real con terminal Clover POS, ledger financiero, campañas de email), el módulo de **RCR Barbería** (Firebase/Firestore: catálogo de productos, transacciones, generación y lectura de QR, generación de códigos de barra), y **Montreal Spider Co.**, ya en producción (e-commerce bilingüe + operación de consignación con distribuidores, inventario por ejemplar, ubicaciones de almacén, códigos QR):
 
 | Categoría Odoo | Estado en GABAN | Dónde vive hoy |
 |---|---|---|
 | Sitios web | ✅ Cubierto | Núcleo de GABAN Digital: Websites, Landing Pages, Launch 72H, Grow Package |
-| Sitios web → eCommerce | ✅ Probado | Reptiles Concept (producción). Montreal Spider Co. (construido, integraciones pendientes). Ninguno se ofrece como servicio, solo como caso de portafolio |
+| Sitios web → eCommerce | ✅ Probado, en producción | Reptiles Concept y Montreal Spider Co., ambos en vivo. Ninguno se ofrece como servicio, solo como caso de portafolio |
 | Finanzas | ✅ Probado, más fuerte de lo pensado | Mecanico_Management genera **facturas PDF con numeración automática y TPS/TVQ**, más métricas de ingresos/facturas pendientes y documentos para el contador. Reptiles Concept tiene ledger unificado con cálculo de impuestos |
 | Marketing → Email Marketing | ✅ Probado | Mecanico_Management y Reptiles Concept ya envían campañas/recordatorios reales — Mecanico_Management además es **multilingüe (ES/EN/FR)** por email y SMS |
 | Ventas → CRM | 🟡 Parcial | Base de clientes embebida en Mecanico_Management y Reptiles Concept; búsqueda por nombre/correo/teléfono ya existe. No se vende como CRM aparte |
-| Ventas → TPV / Inventario | 🟡 Parcial (RCR en producción) / ⚪ Construido sin conectar (Montreal Spider Co.) | RCR: catálogo + código de barras + QR + transacciones, en producción. Montreal Spider Co.: inventario por ejemplar, ubicaciones de almacén, consignación con socios, propuestas de reabastecimiento — construido, no en producción todavía |
+| Ventas → TPV / Inventario | 🟡 Parcial, ambos en producción | RCR: catálogo + código de barras + QR + transacciones. Montreal Spider Co.: inventario por ejemplar, ubicaciones de almacén, consignación con socios, propuestas de reabastecimiento. Ninguno se vende como producto de inventario/POS aparte |
 | Servicios → Citas | 🟡 Parcial | Citas reales dentro de Mecanico_Management, con confirmaciones/cancelaciones automáticas. "Servicio de campo" (FieldOS) es concepto, no producto |
 | Recursos Humanos / Productividad | ⚪ No cubierto | Sin cambios; no es prioridad para el modelo actual |
 
@@ -102,7 +104,7 @@ A diferencia de la sección 5 (reordenar/corregir lo que ya se vende), esto son 
 
 **Idea grande, no quick win:** el motor de `leadgen/` (prospección en Google Maps, scoring, propuesta personalizada) hoy es "herramienta interna" según su propio README. Ofrecerlo como servicio de generación de leads a negocios B2B sería un producto nuevo real — no una reconfiguración de algo existente, así que no cuenta como bajo esfuerzo, pero vale la pena anotarlo.
 
-**Otra idea para el radar, no quick win todavía:** Montreal Spider Co. demuestra inventario con seguimiento por unidad + QR + consignación con distribuidores — un patrón que podría convertirse en oferta para negocios de consignación (arte, plantas, coleccionables). Pero como sus integraciones de pago/autenticación/persistencia todavía no están conectadas a producción, no califica como "ya lo construimos y funciona" igual que RCR o Reptiles Concept — primero necesita salir en vivo para su propio cliente antes de revenderse como capacidad de GABAN.
+**Idea para el radar, ahora más cerca de quick win:** Montreal Spider Co. ya está en producción, así que su inventario con seguimiento por unidad + QR + consignación con distribuidores pasa de "construido, no probado" a "probado en vivo" — un patrón real, no solo teórico, que podría convertirse en oferta para negocios de consignación (arte, plantas, coleccionables) cuando haya ancho de banda para extraerlo como producto propio.
 
 ---
 
