@@ -153,6 +153,7 @@ function footerDigital() {
             <li><a class="text-decoration-none" href="/seo.html" data-i18n="foot_seo">Local SEO</a></li>
             <li><a class="text-decoration-none" href="/landing-pages.html" data-i18n="foot_landing">Landing pages</a></li>
             <li><a class="text-decoration-none" href="/automations.html" data-i18n="foot_automations">Automations</a></li>
+            <li><a class="text-decoration-none" href="/portfolio.html#reptiles" data-i18n="foot_ecommerce">E-commerce</a></li>
           </ul>
         </div>
 
@@ -186,6 +187,7 @@ function footerSoftware() {
           <ul class="list-unstyled small mb-0">
             <li><a class="text-decoration-none" href="/garageos.html">GarageOS</a></li>
             <li><a class="text-decoration-none" href="/fieldos.html">FieldOS</a></li>
+            <li><a class="text-decoration-none" href="/booking-system.html" data-i18n="foot_booking">Booking System</a></li>
           </ul>
         </div>
 
