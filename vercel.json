@@ -27,6 +27,18 @@
       "destination": "/api/preview/:segments*"
     },
     {
+      "source": "/blog",
+      "destination": "/api/blog"
+    },
+    {
+      "source": "/blog/:segments*",
+      "destination": "/api/blog/:segments*"
+    },
+    {
+      "source": "/blog-sitemap.xml",
+      "destination": "/api/blog-sitemap.xml"
+    },
+    {
       "source": "/admin",
       "destination": "/admin/index.html"
     },
@@ -37,6 +49,10 @@
     {
       "source": "/admin/previews",
       "destination": "/admin/previews.html"
+    },
+    {
+      "source": "/admin/blog",
+      "destination": "/admin/blog.html"
     }
   ],
   "redirects": [

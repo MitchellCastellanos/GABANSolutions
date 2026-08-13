@@ -37,6 +37,7 @@ const NAV_LINKS = {
     { id: "home", href: "/", i18n: "nav_home", label: "Home" },
     { id: "digital", href: DIGITAL_URL, i18n: "nav_digital", label: "Digital" },
     { id: "software", href: SOFTWARE_URL, i18n: "nav_software", label: "Software" },
+    { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
     { id: "about", href: "/about.html", i18n: "nav_about", label: "About" },
     { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" }
   ],
@@ -124,6 +125,7 @@ function footerHome() {
           <ul class="list-unstyled small mb-0">
             <li><a class="text-decoration-none" href="/about.html" data-i18n="nav_about">About</a></li>
             <li><a class="text-decoration-none" href="/work.html" data-i18n="nav_work">Work</a></li>
+            <li><a class="text-decoration-none" href="/blog" data-i18n="nav_blog">Blog</a></li>
             <li><a class="text-decoration-none" href="/contact.html" data-i18n="nav_contact">Contact</a></li>
           </ul>
         </div>
