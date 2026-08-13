@@ -1,9 +1,9 @@
 # Investigación: estructura de categorías de Odoo aplicada a GABAN
 
-**Fecha:** agosto 2026 (v3 — corregida con auditoría directa de los 7 repos de GitHub)
-**Objetivo:** investigar cómo Odoo organiza su tienda de apps (apps.odoo.com) en un formato tipo "shopping cart", identificar qué de eso ya construyó GABAN en proyectos reales, y proponer una estructura de catálogo más amigable para clientes y mejor para SEO.
+**Fecha:** agosto 2026 (v4 — auditoría de los 7 repos de GitHub + extensiones deducidas de lo ya construido)
+**Objetivo:** investigar cómo Odoo organiza su tienda de apps (apps.odoo.com) en un formato tipo "shopping cart", identificar qué de eso ya construyó GABAN en proyectos reales (incluyendo lo que se puede *deducir* razonablemente de lo ya construido, no solo lo literal), y proponer una estructura de catálogo más amigable para clientes y mejor para SEO.
 
-Maqueta visual interactiva de la propuesta: ver artefacto publicado en la conversación ("Catálogo GABAN") — construida sobre la v2; los hallazgos de la v3 (abajo) todavía no están reflejados ahí.
+Maqueta visual interactiva de la propuesta: ver artefacto publicado en la conversación ("Catálogo GABAN") — actualizada en esta misma revisión con todo lo de abajo.
 
 > **Corrección v2:** la v1 trataba a FieldOS como un producto "disponible" equivalente a GarageOS. **FieldOS no existe** — solo GarageOS es real. A cambio, GarageOS ya cubre más terreno del que el sitio muestra hoy, y dos capacidades probadas en proyectos de cliente reales no se habían detectado porque solo viven dentro de `portfolio.html`, desconectadas de la oferta de venta.
 >
@@ -65,13 +65,13 @@ Esto cambia el catálogo: cada tarjeta no lleva un botón de "Instalar", lleva *
 
 ## 4. Propuesta de catálogo GABAN (con prueba real por categoría)
 
-1. **🌐 Presencia Digital** — *Negocio principal*: Sitios web, Landing Pages, SEO Local, Perfil de Google Business, Flujo de Reseñas, Smart Links
-2. **🛒 E-commerce a Medida** — *Ya lo construimos (Reptiles Concept)*: catálogo bilingüe, checkout + pagos, cuentas de cliente, sync POS en tiempo real, impuestos automáticos
-3. **🏷️ Punto de Venta y Catálogo** — *Ya lo construimos (RCR)*: catálogo estático, código de barras, transacciones diarias, segmento de finanzas — **caso sin documentar aún**
-4. **🧾 Finanzas y Facturación** — *Ya lo construimos*: cotización → factura y finanzas completas (GarageOS), ledger unificado (Reptiles) · *Por extraer*: facturación standalone
-5. **📣 Marketing y Campañas de Email** — *Ya lo construimos*: envío de campañas real (GarageOS/Reptiles), formularios, seguimiento · *Concepto*: SMS marketing
-6. **🧰 Software a Medida por Industria** — *Negocio principal*: GarageOS es el producto real; "el siguiente vertical" se vende como patrón replicable, no como FieldOS ya construido
-7. **👥 Clientes y Ventas (CRM)** — *Por extraer*: embebido en GarageOS y Reptiles Concept; falta venderlo standalone
+1. **🌐 Presencia Digital** — *Negocio principal*: Sitios web, Landing Pages, SEO Local, Perfil de Google Business, Flujo de Reseñas, Smart Links (ampliado — ver nota sección 2)
+2. **🛒 E-commerce a Medida** — *Ya lo construimos (Reptiles Concept, Montreal Spider Co.)*: catálogo bilingüe, checkout + pagos, cuentas de cliente, sync POS en tiempo real, impuestos automáticos · *Deducido, casi gratis:* analítica propia sin depender de Google Analytics/terceros (Reptiles ya la tiene integrada), perfil de cliente con historial/login simple para negocios recurrentes (mismo componente de cuentas+wishlist), zonas de entrega con tarifa automática (patrón de Montreal Spider Co.)
+3. **🏷️ Punto de Venta y Catálogo** — *Ya lo construimos (RCR)*: catálogo, código de barras, QR (genera y lee), transacciones diarias, segmento de finanzas — **caso sin documentar aún** · *Deducido, casi gratis:* check-in de citas o cupones/promos escaneables por QR (RCR ya lee y genera QR, falta solo el caso de uso), alertas de inventario bajo / reorden automático (Montreal Spider Co. ya calcula propuestas de reabastecimiento)
+4. **🧾 Finanzas y Facturación** — *Ya lo construimos*: facturas PDF con numeración automática y TPS/TVQ, finanzas completas (Mecanico_Management), ledger unificado (Reptiles) · *Deducido, casi gratis:* cotizaciones/presupuestos en PDF con la misma plantilla de factura, reportes contables automáticos enviados al contador (Mecanico_Management ya genera "documentos para el contador" en el panel) · *Por extraer:* facturación standalone
+5. **📣 Marketing y Campañas de Email** — *Ya lo construimos*: envío de campañas real y multilingüe ES/EN/FR (Mecanico_Management/Reptiles), formularios, seguimiento · *Deducido, casi gratis:* **newsletters con listas automáticas segmentadas** (ya existe el motor de envío de correos + la base de clientes — falta solo la regla de segmento, ej. "clientes sin visita hace 6 meses") · *Concepto*: SMS marketing como línea propia
+6. **🧰 Software a Medida por Industria** — *Negocio principal*: Mecanico_Management (GarageOS) es el producto real; "el siguiente vertical" se vende como patrón replicable, no como FieldOS ya construido · *Deducido, casi gratis:* recordatorio de mantenimiento preventivo por tiempo/uso (ya existe el motor de recordatorios + historial por vehículo, falta solo la regla periódica)
+7. **👥 Clientes y Ventas (CRM)** — *Por extraer*: embebido en Mecanico_Management y Reptiles Concept, con búsqueda por nombre/correo/teléfono ya lista; falta venderlo standalone
 8. **🗂️ Equipo y Operación Interna** — *Fase futura, bajo demanda*: horario, ausencias — ideas, no roadmap
 
 ---
@@ -106,7 +106,25 @@ A diferencia de la sección 5 (reordenar/corregir lo que ya se vende), esto son 
 
 ---
 
-## 7. Lenguaje: del término técnico al beneficio del dueño de negocio
+## 7. Extensiones deducidas: lo que ya casi hacemos sin saberlo
+
+Esto no son productos nuevos ni ajustes de copy — es la lógica de "ya le pusimos X, por lo tanto también podemos Y", aplicada a cada proyecto real. Ninguno de estos está construido todavía; todos están a un paso pequeño de algo que sí lo está. Ya quedaron acomodados dentro del catálogo de la sección 4; aquí está el razonamiento de cada uno.
+
+| Ya existe | Por lo tanto, casi gratis | Deducido de |
+|---|---|---|
+| Recordatorios/facturas por email | **Newsletters con listas automáticas segmentadas** ("clientes sin visita hace 6 meses", "clientes con vehículo X") | Mecanico_Management |
+| Motor de facturas PDF con TPS/TVQ | **Cotizaciones/presupuestos en PDF** con la misma plantilla, antes de convertirse en factura | Mecanico_Management |
+| Dashboard con métricas + "documentos para el contador" | **Reporte contable automático** enviado por email al contador cada mes, sin que el dueño entre al panel | Mecanico_Management |
+| Recordatorios + historial por vehículo | **Recordatorio de mantenimiento preventivo** por tiempo o uso ("cada 6 meses", "cada 10,000 km") | Mecanico_Management |
+| Analítica de tráfico integrada en el panel | **Dashboard de analítica propio**, sin pagar otra suscripción de terceros | Reptiles Concept |
+| Cuentas de cliente + wishlist + historial | **Perfil de cliente con login simple** para negocios recurrentes (barbería, taller) | Reptiles Concept |
+| Genera y lee códigos QR | **Check-in de citas o cupones/promos** escaneables por QR en el mostrador | RCR |
+| Zonas de entrega con tarifa calculada | **Zonas de entrega con tarifa automática** reutilizable para cualquier negocio local que reparte | Montreal Spider Co. |
+| Propuestas de reabastecimiento | **Alertas de inventario bajo / reorden automático** para cualquier negocio con stock limitado | Montreal Spider Co. |
+
+---
+
+## 8. Lenguaje: del término técnico al beneficio del dueño de negocio
 
 | Categoría técnica | Cómo lo dice Odoo | Cómo debería sonar en GABAN |
 |---|---|---|
@@ -120,7 +138,7 @@ A diferencia de la sección 5 (reordenar/corregir lo que ya se vende), esto son 
 
 ---
 
-## 8. Por qué esta estructura ayuda al SEO
+## 9. Por qué esta estructura ayuda al SEO
 
 - **Más puertas de entrada (long-tail):** hoy GABAN no tiene página para búsquedas como "tienda en línea sincronizada con caja Clover" o "software de punto de venta con código de barras" — categorías nuevas que antes no existían en el sitio.
 - **Autoridad temática:** la jerarquía categoría → subcategoría → servicio le muestra a Google cómo se relaciona todo.
@@ -129,7 +147,7 @@ A diferencia de la sección 5 (reordenar/corregir lo que ya se vende), esto son 
 
 ---
 
-## 9. Roadmap sugerido — orden de implementación
+## 10. Roadmap sugerido — orden de implementación
 
 El orden no es por sección del documento, es por **riesgo, dependencia y a quién le vendes**. Regla general: primero lo que es solo escritura y cero riesgo, después lo que se vende a la base de clientes que ya existe (sin nueva página de marketing), después lo que abre un segmento de cliente nuevo, y solo al final la reestructura grande del sitio — porque para entonces ya se sabe qué categorías tuvieron demanda real y vale la pena documentar con su propia URL. `leadgen/` como producto queda fuera de este roadmap a propósito (ver nota al final de la sección 6).
 
