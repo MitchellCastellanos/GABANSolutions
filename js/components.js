@@ -1,4 +1,26 @@
 // =========================================================
+// VERCEL WEB ANALYTICS
+// ---------------------------------------------------------
+// First-party, cookieless traffic tracking. Every page on the site
+// loads this file, so injecting it here (once) covers all 3 domains
+// and the dynamic blog pages instead of duplicating a <script> tag
+// across 20+ HTML files. window.va must exist before the analytics
+// script loads, so this runs before anything else in the file.
+//
+// Requires Web Analytics to be turned on for this project in the
+// Vercel dashboard (Project Settings -> Analytics -> Enable) — that's
+// a one-time manual step, no API for it. Until then this script tag
+// 404s harmlessly in the background; it does not break the page.
+// =========================================================
+window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+(function () {
+  var script = document.createElement("script");
+  script.defer = true;
+  script.src = "/_vercel/insights/script.js";
+  document.head.appendChild(script);
+})();
+
+// =========================================================
 // SHARED LAYOUT (context-aware)
 // ---------------------------------------------------------
 // The same deployment is served under three hosts:
