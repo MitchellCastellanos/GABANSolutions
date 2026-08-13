@@ -46,6 +46,7 @@ const NAV_LINKS = {
     { id: "services", href: "/#services", i18n: "nav_services", label: "Services" },
     { id: "pricing", href: "/digital-pricing.html", i18n: "nav_pricing", label: "Pricing" },
     { id: "work", href: "/work.html", i18n: "nav_work", label: "Work" },
+    { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
     { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" }
   ],
   software: [
@@ -53,6 +54,7 @@ const NAV_LINKS = {
     { id: "products", href: "/#products", i18n: "nav_products", label: "Products" },
     { id: "pricing", href: "/pricing.html", i18n: "nav_pricing", label: "Pricing" },
     { id: "program", href: "/#founder-client-program", i18n: "nav_program", label: "Founder Program" },
+    { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
     { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" }
   ]
 };
@@ -161,6 +163,7 @@ function footerDigital() {
             <li><a class="text-decoration-none" href="/express.html" data-i18n="nav_express">Launch 72H</a></li>
             <li><a class="text-decoration-none" href="/grow-package.html" data-i18n="nav_grow">Grow Package</a></li>
             <li><a class="text-decoration-none" href="/work.html" data-i18n="nav_work">Work</a></li>
+            <li><a class="text-decoration-none" href="/blog" data-i18n="nav_blog">Blog</a></li>
           </ul>
         </div>
 
@@ -191,6 +194,7 @@ function footerSoftware() {
           <ul class="list-unstyled small mb-0">
             <li><a class="text-decoration-none" href="/pricing.html" data-i18n="nav_pricing">Pricing</a></li>
             <li><a class="text-decoration-none" href="/#founder-client-program" data-i18n="nav_program">Founder Program</a></li>
+            <li><a class="text-decoration-none" href="/blog" data-i18n="nav_blog">Blog</a></li>
             <li><a class="text-decoration-none" href="/contact.html" data-i18n="nav_contact">Contact</a></li>
           </ul>
         </div>
