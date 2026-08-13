@@ -11,6 +11,7 @@
     "leadgen:test-emails": "node leadgen/scripts/send-test-emails.mjs",
     "leadgen:generate-preview": "node leadgen/scripts/generate-preview.mjs",
     "leadgen:validate-preview": "node leadgen/scripts/validate-preview.mjs",
-    "leadgen:archive-previews": "node leadgen/scripts/archive-previews.mjs"
+    "leadgen:archive-previews": "node leadgen/scripts/archive-previews.mjs",
+    "seo:audit": "node scripts/seo-audit.mjs"
   }
 }
