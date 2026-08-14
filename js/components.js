@@ -184,7 +184,7 @@ function footerDigital() {
             <li><a class="text-decoration-none" href="/seo.html" data-i18n="foot_seo">Local SEO</a></li>
             <li><a class="text-decoration-none" href="/landing-pages.html" data-i18n="foot_landing">Landing pages</a></li>
             <li><a class="text-decoration-none" href="/automations.html" data-i18n="foot_automations">Automations</a></li>
-            <li><a class="text-decoration-none" href="/portfolio.html#reptiles" data-i18n="foot_ecommerce">E-commerce</a></li>
+            <li><a class="text-decoration-none" href="/ecommerce.html" data-i18n="foot_ecommerce">E-commerce</a></li>
           </ul>
         </div>
 
