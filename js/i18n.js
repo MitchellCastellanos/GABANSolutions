@@ -1370,6 +1370,7 @@ const pageI18n = {
       reptiles_h5: "Customer accounts & wishlist",
       reptiles_h6: "Admin & finance dashboard",
       reptiles_btn_live: "Visit Website",
+      reptiles_btn_ecom: "See our custom e-commerce",
       reptiles_btn_start: "Start Your Project",
 
       reptiles_stat_1t: "Live inventory",
@@ -1395,6 +1396,7 @@ const pageI18n = {
       mspider_h5: "Montreal delivery zones",
       mspider_h6: "Care guides & FAQ",
       mspider_btn_live: "Visit Website",
+      mspider_btn_ecom: "See our custom e-commerce",
       mspider_btn_start: "Start Your Project",
       mspider_stat_1t: "Per-specimen tracking",
       mspider_stat_1d: "Every animal tracked individually — location, lifecycle stage, growth and molt history, and pricing.",
@@ -1565,6 +1567,7 @@ const pageI18n = {
       reptiles_h5: "Comptes clients & liste de souhaits",
       reptiles_h6: "Tableau de bord admin & finances",
       reptiles_btn_live: "Voir le site",
+      reptiles_btn_ecom: "Voir notre commerce en ligne sur mesure",
       reptiles_btn_start: "Démarrer votre projet",
 
       reptiles_stat_1t: "Inventaire en direct",
@@ -1590,6 +1593,7 @@ const pageI18n = {
       mspider_h5: "Zones de livraison Montréal",
       mspider_h6: "Guides de soins et FAQ",
       mspider_btn_live: "Voir le site",
+      mspider_btn_ecom: "Voir notre commerce en ligne sur mesure",
       mspider_btn_start: "Démarrer votre projet",
       mspider_stat_1t: "Suivi par spécimen",
       mspider_stat_1d: "Chaque animal suivi individuellement — emplacement, stade de vie, historique de croissance et de mue, et prix.",
@@ -1760,6 +1764,7 @@ const pageI18n = {
       reptiles_h5: "Cuentas de cliente y wishlist",
       reptiles_h6: "Panel admin y finanzas",
       reptiles_btn_live: "Ver sitio",
+      reptiles_btn_ecom: "Ver nuestro e-commerce a medida",
       reptiles_btn_start: "Iniciar proyecto",
 
       reptiles_stat_1t: "Inventario en vivo",
@@ -1785,6 +1790,7 @@ const pageI18n = {
       mspider_h5: "Zonas de entrega en Montreal",
       mspider_h6: "Guías de cuidado y FAQ",
       mspider_btn_live: "Ver sitio",
+      mspider_btn_ecom: "Ver nuestro e-commerce a medida",
       mspider_btn_start: "Iniciar proyecto",
       mspider_stat_1t: "Seguimiento por ejemplar",
       mspider_stat_1d: "Cada animal rastreado individualmente — ubicación, etapa de vida, historial de crecimiento y muda, y precio.",
