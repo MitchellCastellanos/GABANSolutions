@@ -52,8 +52,10 @@ const BRANDS = {
   software: { label: 'GABAN <span class="fw-normal">Software</span>', name: "GABAN Software", href: "/" }
 };
 
-// Navbar links per context. Within a brand links are relative; only
-// the umbrella links out to the division subdomains.
+// Navbar links per context. Within a brand most links are relative;
+// "umbrella" and the sibling-division link always point out to the
+// other subdomain so a visitor can travel between GABAN Solutions,
+// Digital and Software without hitting a dead end.
 const NAV_LINKS = {
   home: [
     { id: "home", href: "/", i18n: "nav_home", label: "Home" },
@@ -69,15 +71,18 @@ const NAV_LINKS = {
     { id: "pricing", href: "/digital-pricing.html", i18n: "nav_pricing", label: "Pricing" },
     { id: "work", href: "/work.html", i18n: "nav_work", label: "Work" },
     { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
-    { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" }
+    { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" },
+    { id: "software", href: SOFTWARE_URL, i18n: "nav_software", label: "Software" },
+    { id: "umbrella", href: UMBRELLA_URL, i18n: "nav_umbrella", label: "GABAN Solutions" }
   ],
   software: [
     { id: "home", href: "/", i18n: "nav_home", label: "Home" },
     { id: "products", href: "/#products", i18n: "nav_products", label: "Products" },
     { id: "pricing", href: "/pricing.html", i18n: "nav_pricing", label: "Pricing" },
-    { id: "program", href: "/#founder-client-program", i18n: "nav_program", label: "Founder Program" },
     { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
-    { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" }
+    { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" },
+    { id: "digital", href: DIGITAL_URL, i18n: "nav_digital", label: "Digital" },
+    { id: "umbrella", href: UMBRELLA_URL, i18n: "nav_umbrella", label: "GABAN Solutions" }
   ]
 };
 
@@ -165,7 +170,11 @@ function footerDigital() {
   return `
         <div class="col-md-3">
           <h2 class="h6 fw-bold">GABAN Digital</h2>
-          <p class="small text-muted mb-0" data-i18n="foot_tagline_digital">Websites, local SEO and automation for businesses that want to be found and trusted.</p>
+          <p class="small text-muted mb-3" data-i18n="foot_tagline_digital">Websites, local SEO and automation for businesses that want to be found and trusted.</p>
+          <ul class="list-unstyled small mb-0">
+            <li><a class="text-decoration-none" href="${SOFTWARE_URL}" data-i18n="nav_software">Software</a></li>
+            <li><a class="text-decoration-none" href="${UMBRELLA_URL}" data-i18n="nav_umbrella">GABAN Solutions</a></li>
+          </ul>
         </div>
 
         <div class="col-md-3">
@@ -201,7 +210,11 @@ function footerSoftware() {
   return `
         <div class="col-md-3">
           <h2 class="h6 fw-bold">GABAN Software</h2>
-          <p class="small text-muted mb-0" data-i18n="foot_tagline_software">Ready-to-use software platforms for small businesses that want better operations.</p>
+          <p class="small text-muted mb-3" data-i18n="foot_tagline_software">Ready-to-use software platforms for small businesses that want better operations.</p>
+          <ul class="list-unstyled small mb-0">
+            <li><a class="text-decoration-none" href="${DIGITAL_URL}" data-i18n="nav_digital">Digital</a></li>
+            <li><a class="text-decoration-none" href="${UMBRELLA_URL}" data-i18n="nav_umbrella">GABAN Solutions</a></li>
+          </ul>
         </div>
 
         <div class="col-md-3">
@@ -214,10 +227,9 @@ function footerSoftware() {
         </div>
 
         <div class="col-md-3">
-          <h2 class="h6 fw-bold" data-i18n="foot_program">Program</h2>
+          <h2 class="h6 fw-bold" data-i18n="foot_company">Company</h2>
           <ul class="list-unstyled small mb-0">
             <li><a class="text-decoration-none" href="/pricing.html" data-i18n="nav_pricing">Pricing</a></li>
-            <li><a class="text-decoration-none" href="/#founder-client-program" data-i18n="nav_program">Founder Program</a></li>
             <li><a class="text-decoration-none" href="/blog" data-i18n="nav_blog">Blog</a></li>
             <li><a class="text-decoration-none" href="/contact.html" data-i18n="nav_contact">Contact</a></li>
           </ul>
