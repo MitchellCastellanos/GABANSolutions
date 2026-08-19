@@ -371,6 +371,8 @@
       formWrap.scrollIntoView({ behavior: "smooth", block: "center" });
     }
 
+    form.addEventListener("input", () => window.gabanTrack?.("form_start", { form: "book" }), { once: true });
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       if (!selectedSlot) return;
@@ -386,6 +388,16 @@
       data.lang = localStorage.getItem("siteLang") || "en";
       data.ref = new URLSearchParams(window.location.search).get("ref") || "book-page";
 
+      const attribution = window.gabanAttribution || {};
+      data.utm_source = attribution.source || "";
+      data.utm_medium = attribution.medium || "";
+      data.utm_campaign = attribution.campaign || "";
+      data.utm_content = attribution.content || "";
+      data.utm_term = attribution.term || "";
+      data.referrer = attribution.referrer || "";
+      data.landing_page = attribution.landing_page || "";
+      data.landing_service = attribution.landing_service || "";
+
       submitBtn.disabled = true;
       const originalLabel = submitBtn.textContent;
       submitBtn.textContent = "…";
@@ -399,6 +411,7 @@
         const result = await res.json().catch(() => ({}));
 
         if (res.ok && result.ok) {
+          window.gabanTrack?.("booking_submit", { ref: data.ref || "" });
           formWrap.classList.add("d-none");
           successDetailEl.textContent = `${result.dateLabel} at ${result.timeLabel} (${result.timezoneLabel})`;
           successMeetLinkEl.innerHTML = result.meetLink

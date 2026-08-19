@@ -18,6 +18,8 @@
 //                          a CRM/notification pipeline later
 // ============================================================
 
+import { createLead } from "../leads/lib/airtable.mjs";
+
 const DEFAULT_FORMSPREE_ENDPOINT = "https://formspree.io/f/mwvrpnnk";
 
 async function postJSON(url, payload, ms = 6000) {
@@ -75,6 +77,18 @@ export default async function handler(req, res) {
     ref: clean(body.ref, 100),
     source_path: clean(body.source_path, 200),
     lang: clean(body.lang, 5),
+    // First-touch acquisition attribution, captured client-side in
+    // js/components.js (sessionStorage, no cookies) and forwarded here
+    // so a lead can be traced back to the campaign/source that produced
+    // it. All optional — absent on the Formspree-only fallback path.
+    utm_source: clean(body.utm_source, 60),
+    utm_medium: clean(body.utm_medium, 60),
+    utm_campaign: clean(body.utm_campaign, 100),
+    utm_content: clean(body.utm_content, 100),
+    utm_term: clean(body.utm_term, 100),
+    referrer: clean(body.referrer, 200),
+    landing_page: clean(body.landing_page, 200),
+    landing_service: clean(body.landing_service, 80),
     submitted_at: new Date().toISOString()
   };
 
@@ -106,6 +120,32 @@ export default async function handler(req, res) {
   if (webhookUrl) {
     postJSON(webhookUrl, lead, 4000).catch(() => {});
   }
+
+  // Best-effort persistence for the admin analytics dashboard (leads,
+  // conversion funnel, campaign attribution). Formspree above is still
+  // the primary delivery path (email notification) — a missing/misnamed
+  // Airtable "Leads" table must never block or fail this response.
+  createLead({
+    Name: lead.name,
+    Contact: lead.contact,
+    Need: lead.need,
+    Business: lead.business,
+    Package: lead.package,
+    Timeline: lead.timeline,
+    Message: lead.message,
+    Ref: lead.ref,
+    SourcePath: lead.source_path,
+    Lang: lead.lang,
+    UtmSource: lead.utm_source,
+    UtmMedium: lead.utm_medium,
+    UtmCampaign: lead.utm_campaign,
+    UtmContent: lead.utm_content,
+    UtmTerm: lead.utm_term,
+    Referrer: lead.referrer,
+    LandingPage: lead.landing_page,
+    LandingService: lead.landing_service,
+    SubmittedAt: lead.submitted_at
+  }).catch(() => {});
 
   if (!delivered) {
     return res.status(502).json({ ok: false, error: "Could not deliver lead" });

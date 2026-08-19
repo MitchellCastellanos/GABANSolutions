@@ -11,10 +11,12 @@ separate ungated pages like the old `leadgen-admin.html`.
   Old bookmarks to that URL redirect here automatically.
 - **`/admin/blog`** — write/validate/publish blog posts, rendered live
   from Airtable at `/blog/<slug>`. See `blog/README.md`.
-- **`/admin/analytics`** — traffic summary (pageviews, top pages,
-  referrers, countries, devices) from Vercel Web Analytics. Needs two
-  one-time setup steps that can't be done from code — see
-  "Analytics setup" below.
+- **`/admin/analytics`** — business acquisition + conversion dashboard:
+  traffic (pageviews, top pages, referrers, countries, devices) from
+  Vercel Web Analytics, plus a conversion funnel, acquisition/campaign/
+  service/landing-page breakdowns, and leads/bookings KPIs joined
+  against real tracked events. Needs setup steps that can't be done
+  from code — see "Analytics setup" below.
 
 ## How the gate works
 
@@ -51,6 +53,49 @@ manual steps neither code nor this repo's CI can do for you:
    to code running on the live site — the deployed handler needs its
    own credential). The project ID and team ID are hardcoded in that
    file (not secrets, just IDs).
+
+### Conversion funnel, acquisition, campaigns, service interest
+
+These sections read first-party custom events fired by
+`js/components.js` (site-wide: `session_start`, `service_view`,
+`portfolio_view`, `booking_cta_click`, `contact_cta_click`,
+`phone_click`, `email_click`) plus `contact.html`/`book.html`
+(`form_start`, `lead_submit`, `booking_submit`) via
+`va('event', {...})` — the same Web Analytics beacon as step 1 above,
+so no extra setup is needed for these to start appearing, beyond Web
+Analytics being enabled.
+
+### Leads/Bookings KPIs, attribution, Campaign Performance
+
+These need one more manual step this repo can't do for you: **create
+an Airtable `Leads` table** (same base as `Bookings`/`BlogPosts`/
+`Prospects`) with these fields —
+
+```
+Name, Contact, Need, Business, Package, Timeline, Message, Ref,
+SourcePath, Lang, UtmSource, UtmMedium, UtmCampaign, UtmContent,
+UtmTerm, Referrer, LandingPage, LandingService, SubmittedAt
+```
+
+Optionally override the table name with `AIRTABLE_LEADS_TABLE` (env
+var, defaults to `"Leads"`). Until this table exists, the "Leads" and
+"Conversion Rate" KPI tiles show "Not tracked yet" instead of a
+(misleading) zero — nothing else on the dashboard is affected, and the
+contact form itself keeps working exactly as before (Formspree
+delivery is independent of this table).
+
+Also **add these columns to the existing `Bookings` table**, so
+booking-form submissions carry the same attribution:
+
+```
+UtmSource, UtmMedium, UtmCampaign, UtmContent, UtmTerm, Referrer,
+LandingPage, LandingService
+```
+
+Until those columns exist, `api/booking/[...path].js` automatically
+retries without them — bookings keep working either way; attribution
+just starts populating the moment the columns are added, no deploy
+needed.
 
 ## Adding another tool under /admin later
 

@@ -9,58 +9,113 @@
     * { box-sizing: border-box; }
     body {
       margin: 0; font-family: system-ui, -apple-system, sans-serif; background: #f6f6f4;
-      color: #1a1a1a; padding: 1.25rem; max-width: 640px; margin: 0 auto;
+      color: #1a1a1a; padding: 1.25rem; max-width: 880px; margin: 0 auto;
     }
     h1 { font-size: 1.3rem; margin: 1rem 0 0.25rem; }
-    h2 { font-size: 0.95rem; margin: 1.75rem 0 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; color: #888; }
+    h2 { font-size: 0.95rem; margin: 1.75rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.03em; color: #888; }
+    h2 .h2-sub { display: block; text-transform: none; letter-spacing: normal; font-size: 0.78rem; color: #999; margin-top: 0.15rem; font-weight: 400; }
     p.sub { color: #666; font-size: 0.9rem; margin: 0 0 1rem; }
     a { color: #0b3d63; }
-    .range-row { display: flex; gap: 0.5rem; margin: 1rem 0; }
+    .range-row { display: flex; gap: 0.5rem; margin: 1rem 0; flex-wrap: wrap; }
     .range-btn {
-      flex: 1; padding: 0.6rem; border: 1px solid #ddd; border-radius: 8px; background: #fff;
+      flex: 1; min-width: 70px; padding: 0.6rem; border: 1px solid #ddd; border-radius: 8px; background: #fff;
       font-size: 0.85rem; font-weight: 600; cursor: pointer; color: #444;
     }
     .range-btn.active { background: #111; color: #fff; border-color: #111; }
-    .totals-row { display: flex; gap: 0.75rem; margin: 1rem 0; }
-    .stat-tile {
-      flex: 1; padding: 1rem; border-radius: 10px; background: #fff; border: 1px solid #eee; text-align: center;
+    .custom-range-row { display: none; gap: 0.5rem; margin: -0.5rem 0 1rem; flex-wrap: wrap; align-items: center; }
+    .custom-range-row.show { display: flex; }
+    .custom-range-row input[type="date"] {
+      flex: 1; min-width: 130px; padding: 0.5rem; border: 1px solid #ddd; border-radius: 8px; font-size: 0.85rem;
     }
-    .stat-tile .n { font-size: 1.6rem; font-weight: 800; }
-    .stat-tile .l { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 0.03em; }
+    .custom-range-row button {
+      padding: 0.5rem 0.9rem; border: 1px solid #111; border-radius: 8px; background: #111; color: #fff;
+      font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.6rem; margin: 1rem 0; }
+    .kpi-tile { padding: 0.9rem; border-radius: 10px; background: #fff; border: 1px solid #eee; }
+    .kpi-tile .n { font-size: 1.5rem; font-weight: 800; line-height: 1.1; }
+    .kpi-tile .n.muted { color: #ccc; font-weight: 700; }
+    .kpi-tile .l { font-size: 0.72rem; color: #888; text-transform: uppercase; letter-spacing: 0.03em; margin-top: 0.15rem; }
+    .kpi-tile .d { font-size: 0.75rem; margin-top: 0.35rem; font-weight: 600; }
+    .kpi-tile .d.up { color: #1a7f37; }
+    .kpi-tile .d.down { color: #c0392b; }
+    .kpi-tile .d.flat, .kpi-tile .d.na { color: #999; font-weight: 500; }
+
     table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #eee; }
-    th, td { padding: 0.6rem 0.75rem; text-align: left; font-size: 0.85rem; border-bottom: 1px solid #f0f0f0; }
+    th, td { padding: 0.6rem 0.75rem; text-align: left; font-size: 0.85rem; border-bottom: 1px solid #f0f0f0; white-space: nowrap; }
     th { color: #888; font-weight: 600; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 0.03em; }
     tr:last-child td { border-bottom: none; }
     td.num { text-align: right; font-variant-numeric: tabular-nums; }
-    .empty { color: #888; font-size: 0.85rem; padding: 1rem; text-align: center; }
-    .chart-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin: 1rem 0; }
-    .chart-legend { display: flex; gap: 1rem; font-size: 0.75rem; color: #666; margin-bottom: 0.5rem; }
-    .chart-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.3rem; }
-    .chart-legend .dot.pv { background: #111; }
-    .chart-legend .dot.vs { background: #0b3d63; }
-    .chart-svg { width: 100%; height: auto; display: block; }
-    .chart-area { fill: rgba(17, 17, 17, 0.06); stroke: none; }
-    .chart-line { fill: none; stroke-width: 2; }
-    .chart-line.pv { stroke: #111; }
-    .chart-line.vs { stroke: #0b3d63; }
-    .chart-axis { display: flex; justify-content: space-between; font-size: 0.7rem; color: #999; margin-top: 0.4rem; }
+    td.sub { color: #999; font-size: 0.75rem; }
+    .table-scroll { overflow-x: auto; border-radius: 10px; }
+    .table-scroll table { border-radius: 10px; }
+    .empty { color: #888; font-size: 0.85rem; padding: 1rem; text-align: center; background: #fff; border: 1px solid #eee; border-radius: 10px; }
     .setup-notice {
       padding: 1.25rem; border-radius: 10px; background: #fff8ea; border: 1px solid #e0a72e; font-size: 0.88rem;
     }
     .setup-notice code { background: #f0e6cf; padding: 0.1rem 0.35rem; border-radius: 4px; font-size: 0.82rem; }
     .loading { color: #888; font-size: 0.9rem; padding: 2rem 0; text-align: center; }
+    .caption { color: #999; font-size: 0.75rem; margin: 0.5rem 0 0; }
+
+    .chart-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin: 0.75rem 0; }
+    .chart-toggles { display: flex; gap: 0.4rem; margin-bottom: 0.75rem; flex-wrap: wrap; }
+    .chart-toggle {
+      display: flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.7rem; border-radius: 999px;
+      border: 1px solid #ddd; background: #fff; font-size: 0.75rem; font-weight: 600; color: #999; cursor: pointer;
+    }
+    .chart-toggle .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+    .chart-toggle.active { border-color: transparent; color: #fff; }
+    .chart-toggle[data-metric="pageviews"] .dot { background: #111; }
+    .chart-toggle[data-metric="visitors"] .dot { background: #0b3d63; }
+    .chart-toggle[data-metric="leads"] .dot { background: #b45309; }
+    .chart-toggle[data-metric="pageviews"].active { background: #111; }
+    .chart-toggle[data-metric="visitors"].active { background: #0b3d63; }
+    .chart-toggle[data-metric="leads"].active { background: #b45309; }
+    .chart-svg { width: 100%; height: auto; display: block; }
+    .chart-line { fill: none; stroke-width: 2; }
+    .chart-axis { display: flex; justify-content: space-between; font-size: 0.7rem; color: #999; margin-top: 0.4rem; }
+
+    .funnel { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 1rem; }
+    .funnel-step { margin-bottom: 0.65rem; }
+    .funnel-step:last-child { margin-bottom: 0; }
+    .funnel-step-label { display: flex; justify-content: space-between; font-size: 0.82rem; margin-bottom: 0.3rem; }
+    .funnel-step-label .name { font-weight: 600; }
+    .funnel-step-label .stat { color: #888; font-variant-numeric: tabular-nums; }
+    .funnel-bar-track { background: #f2f2f0; border-radius: 6px; height: 10px; overflow: hidden; }
+    .funnel-bar-fill { background: #111; height: 100%; border-radius: 6px; min-width: 2px; }
+
+    .device-bars { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 1rem; }
+    .device-row { margin-bottom: 0.65rem; }
+    .device-row:last-child { margin-bottom: 0; }
+    .device-row-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.3rem; font-weight: 600; }
+    .device-bar-track { background: #f2f2f0; border-radius: 6px; height: 10px; overflow: hidden; }
+    .device-bar-fill { background: #0b3d63; height: 100%; border-radius: 6px; min-width: 2px; }
+
+    @media (max-width: 480px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+      body { padding: 1rem 0.75rem; }
+      th, td { padding: 0.5rem 0.5rem; font-size: 0.78rem; }
+    }
   </style>
   <script src="/admin/auth.js"></script>
 </head>
 <body>
   <p class="sub"><a href="/admin">&larr; Admin home</a></p>
   <h1>Analytics</h1>
-  <p class="sub">Traffic from Vercel Web Analytics (first-party, no cookies).</p>
+  <p class="sub">Where visitors come from, what they're interested in, and what turns into a lead. Traffic from Vercel Web Analytics (first-party, no cookies); leads/bookings from GABAN's own forms.</p>
 
   <div class="range-row" id="rangeRow">
     <button class="range-btn" data-days="7">7 days</button>
     <button class="range-btn active" data-days="30">30 days</button>
     <button class="range-btn" data-days="90">90 days</button>
+    <button class="range-btn" data-days="custom">Custom</button>
+  </div>
+  <div class="custom-range-row" id="customRangeRow">
+    <input type="date" id="customSince">
+    <span style="color:#999;font-size:0.85rem;">to</span>
+    <input type="date" id="customUntil">
+    <button id="customApply" type="button">Apply</button>
   </div>
 
   <div id="content">
@@ -81,6 +136,237 @@
       return res.json();
     }
 
+    function fmtNum(n) {
+      if (n === null || n === undefined) return "—";
+      return Number(n).toLocaleString();
+    }
+
+    function fmtPct(n) {
+      if (n === null || n === undefined) return "—";
+      return `${n.toFixed(1)}%`;
+    }
+
+    let countryNames = null;
+    function countryName(code) {
+      if (!code) return "(unknown)";
+      try {
+        countryNames = countryNames || new Intl.DisplayNames(["en"], { type: "region" });
+        return countryNames.of(code) || code;
+      } catch {
+        return code;
+      }
+    }
+
+    const INTERNAL_HOSTS = ["gabansolutions.ca", "digital.gabansolutions.ca", "software.gabansolutions.ca"];
+    function normalizeSource(hostname) {
+      if (!hostname) return "Direct / Unknown";
+      const h = String(hostname).toLowerCase().replace(/^www\./, "");
+      if (INTERNAL_HOSTS.includes(h)) return "Internal";
+      if (/google\./.test(h)) return "Google";
+      if (/linkedin\./.test(h)) return "LinkedIn";
+      if (/facebook\.|^fb\.com$|l\.facebook/.test(h)) return "Facebook";
+      if (/instagram\./.test(h)) return "Instagram";
+      if (/brave\./.test(h)) return "Brave Search";
+      if (/bing\./.test(h)) return "Bing";
+      if (/duckduckgo\./.test(h)) return "DuckDuckGo";
+      if (/twitter\.|x\.com|t\.co/.test(h)) return "X / Twitter";
+      if (/wa\.me|whatsapp\./.test(h)) return "WhatsApp";
+      return h;
+    }
+
+    // ---------------------------------------------------------------
+    // KPI row
+    // ---------------------------------------------------------------
+    function renderKpiTile(label, kpi, { isPercent = false } = {}) {
+      const has = kpi && kpi.value !== null && kpi.value !== undefined && kpi.available !== false;
+      const valueLabel = !has ? `<span class="n muted">—</span>` : `<span class="n">${isPercent ? fmtPct(kpi.value) : fmtNum(kpi.value)}</span>`;
+      let deltaHtml = `<div class="d na">No prior-period data</div>`;
+      if (!has) {
+        deltaHtml = `<div class="d na">Not tracked yet</div>`;
+      } else if (kpi.delta) {
+        const arrow = kpi.delta.dir === "up" ? "&uarr;" : kpi.delta.dir === "down" ? "&darr;" : "&middot;";
+        deltaHtml = `<div class="d ${kpi.delta.dir}">${arrow} ${escapeHtml(kpi.delta.label)} vs prior period</div>`;
+      }
+      return `<div class="kpi-tile">${valueLabel}<div class="l">${escapeHtml(label)}</div>${deltaHtml}</div>`;
+    }
+
+    function renderKpiRow(data) {
+      const k = data.kpis || {};
+      return `<div class="kpi-row">
+        ${renderKpiTile("Visitors", k.visitors)}
+        ${renderKpiTile("Pageviews", k.pageviews)}
+        ${renderKpiTile("Leads", k.leads)}
+        ${renderKpiTile("Bookings", k.bookings)}
+        ${renderKpiTile("Conversion Rate", k.conversionRate, { isPercent: true })}
+      </div>`;
+    }
+
+    // ---------------------------------------------------------------
+    // Evolution chart (Pageviews / Visitors / Leads toggle)
+    // ---------------------------------------------------------------
+    const METRIC_COLORS = { pageviews: "#111", visitors: "#0b3d63", leads: "#b45309" };
+    let evolutionRows = [];
+    let activeMetrics = new Set(["pageviews", "visitors"]);
+
+    function mergeEvolutionData(byDate, conversionsByDate) {
+      const convMap = new Map((conversionsByDate || []).map((d) => [d.date, d]));
+      return (byDate || [])
+        .slice()
+        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp))
+        .map((row) => {
+          const day = new Date(row.timestamp).toISOString().slice(0, 10);
+          const conv = convMap.get(day);
+          return {
+            timestamp: row.timestamp,
+            pageviews: row.pageviews || 0,
+            visitors: row.visitors || 0,
+            leads: conv ? conv.leads + conv.bookings : null
+          };
+        });
+    }
+
+    function renderEvolutionChart() {
+      const el = $("evolutionChart");
+      if (!el) return;
+      const rows = evolutionRows;
+      if (!rows || rows.length < 2) {
+        el.innerHTML = `<div class="empty">Not enough data yet to chart.</div>`;
+        return;
+      }
+      const metrics = [...activeMetrics].filter((m) => m === "pageviews" || m === "visitors" || (m === "leads" && rows.some((r) => r.leads !== null)));
+      if (!metrics.length) {
+        el.innerHTML = `<div class="empty">Select a metric above to chart it.</div>`;
+        return;
+      }
+
+      const w = 640, h = 220, padL = 12, padR = 12, padT = 16, padB = 12;
+      const innerW = w - padL - padR, innerH = h - padT - padB;
+      const maxVal = Math.max(1, ...rows.flatMap((r) => metrics.map((m) => r[m] || 0)));
+      const stepX = innerW / (rows.length - 1);
+      const x = (i) => padL + i * stepX;
+      const y = (v) => padT + innerH - (v / maxVal) * innerH;
+
+      const linePath = (key) => rows.map((r, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(1)},${y(r[key] || 0).toFixed(1)}`).join(" ");
+      const fmtDay = (ts) => new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      const dots = (key) => rows.map((r, i) => r[key] === null ? "" : `<circle cx="${x(i).toFixed(1)}" cy="${y(r[key] || 0).toFixed(1)}" r="2.5" fill="${METRIC_COLORS[key]}"><title>${escapeHtml(fmtDay(r.timestamp))}: ${escapeHtml(r[key])} ${key}</title></circle>`).join("");
+
+      el.innerHTML = `
+        <svg viewBox="0 0 ${w} ${h}" class="chart-svg">
+          ${metrics.map((m) => `<path d="${linePath(m)}" class="chart-line" style="stroke:${METRIC_COLORS[m]}"></path>`).join("")}
+          ${metrics.map((m) => dots(m)).join("")}
+        </svg>
+        <div class="chart-axis">
+          <span>${escapeHtml(fmtDay(rows[0].timestamp))}</span>
+          <span>${escapeHtml(fmtDay(rows[rows.length - 1].timestamp))}</span>
+        </div>`;
+    }
+
+    function renderEvolutionSection(data) {
+      evolutionRows = mergeEvolutionData(data.byDate, data.conversionsByDate);
+      const hasLeads = evolutionRows.some((r) => r.leads !== null);
+      return `
+        <div class="chart-card">
+          <div class="chart-toggles" id="chartToggles">
+            <button class="chart-toggle ${activeMetrics.has("pageviews") ? "active" : ""}" data-metric="pageviews" type="button"><span class="dot"></span>Pageviews</button>
+            <button class="chart-toggle ${activeMetrics.has("visitors") ? "active" : ""}" data-metric="visitors" type="button"><span class="dot"></span>Visitors</button>
+            ${hasLeads ? `<button class="chart-toggle ${activeMetrics.has("leads") ? "active" : ""}" data-metric="leads" type="button"><span class="dot"></span>Leads</button>` : ""}
+          </div>
+          <div id="evolutionChart"></div>
+        </div>`;
+    }
+
+    function wireEvolutionToggles() {
+      $("chartToggles")?.querySelectorAll(".chart-toggle").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const metric = btn.dataset.metric;
+          if (activeMetrics.has(metric)) {
+            if (activeMetrics.size > 1) activeMetrics.delete(metric);
+          } else {
+            activeMetrics.add(metric);
+          }
+          btn.classList.toggle("active", activeMetrics.has(metric));
+          renderEvolutionChart();
+        });
+      });
+      renderEvolutionChart();
+    }
+
+    // ---------------------------------------------------------------
+    // Conversion funnel
+    // ---------------------------------------------------------------
+    function renderFunnel(data) {
+      if (!data.funnelTracked) {
+        return `<div class="empty">No funnel data yet — event tracking just went live. Check back after some traffic.</div>`;
+      }
+      const steps = data.funnel.map((step) => `
+        <div class="funnel-step">
+          <div class="funnel-step-label">
+            <span class="name">${escapeHtml(step.label)}</span>
+            <span class="stat">${fmtNum(step.count)} &middot; ${step.pctOfVisitors === null ? "—" : fmtPct(step.pctOfVisitors)}</span>
+          </div>
+          <div class="funnel-bar-track"><div class="funnel-bar-fill" style="width:${Math.max(2, step.pctOfVisitors || 0)}%"></div></div>
+        </div>`).join("");
+      return `<div class="funnel">${steps}</div>
+        <p class="caption">Each stage counts unique visitors who completed that action — a visitor who does two different actions is counted in both, so this is a set of checkpoints, not a single strict path.</p>`;
+    }
+
+    // ---------------------------------------------------------------
+    // Generic breakdown table (Acquisition / Campaigns / Service Interest / Landing Pages)
+    // ---------------------------------------------------------------
+    function renderBreakdownTable(rows, columns, emptyMessage) {
+      if (!rows || !rows.length) {
+        return `<div class="empty">${escapeHtml(emptyMessage)}</div>`;
+      }
+      const head = columns.map((c) => `<th${c.num ? ' class="num"' : ""}>${escapeHtml(c.label)}</th>`).join("");
+      const body = rows.map((row) => `<tr>${columns.map((c) => `<td${c.num ? ' class="num"' : ""}>${c.render(row)}</td>`).join("")}</tr>`).join("");
+      return `<div class="table-scroll"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+    }
+
+    function renderAcquisition(data) {
+      const cols = [
+        { label: "Source", render: (r) => escapeHtml(r.source) },
+        { label: "Visitors", num: true, render: (r) => fmtNum(r.visitors) },
+        { label: "Leads", num: true, render: (r) => fmtNum(r.leads) },
+        { label: "Conversion", num: true, render: (r) => r.conversion === null ? "—" : fmtPct(r.conversion) }
+      ];
+      return renderBreakdownTable(data.acquisition, cols, "No tracked sessions yet for this period.")
+        + `<p class="caption">Based on sessions tracked since this dashboard's event tracking went live — totals may not match the Visitors KPI above, which includes older/untracked traffic.</p>`;
+    }
+
+    function renderCampaigns(data) {
+      const cols = [
+        { label: "Campaign", render: (r) => escapeHtml(r.campaign) },
+        { label: "Source", render: (r) => r.source ? escapeHtml(r.source) : `<span style="color:#bbb">—</span>` },
+        { label: "Visitors", num: true, render: (r) => fmtNum(r.visitors) },
+        { label: "Leads", num: true, render: (r) => fmtNum(r.leads) },
+        { label: "Conversion", num: true, render: (r) => r.conversion === null ? "—" : fmtPct(r.conversion) }
+      ];
+      return renderBreakdownTable(data.campaigns, cols, "No campaign traffic detected. Add UTM parameters (utm_source, utm_medium, utm_campaign) to marketing links to start tracking campaigns.");
+    }
+
+    function renderServiceInterest(data) {
+      const cols = [
+        { label: "Service", render: (r) => escapeHtml(r.service) },
+        { label: "Views", num: true, render: (r) => fmtNum(r.views) },
+        { label: "Leads", num: true, render: (r) => fmtNum(r.leads) },
+        { label: "Conversion", num: true, render: (r) => r.conversion === null ? "—" : fmtPct(r.conversion) }
+      ];
+      return renderBreakdownTable(data.serviceInterest, cols, "No service page views tracked yet for this period.");
+    }
+
+    function renderLandingPages(data) {
+      const cols = [
+        { label: "Landing Page", render: (r) => escapeHtml(r.page) },
+        { label: "Visitors", num: true, render: (r) => fmtNum(r.visitors) },
+        { label: "Leads", num: true, render: (r) => fmtNum(r.leads) },
+        { label: "Conversion", num: true, render: (r) => r.conversion === null ? "—" : fmtPct(r.conversion) }
+      ];
+      return renderBreakdownTable(data.landingPages, cols, "No tracked landing pages yet for this period.");
+    }
+
+    // ---------------------------------------------------------------
+    // Existing sections, kept + improved
+    // ---------------------------------------------------------------
     function renderTable(rows, dimensionKey, dimensionLabel) {
       if (!rows || !rows.length) {
         return `<div class="empty">No data yet for this range.</div>`;
@@ -92,73 +378,98 @@
           <td class="num">${escapeHtml(r.visitors ?? "—")}</td>
         </tr>`).join("");
       return `
+        <div class="table-scroll">
         <table>
           <thead><tr><th>${escapeHtml(dimensionLabel)}</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead>
           <tbody>${body}</tbody>
-        </table>`;
-    }
-
-    function buildEvolutionChart(rows) {
-      if (!rows || rows.length < 2) {
-        return `<div class="empty">Not enough data yet to chart.</div>`;
-      }
-      const sorted = [...rows].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-      const w = 640, h = 220, padL = 12, padR = 12, padT = 16, padB = 12;
-      const innerW = w - padL - padR, innerH = h - padT - padB;
-      const maxVal = Math.max(1, ...sorted.map((r) => Math.max(r.pageviews || 0, r.visitors || 0)));
-      const stepX = innerW / (sorted.length - 1);
-      const x = (i) => padL + i * stepX;
-      const y = (v) => padT + innerH - (v / maxVal) * innerH;
-
-      const linePath = (key) => sorted.map((r, i) => `${i === 0 ? "M" : "L"}${x(i).toFixed(1)},${y(r[key] || 0).toFixed(1)}`).join(" ");
-      const areaPath = (key) => `${linePath(key)} L${x(sorted.length - 1).toFixed(1)},${(padT + innerH).toFixed(1)} L${x(0).toFixed(1)},${(padT + innerH).toFixed(1)} Z`;
-
-      const fmt = (ts) => new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-      const dots = (key, color) => sorted.map((r, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(r[key] || 0).toFixed(1)}" r="2.5" fill="${color}"><title>${escapeHtml(fmt(r.timestamp))}: ${escapeHtml(r[key] ?? 0)} ${escapeHtml(key)}</title></circle>`).join("");
-
-      return `
-        <div class="chart-card">
-          <div class="chart-legend">
-            <span><i class="dot pv"></i>Pageviews</span>
-            <span><i class="dot vs"></i>Visitors</span>
-          </div>
-          <svg viewBox="0 0 ${w} ${h}" class="chart-svg">
-            <path d="${areaPath("pageviews")}" class="chart-area"></path>
-            <path d="${linePath("pageviews")}" class="chart-line pv"></path>
-            <path d="${linePath("visitors")}" class="chart-line vs"></path>
-            ${dots("pageviews", "#111")}
-            ${dots("visitors", "#0b3d63")}
-          </svg>
-          <div class="chart-axis">
-            <span>${escapeHtml(fmt(sorted[0].timestamp))}</span>
-            <span>${escapeHtml(fmt(sorted[sorted.length - 1].timestamp))}</span>
-          </div>
+        </table>
         </div>`;
     }
 
+    function renderReferrers(rows) {
+      if (!rows || !rows.length) return `<div class="empty">No data yet for this range.</div>`;
+      const body = rows.map((r) => `
+        <tr>
+          <td>${escapeHtml(normalizeSource(r.referrerHostname))}<div class="sub">${escapeHtml(r.referrerHostname || "no referrer")}</div></td>
+          <td class="num">${escapeHtml(r.pageviews ?? r.count ?? 0)}</td>
+          <td class="num">${escapeHtml(r.visitors ?? "—")}</td>
+        </tr>`).join("");
+      return `<div class="table-scroll"><table>
+        <thead><tr><th>Source</th><th class="num">Views</th><th class="num">Visitors</th></tr></thead>
+        <tbody>${body}</tbody>
+      </table></div>`;
+    }
+
+    function renderCountries(rows) {
+      if (!rows || !rows.length) return `<div class="empty">No data yet for this range.</div>`;
+      const totalVisitors = rows.reduce((sum, r) => sum + (r.visitors || 0), 0) || 1;
+      const body = rows.map((r) => `
+        <tr>
+          <td>${escapeHtml(countryName(r.country))}<div class="sub">${escapeHtml(r.country || "")}</div></td>
+          <td class="num">${escapeHtml(r.pageviews ?? r.count ?? 0)}</td>
+          <td class="num">${fmtPct((r.visitors || 0) / totalVisitors * 100)}</td>
+        </tr>`).join("");
+      return `<div class="table-scroll"><table>
+        <thead><tr><th>Country</th><th class="num">Pageviews</th><th class="num">% Traffic</th></tr></thead>
+        <tbody>${body}</tbody>
+      </table></div>
+      <p class="caption">Top ${rows.length} countries by visitors for this period.</p>`;
+    }
+
+    function renderDevices(rows) {
+      if (!rows || !rows.length) return `<div class="empty">No data yet for this range.</div>`;
+      const total = rows.reduce((sum, r) => sum + (r.visitors || 0), 0) || 1;
+      const sorted = [...rows].sort((a, b) => (b.visitors || 0) - (a.visitors || 0));
+      const bars = sorted.map((r) => {
+        const share = (r.visitors || 0) / total * 100;
+        const label = r.deviceType ? r.deviceType[0].toUpperCase() + r.deviceType.slice(1) : "(unknown)";
+        return `<div class="device-row">
+          <div class="device-row-label"><span>${escapeHtml(label)}</span><span>${fmtPct(share)}</span></div>
+          <div class="device-bar-track"><div class="device-bar-fill" style="width:${Math.max(2, share)}%"></div></div>
+        </div>`;
+      }).join("");
+      return `<div class="device-bars">${bars}</div>`;
+    }
+
+    // ---------------------------------------------------------------
+    // Dashboard assembly
+    // ---------------------------------------------------------------
     function renderDashboard(data) {
-      const totals = data.totals || {};
-      return `
-        <div class="totals-row">
-          <div class="stat-tile"><div class="n">${escapeHtml(totals.pageviews ?? 0)}</div><div class="l">Pageviews</div></div>
-          <div class="stat-tile"><div class="n">${escapeHtml(totals.visitors ?? 0)}</div><div class="l">Visitors</div></div>
-        </div>
+      const html = `
+        ${renderKpiRow(data)}
 
         <h2>Evolution</h2>
-        ${buildEvolutionChart(data.byDate)}
+        ${renderEvolutionSection(data)}
 
-        <h2>Top pages</h2>
+        <h2>Conversion Funnel<span class="h2-sub">Visitor &rarr; Service Page &rarr; CTA &rarr; Form &rarr; Lead</span></h2>
+        ${renderFunnel(data)}
+
+        <h2>Acquisition</h2>
+        ${renderAcquisition(data)}
+
+        <h2>Campaign Performance</h2>
+        ${renderCampaigns(data)}
+
+        <h2>Service Interest</h2>
+        ${renderServiceInterest(data)}
+
+        <h2>Landing Pages</h2>
+        ${renderLandingPages(data)}
+
+        <h2>Top Pages</h2>
         ${renderTable(data.byPath, "requestPath", "Path")}
 
-        <h2>Top referrers</h2>
-        ${renderTable(data.byReferrer, "referrerHostname", "Source")}
+        <h2>Top Referrers</h2>
+        ${renderReferrers(data.byReferrer)}
 
-        <h2>Top countries</h2>
-        ${renderTable(data.byCountry, "country", "Country")}
+        <h2>Geography</h2>
+        ${renderCountries(data.byCountry)}
 
         <h2>Devices</h2>
-        ${renderTable(data.byDevice, "deviceType", "Device")}
+        ${renderDevices(data.byDevice)}
       `;
+      $("content").innerHTML = html;
+      wireEvolutionToggles();
     }
 
     function renderSetupNotice(message) {
@@ -169,10 +480,14 @@
         </div>`;
     }
 
-    async function loadAnalytics(days) {
+    // ---------------------------------------------------------------
+    // Range state + fetch
+    // ---------------------------------------------------------------
+    async function loadAnalytics(query) {
       $("content").innerHTML = `<div class="loading">Loading…</div>`;
       try {
-        const data = await callJson(`/api/admin/analytics?days=${days}`);
+        const qs = new URLSearchParams(query).toString();
+        const data = await callJson(`/api/admin/analytics?${qs}`);
         if (!data.ok) {
           $("content").innerHTML = renderSetupNotice(data.error || "Something went wrong.");
           return;
@@ -181,7 +496,7 @@
           $("content").innerHTML = renderSetupNotice(data.message);
           return;
         }
-        $("content").innerHTML = renderDashboard(data);
+        renderDashboard(data);
       } catch (err) {
         $("content").innerHTML = renderSetupNotice(err.message);
       }
@@ -191,11 +506,23 @@
       btn.addEventListener("click", () => {
         document.querySelectorAll(".range-btn").forEach((b) => b.classList.remove("active"));
         btn.classList.add("active");
-        loadAnalytics(btn.dataset.days);
+        if (btn.dataset.days === "custom") {
+          $("customRangeRow").classList.add("show");
+          return;
+        }
+        $("customRangeRow").classList.remove("show");
+        loadAnalytics({ days: btn.dataset.days });
       });
     });
 
-    adminReady.then(() => loadAnalytics(30));
+    $("customApply").addEventListener("click", () => {
+      const since = $("customSince").value;
+      const until = $("customUntil").value;
+      if (!since || !until) return;
+      loadAnalytics({ since: new Date(since).toISOString(), until: new Date(new Date(until).getTime() + 86400000).toISOString() });
+    });
+
+    adminReady.then(() => loadAnalytics({ days: 30 }));
   </script>
 </body>
 </html>

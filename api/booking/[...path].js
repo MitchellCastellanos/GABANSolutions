@@ -112,22 +112,45 @@ async function handleBook(req, res) {
     return res.status(409).json({ ok: false, error: "That time was just taken — please pick another slot." });
   }
 
+  const bookingFields = {
+    Name: name,
+    Email: email,
+    Phone: phone,
+    Business: business,
+    Notes: notes,
+    Start: startDate.toISOString(),
+    End: endDate.toISOString(),
+    Status: "Confirmed",
+    Source: clean(body.ref, 100) || "book.html",
+    Lang: clean(body.lang, 5),
+    "Submitted At": new Date().toISOString()
+  };
+
+  // First-touch acquisition attribution (see js/components.js) — same
+  // fields as the "Leads" table, added to the existing "Bookings"
+  // table's own columns. These columns may not exist yet in Airtable
+  // (see docs/ADMIN.md), so try the enriched write first and fall back
+  // to the core fields alone rather than losing a real booking over a
+  // missing column.
+  const attributionFields = {
+    UtmSource: clean(body.utm_source, 60),
+    UtmMedium: clean(body.utm_medium, 60),
+    UtmCampaign: clean(body.utm_campaign, 100),
+    UtmContent: clean(body.utm_content, 100),
+    UtmTerm: clean(body.utm_term, 100),
+    Referrer: clean(body.referrer, 200),
+    LandingPage: clean(body.landing_page, 200),
+    LandingService: clean(body.landing_service, 80)
+  };
+
   try {
-    await createBooking({
-      Name: name,
-      Email: email,
-      Phone: phone,
-      Business: business,
-      Notes: notes,
-      Start: startDate.toISOString(),
-      End: endDate.toISOString(),
-      Status: "Confirmed",
-      Source: clean(body.ref, 100) || "book.html",
-      Lang: clean(body.lang, 5),
-      "Submitted At": new Date().toISOString()
-    });
+    await createBooking({ ...bookingFields, ...attributionFields });
   } catch {
-    return res.status(502).json({ ok: false, error: "Could not save the booking. Please try again or contact us directly." });
+    try {
+      await createBooking(bookingFields);
+    } catch {
+      return res.status(502).json({ ok: false, error: "Could not save the booking. Please try again or contact us directly." });
+    }
   }
 
   const dateLabel = formatDateLabel(startDate, config.timezone);

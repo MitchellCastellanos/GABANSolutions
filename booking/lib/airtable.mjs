@@ -57,6 +57,28 @@ export async function listBookingsBetween(fromIso, toIso, { includeCancelled = f
   return records;
 }
 
+/**
+ * List booking records *submitted* within [fromIso, toIso) (uses the
+ * "Submitted At" field, not "Start"). For the analytics dashboard,
+ * which needs "when did this conversion happen", not "when is the
+ * appointment" (listBookingsBetween above answers that second,
+ * different question for the booking calendar UI).
+ */
+export async function listBookingsSubmittedBetween(fromIso, toIso, { includeCancelled = true } = {}) {
+  const statusClause = includeCancelled ? "TRUE()" : `{Status} != "Cancelled"`;
+  const formula = `AND(${statusClause}, IS_AFTER({Submitted At}, "${fromIso}"), IS_BEFORE({Submitted At}, "${toIso}"))`;
+  const records = [];
+  let offset;
+  do {
+    const params = new URLSearchParams({ filterByFormula: formula, pageSize: "100" });
+    if (offset) params.set("offset", offset);
+    const page = await airtableFetch(`${tableUrl()}?${params.toString()}`);
+    records.push(...page.records);
+    offset = page.offset;
+  } while (offset);
+  return records;
+}
+
 export async function createBooking(fields) {
   const result = await airtableFetch(tableUrl(), {
     method: "POST",

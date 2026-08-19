@@ -21,6 +21,164 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 })();
 
 // =========================================================
+// FIRST-PARTY EVENT TRACKING + ATTRIBUTION
+// ---------------------------------------------------------
+// Fires custom events through the Vercel Web Analytics beacon above
+// (queryable later via /v1/query/web-analytics/events/*, same token
+// and endpoint the admin dashboard already uses for pageviews). No
+// cookies, no third-party pixels: first-touch attribution (utm_*,
+// referrer, landing page) is captured once per browser tab in
+// sessionStorage and forwarded to the contact/booking forms so a lead
+// can be traced back to the campaign that produced it.
+//
+// This runs synchronously (not on DOMContentLoaded) because it must
+// finish — and window.gabanAttribution/gabanTrack must exist — before
+// each page's own inline <script> block runs later in the same
+// document, since that's where contact.html/book.html read them.
+// =========================================================
+
+const ATTRIBUTION_KEY = "gaban_attribution";
+const INTERNAL_HOSTS = ["gabansolutions.ca", "digital.gabansolutions.ca", "software.gabansolutions.ca"];
+
+// Real service/product pages that exist on the site today (see
+// digital.html / software.html cards + nav) — used to auto-fire
+// service_view without editing every page individually.
+const SERVICE_PAGES = {
+  "/websites.html": "Websites",
+  "/landing-pages.html": "Landing Pages",
+  "/seo.html": "Local SEO",
+  "/ecommerce.html": "E-commerce",
+  "/automations.html": "Automations",
+  "/garageos.html": "GarageOS",
+  "/fieldos.html": "FieldOS",
+  "/booking-system.html": "Booking System"
+};
+const PORTFOLIO_PAGES = ["/work.html", "/portfolio.html"];
+
+function classifySource(referrerHost, utmSource) {
+  if (utmSource) return utmSource;
+  if (!referrerHost) return "Direct / Unknown";
+  const h = referrerHost.toLowerCase().replace(/^www\./, "");
+  if (INTERNAL_HOSTS.includes(h)) return "Internal";
+  if (/google\./.test(h)) return "Google";
+  if (/linkedin\./.test(h)) return "LinkedIn";
+  if (/facebook\.|^fb\.com$|l\.facebook/.test(h)) return "Facebook";
+  if (/instagram\./.test(h)) return "Instagram";
+  if (/brave\./.test(h)) return "Brave Search";
+  if (/bing\./.test(h)) return "Bing";
+  if (/duckduckgo\./.test(h)) return "DuckDuckGo";
+  if (/twitter\.|x\.com|t\.co/.test(h)) return "X / Twitter";
+  if (/wa\.me|whatsapp\./.test(h)) return "WhatsApp";
+  return h;
+}
+
+function readAttribution() {
+  try {
+    const raw = sessionStorage.getItem(ATTRIBUTION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveAttribution(attribution) {
+  try {
+    sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(attribution));
+  } catch {
+    // sessionStorage unavailable (private mode, etc.) — attribution is
+    // best-effort, never block the page over it.
+  }
+}
+
+function trackEvent(name, data = {}) {
+  if (typeof window.va === "function") {
+    window.va("event", { name, data });
+  }
+}
+window.gabanTrack = trackEvent;
+
+function initAttribution() {
+  let attribution = readAttribution();
+  const params = new URLSearchParams(location.search);
+  const utmSource = params.get("utm_source") || "";
+  const utmMedium = params.get("utm_medium") || "";
+  const utmCampaign = params.get("utm_campaign") || "";
+  const utmContent = params.get("utm_content") || "";
+  const utmTerm = params.get("utm_term") || "";
+
+  if (!attribution) {
+    // First pageview of this tab/session: capture first-touch attribution.
+    let referrerHost = "";
+    try {
+      referrerHost = document.referrer ? new URL(document.referrer).hostname : "";
+    } catch {
+      referrerHost = "";
+    }
+    attribution = {
+      source: classifySource(referrerHost, utmSource),
+      medium: utmMedium || (referrerHost ? "referral" : "none"),
+      campaign: utmCampaign,
+      content: utmContent,
+      term: utmTerm,
+      referrer: referrerHost,
+      landing_page: location.pathname,
+      landing_service: SERVICE_PAGES[location.pathname] || ""
+    };
+    saveAttribution(attribution);
+    trackEvent("session_start", {
+      source: attribution.source,
+      medium: attribution.medium,
+      campaign: attribution.campaign,
+      referrer_host: attribution.referrer,
+      landing_page: attribution.landing_page
+    });
+  } else if (utmCampaign && !attribution.campaign) {
+    // Same session, but this pageview carries a fresh campaign link
+    // (e.g. a second ad click) — record it without discarding the
+    // original first-touch source.
+    attribution.campaign = utmCampaign;
+    attribution.content = utmContent;
+    attribution.term = utmTerm;
+    saveAttribution(attribution);
+  }
+  return attribution;
+}
+
+function ctaLocation(link) {
+  if (link.closest("nav")) return "nav";
+  if (link.closest("footer")) return "footer";
+  if (link.closest("header")) return "hero";
+  return "content";
+}
+
+function initTracking() {
+  window.gabanAttribution = initAttribution();
+
+  const service = SERVICE_PAGES[location.pathname];
+  if (service) trackEvent("service_view", { service, page: location.pathname });
+  if (PORTFOLIO_PAGES.includes(location.pathname)) trackEvent("portfolio_view", { page: location.pathname });
+
+  // Delegated click tracking for site-wide conversion actions — covers
+  // every tel:/mailto: link and every link to /book.html or
+  // /contact.html without needing a listener on each individual button.
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("a[href]");
+    if (!link) return;
+    if (link.protocol === "tel:") {
+      trackEvent("phone_click", { page: location.pathname });
+    } else if (link.protocol === "mailto:") {
+      trackEvent("email_click", { page: location.pathname });
+    } else if (link.pathname === "/book.html") {
+      trackEvent("booking_cta_click", { page: location.pathname, cta_location: ctaLocation(link) });
+    } else if (link.pathname === "/contact.html") {
+      trackEvent("contact_cta_click", { page: location.pathname, cta_location: ctaLocation(link) });
+    }
+  });
+}
+
+initTracking();
+
+// =========================================================
 // SHARED LAYOUT (context-aware)
 // ---------------------------------------------------------
 // The same deployment is served under three hosts:
