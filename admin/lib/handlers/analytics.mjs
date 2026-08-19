@@ -64,12 +64,13 @@ export async function handleAnalytics(req, res) {
   const { since, until, days } = dateRange(req.query);
 
   try {
-    const [count, byPath, byReferrer, byCountry, byDevice] = await Promise.all([
+    const [count, byPath, byReferrer, byCountry, byDevice, byDate] = await Promise.all([
       vercelAnalytics("/v1/query/web-analytics/visits/count", { since, until }),
       vercelAnalytics("/v1/query/web-analytics/visits/aggregate", { since, until, by: "requestPath", limit: 10 }),
       vercelAnalytics("/v1/query/web-analytics/visits/aggregate", { since, until, by: "referrerHostname", limit: 10 }),
       vercelAnalytics("/v1/query/web-analytics/visits/aggregate", { since, until, by: "country", limit: 10 }),
-      vercelAnalytics("/v1/query/web-analytics/visits/aggregate", { since, until, by: "deviceType", limit: 5 })
+      vercelAnalytics("/v1/query/web-analytics/visits/aggregate", { since, until, by: "deviceType", limit: 5 }),
+      vercelAnalytics("/v1/query/web-analytics/visits/aggregate", { since, until, by: "day", limit: 100 })
     ]);
 
     return res.status(200).json({
@@ -82,7 +83,8 @@ export async function handleAnalytics(req, res) {
       byPath: byPath.data,
       byReferrer: byReferrer.data,
       byCountry: byCountry.data,
-      byDevice: byDevice.data
+      byDevice: byDevice.data,
+      byDate: byDate.data
     });
   } catch (err) {
     if (err.code === "web_analytics_not_enabled") {
