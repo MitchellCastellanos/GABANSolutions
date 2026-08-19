@@ -20,6 +20,26 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
   document.head.appendChild(script);
 })();
 
+// ---------------------------------------------------------
+// CLICK TRACKING (Vercel Web Analytics custom events)
+// ---------------------------------------------------------
+// Any element with [data-track] fires a named event on click. Extra
+// data-track-* attributes (other than data-track itself) ride along as
+// event data, e.g. data-track="cta_click" data-track-location="hero"
+// sends va('event', { name: 'cta_click', location: 'hero' }). This
+// covers CTA/link clicks site-wide from one listener; form-submission
+// success events (leads/bookings) are tracked where each form is
+// submitted since click tracking alone can't confirm success.
+document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-track]");
+  if (!el || typeof window.va !== "function") return;
+  const payload = { name: el.getAttribute("data-track") };
+  for (const attr of el.attributes) {
+    if (attr.name.startsWith("data-track-")) payload[attr.name.slice("data-track-".length)] = attr.value;
+  }
+  window.va("event", payload);
+});
+
 // =========================================================
 // SHARED LAYOUT (context-aware)
 // ---------------------------------------------------------
@@ -59,6 +79,7 @@ const BRANDS = {
 const NAV_LINKS = {
   home: [
     { id: "home", href: "/", i18n: "nav_home", label: "Home" },
+    { id: "pricing", href: "/#divisions", i18n: "nav_pricing", label: "Pricing" },
     { id: "digital", href: DIGITAL_URL, i18n: "nav_digital", label: "Digital" },
     { id: "software", href: SOFTWARE_URL, i18n: "nav_software", label: "Software" },
     { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },

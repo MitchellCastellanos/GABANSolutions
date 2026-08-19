@@ -399,6 +399,7 @@
         const result = await res.json().catch(() => ({}));
 
         if (res.ok && result.ok) {
+          if (typeof window.va === "function") window.va("event", { name: "lead_submitted", form: "book", ref: data.ref });
           formWrap.classList.add("d-none");
           successDetailEl.textContent = `${result.dateLabel} at ${result.timeLabel} (${result.timezoneLabel})`;
           successMeetLinkEl.innerHTML = result.meetLink

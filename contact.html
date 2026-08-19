@@ -442,6 +442,7 @@
       submitBtn.textContent = "Send Message";
 
       if (delivered) {
+        if (typeof window.va === "function") window.va("event", { name: "lead_submitted", form: "contact", need: data.need, ref: data.ref || "" });
         leadForm.reset();
         successBox?.classList.remove("d-none");
         successBox?.scrollIntoView({ behavior: "smooth", block: "center" });
