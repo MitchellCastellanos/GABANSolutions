@@ -106,8 +106,9 @@ function renderNavbar(activePage = "", context = "home") {
   return `
   <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="${brand.href}">
-        ${brand.label}
+      <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="${brand.href}">
+        <img src="/Images/logo-mark-transparent.png" alt="" width="28" height="28" class="navbar-brand-mark">
+        <span>${brand.label}</span>
       </a>
 
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
@@ -137,7 +138,10 @@ function renderNavbar(activePage = "", context = "home") {
 function footerHome() {
   return `
         <div class="col-md-3">
-          <h2 class="h6 fw-bold">GABAN Solutions</h2>
+          <h2 class="h6 fw-bold d-flex align-items-center gap-2">
+            <img src="/Images/logo-mark-transparent.png" alt="" width="20" height="20">
+            GABAN Solutions
+          </h2>
           <p class="small text-muted mb-0" data-i18n="foot_tagline_home">Digital presence and business software for local businesses.</p>
         </div>
 
@@ -169,7 +173,10 @@ function footerHome() {
 function footerDigital() {
   return `
         <div class="col-md-3">
-          <h2 class="h6 fw-bold">GABAN Digital</h2>
+          <h2 class="h6 fw-bold d-flex align-items-center gap-2">
+            <img src="/Images/logo-mark-transparent.png" alt="" width="20" height="20">
+            GABAN Digital
+          </h2>
           <p class="small text-muted mb-3" data-i18n="foot_tagline_digital">Websites, local SEO and automation for businesses that want to be found and trusted.</p>
           <ul class="list-unstyled small mb-0">
             <li><a class="text-decoration-none" href="${SOFTWARE_URL}" data-i18n="nav_software">Software</a></li>
@@ -209,7 +216,10 @@ function footerDigital() {
 function footerSoftware() {
   return `
         <div class="col-md-3">
-          <h2 class="h6 fw-bold">GABAN Software</h2>
+          <h2 class="h6 fw-bold d-flex align-items-center gap-2">
+            <img src="/Images/logo-mark-transparent.png" alt="" width="20" height="20">
+            GABAN Software
+          </h2>
           <p class="small text-muted mb-3" data-i18n="foot_tagline_software">Ready-to-use software platforms for small businesses that want better operations.</p>
           <ul class="list-unstyled small mb-0">
             <li><a class="text-decoration-none" href="${DIGITAL_URL}" data-i18n="nav_digital">Digital</a></li>
