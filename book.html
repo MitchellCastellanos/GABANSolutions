@@ -39,10 +39,32 @@
   <link rel="stylesheet" href="./MyCSS.css">
 
   <style>
-    .book-date-btn { min-width: 84px; }
-    .book-date-btn.active { background: #111; color: #fff; border-color: #111; }
     .book-time-btn.active { background: #111; color: #fff; border-color: #111; }
-    #bookDatesRow, #bookTimesRow { scrollbar-width: thin; }
+    #bookTimesRow { scrollbar-width: thin; }
+
+    .book-calendar { max-width: 340px; }
+    .book-cal-nav-btn {
+      width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+      border: 1px solid #dee2e6; border-radius: 8px; background: #fff; padding: 0;
+    }
+    .book-cal-nav-btn:disabled { opacity: .3; cursor: default; }
+    .book-cal-month-label { text-transform: capitalize; }
+    .book-calendar-weekdays, .book-calendar-grid {
+      display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;
+    }
+    .book-calendar-weekdays > div {
+      text-align: center; font-size: .7rem; text-transform: uppercase;
+      color: #6c757d; font-weight: 600; padding: .25rem 0;
+    }
+    .book-cal-day {
+      aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;
+      border: 1px solid #dee2e6; border-radius: 8px; background: #fff;
+      font-weight: 600; font-size: .85rem; padding: 0; width: 100%;
+    }
+    .book-cal-day:hover:not(:disabled) { border-color: #111; }
+    .book-cal-day.active { background: #111; color: #fff; border-color: #111; }
+    .book-cal-day:disabled { opacity: .25; cursor: default; background: transparent; border-color: transparent; }
+    .book-cal-day.book-cal-empty { visibility: hidden; border: none; }
   </style>
   <script type="application/ld+json">
   {
@@ -99,7 +121,15 @@
 
             <div id="bookPicker" class="d-none">
               <h2 class="h6 fw-bold mb-2" data-i18n="book_pick_day">1. Pick a day</h2>
-              <div id="bookDatesRow" class="d-flex gap-2 mb-4 overflow-auto pb-2"></div>
+              <div id="bookCalendar" class="book-calendar mb-4">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <button type="button" id="bookCalPrev" class="book-cal-nav-btn" aria-label="Previous month"><i class="bi bi-chevron-left"></i></button>
+                  <div id="bookCalMonthLabel" class="fw-semibold book-cal-month-label"></div>
+                  <button type="button" id="bookCalNext" class="book-cal-nav-btn" aria-label="Next month"><i class="bi bi-chevron-right"></i></button>
+                </div>
+                <div id="bookCalWeekdays" class="book-calendar-weekdays mb-1"></div>
+                <div id="bookCalGrid" class="book-calendar-grid"></div>
+              </div>
 
               <div id="bookTimesWrap" class="d-none">
                 <h2 class="h6 fw-bold mb-2" data-i18n="book_pick_time">2. Pick a time</h2>
@@ -268,7 +298,11 @@
     const loadingEl = document.getElementById("bookLoading");
     const errorEl = document.getElementById("bookError");
     const pickerEl = document.getElementById("bookPicker");
-    const datesRow = document.getElementById("bookDatesRow");
+    const calPrevBtn = document.getElementById("bookCalPrev");
+    const calNextBtn = document.getElementById("bookCalNext");
+    const calMonthLabelEl = document.getElementById("bookCalMonthLabel");
+    const calWeekdaysEl = document.getElementById("bookCalWeekdays");
+    const calGridEl = document.getElementById("bookCalGrid");
     const timesWrap = document.getElementById("bookTimesWrap");
     const timesRow = document.getElementById("bookTimesRow");
     const noSlotsEl = document.getElementById("bookNoSlots");
@@ -289,6 +323,10 @@
     let availability = null;
     let selectedDate = null;
     let selectedSlot = null;
+    let availableDateSet = new Set();
+    let calendarMonth = null;
+    let minMonth = null;
+    let maxMonth = null;
 
     function dateChipLabel(dateStr) {
       const [y, m, d] = dateStr.split("-").map(Number);
@@ -315,28 +353,86 @@
 
     function renderDates() {
       const dateStrs = Object.keys(availability.days).sort();
-      datesRow.innerHTML = "";
-      dateStrs.forEach((dateStr, i) => {
-        const { weekday, dayMonth } = dateChipLabel(dateStr);
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "btn btn-outline-dark book-date-btn text-center flex-shrink-0";
-        btn.innerHTML = `<div class="small text-uppercase">${weekday}</div><div class="fw-semibold">${dayMonth}</div>`;
-        btn.addEventListener("click", () => selectDate(dateStr, btn));
-        datesRow.appendChild(btn);
-        if (i === 0) selectDate(dateStr, btn);
-      });
+      if (!dateStrs.length) return;
+      availableDateSet = new Set(dateStrs);
+
+      const first = dateChipParts(dateStrs[0]);
+      const last = dateChipParts(dateStrs[dateStrs.length - 1]);
+      minMonth = new Date(Date.UTC(first.y, first.m - 1, 1));
+      maxMonth = new Date(Date.UTC(last.y, last.m - 1, 1));
+      calendarMonth = new Date(Date.UTC(first.y, first.m - 1, 1));
+
+      selectDate(dateStrs[0]);
     }
 
-    function selectDate(dateStr, btnEl) {
+    function dateChipParts(dateStr) {
+      const [y, m, d] = dateStr.split("-").map(Number);
+      return { y, m, d };
+    }
+
+    function renderCalendar() {
+      const monthLabel = calendarMonth.toLocaleDateString(currentLocale(), { month: "long", year: "numeric", timeZone: "UTC" });
+      calMonthLabelEl.textContent = monthLabel;
+
+      calPrevBtn.disabled = calendarMonth.getTime() <= minMonth.getTime();
+      calNextBtn.disabled = calendarMonth.getTime() >= maxMonth.getTime();
+
+      calWeekdaysEl.innerHTML = "";
+      const weekdayFmt = new Intl.DateTimeFormat(currentLocale(), { weekday: "short", timeZone: "UTC" });
+      for (let i = 0; i < 7; i++) {
+        // Jan 1, 2023 was a Sunday — use it as a stable reference to build a Sun–Sat header.
+        const d = new Date(Date.UTC(2023, 0, 1 + i));
+        const el = document.createElement("div");
+        el.textContent = weekdayFmt.format(d);
+        calWeekdaysEl.appendChild(el);
+      }
+
+      const y = calendarMonth.getUTCFullYear();
+      const m = calendarMonth.getUTCMonth();
+      const firstWeekday = new Date(Date.UTC(y, m, 1)).getUTCDay();
+      const daysInMonth = new Date(Date.UTC(y, m + 1, 0)).getUTCDate();
+
+      calGridEl.innerHTML = "";
+      for (let i = 0; i < firstWeekday; i++) {
+        const empty = document.createElement("div");
+        empty.className = "book-cal-day book-cal-empty";
+        calGridEl.appendChild(empty);
+      }
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dateStr = `${y}-${String(m + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "book-cal-day";
+        btn.textContent = String(day);
+        if (availableDateSet.has(dateStr)) {
+          btn.addEventListener("click", () => selectDate(dateStr));
+        } else {
+          btn.disabled = true;
+        }
+        if (dateStr === selectedDate) btn.classList.add("active");
+        calGridEl.appendChild(btn);
+      }
+    }
+
+    function selectDate(dateStr) {
       selectedDate = dateStr;
       selectedSlot = null;
-      [...datesRow.children].forEach(b => b.classList.remove("active"));
-      btnEl.classList.add("active");
+      const targetParts = dateChipParts(dateStr);
+      calendarMonth = new Date(Date.UTC(targetParts.y, targetParts.m - 1, 1));
+      renderCalendar();
       renderTimes();
       formWrap.classList.add("d-none");
       successEl.classList.add("d-none");
     }
+
+    calPrevBtn.addEventListener("click", () => {
+      calendarMonth = new Date(Date.UTC(calendarMonth.getUTCFullYear(), calendarMonth.getUTCMonth() - 1, 1));
+      renderCalendar();
+    });
+    calNextBtn.addEventListener("click", () => {
+      calendarMonth = new Date(Date.UTC(calendarMonth.getUTCFullYear(), calendarMonth.getUTCMonth() + 1, 1));
+      renderCalendar();
+    });
 
     function renderTimes() {
       const slots = availability.days[selectedDate] || [];
