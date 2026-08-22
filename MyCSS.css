@@ -174,52 +174,21 @@ ICONS
 }
 
 /* ===============================
-HOME ROUTER (hero + division panels merged)
+TEXT COMPARE (editorial two-column division layout, no cards)
 =============================== */
 
-.router-panel{
-  display:block;
-  height:100%;
-  padding:2rem;
-  border-radius:var(--gaban-radius-lg);
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.14);
-  transition:transform .25s ease, background .25s ease, border-color .25s ease;
+.text-compare-col + .text-compare-col{
+  border-top:1px solid var(--gaban-border);
+  padding-top:2rem;
 }
 
-.router-panel:hover,
-.router-panel:focus-visible{
-  transform:translateY(-4px);
-  background:rgba(255,255,255,0.09);
-  border-color:rgba(255,255,255,0.28);
-}
-
-.router-panel .icon-circle{
-  background:rgba(255,255,255,0.12);
-  color:#ffffff;
-}
-
-/* ===============================
-STEPS STRIP (numbered, not repeated cards)
-=============================== */
-
-.steps-strip{
-  display:flex;
-  flex-wrap:wrap;
-  gap:2.5rem;
-}
-
-.step-item{
-  flex:1 1 240px;
-}
-
-.step-num{
-  font-family:var(--gaban-font-heading);
-  font-size:2.25rem;
-  font-weight:700;
-  color:var(--gaban-accent);
-  line-height:1;
-  margin-bottom:.5rem;
+@media (min-width:992px){
+  .text-compare-col + .text-compare-col{
+    border-top:none;
+    border-left:1px solid var(--gaban-border);
+    padding-top:0;
+    padding-left:3rem;
+  }
 }
 
 /* ===============================
