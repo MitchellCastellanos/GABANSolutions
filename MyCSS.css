@@ -174,21 +174,48 @@ ICONS
 }
 
 /* ===============================
-TEXT COMPARE (editorial two-column division layout, no cards)
+VERTICALS STRIP (plain row, not icon cards)
 =============================== */
 
-.text-compare-col + .text-compare-col{
-  border-top:1px solid var(--gaban-border);
-  padding-top:2rem;
+.verticals-strip{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.6rem 1.75rem;
 }
 
-@media (min-width:992px){
-  .text-compare-col + .text-compare-col{
-    border-top:none;
-    border-left:1px solid var(--gaban-border);
-    padding-top:0;
-    padding-left:3rem;
-  }
+.verticals-label{
+  font-weight:600;
+  color:var(--gaban-muted);
+}
+
+.verticals-item{
+  font-weight:500;
+  padding-left:1.75rem;
+  border-left:1px solid var(--gaban-border);
+}
+
+/* ===============================
+TRACK TABS (home product tabs, brand-colored instead of Bootstrap blue)
+=============================== */
+
+.nav-pills .nav-link{
+  color:var(--gaban-text);
+  border-radius:999px;
+  padding:.6rem 1.4rem;
+  font-weight:600;
+  border:1px solid var(--gaban-border);
+}
+
+.nav-pills .nav-link:not(.active):hover{
+  background:var(--gaban-accent-50);
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link{
+  background:var(--gaban-dark);
+  border-color:var(--gaban-dark);
+  color:#ffffff !important;
 }
 
 /* ===============================
