@@ -91,14 +91,37 @@
 
 <header class="hero bg-dark text-white">
   <div class="container py-5">
-    <div class="row align-items-center g-5">
-      <div class="col-lg-5 reveal-left">
+    <div class="d-flex justify-content-center mb-5">
+      <div class="track-toggle" id="homeTrackToggle">
+        <button type="button" class="track-toggle-btn active" data-track="digital" aria-pressed="true">
+          <i class="bi bi-window-sidebar me-2"></i><span data-i18n="hm_tab_dig">Digital</span>
+        </button>
+        <button type="button" class="track-toggle-btn" data-track="software" aria-pressed="false">
+          <i class="bi bi-grid-1x2 me-2"></i><span data-i18n="hm_tab_sw">Software</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="row align-items-center g-5" data-track-panel="digital">
+      <div class="col-lg-5">
+        <div class="text-uppercase small fw-semibold text-warning mb-3" data-i18n="hm_dig_tag">Websites &amp; e-commerce</div>
+        <h1 class="display-5 fw-bold mb-3" data-i18n="hm_dig_h1">A real online store, not a template with a shopping cart bolted on.</h1>
+        <p class="lead text-white-50 mb-4" data-i18n="hm_dig_lead">GABAN builds websites, online stores and local visibility systems small businesses actually use &mdash; not templates.</p>
+        <a class="btn btn-warning btn-lg" href="https://digital.gabansolutions.ca/" data-i18n="hm_cta_digital">Explore Digital</a>
+      </div>
+      <div class="col-lg-7">
+        <img src="./Images/portfolio/CoverReptilesConcept.jpg" class="img-fluid featured-project-img w-100" alt="Reptiles Concept e-commerce site built by GABAN Solutions" loading="lazy" decoding="async">
+      </div>
+    </div>
+
+    <div class="row align-items-center g-5 d-none" data-track-panel="software">
+      <div class="col-lg-5">
         <div class="text-uppercase small fw-semibold text-warning mb-3" data-i18n="hm_prod_tag">See it in action</div>
         <h1 class="display-5 fw-bold mb-3" data-i18n="hm_prod_h1">This is what running a shop looks like with the right software.</h1>
-        <p class="lead text-white-50 mb-4" data-i18n="hm_prod_lead">GABAN builds the websites and software small businesses actually use &mdash; not templates.</p>
-        <a class="btn btn-warning btn-lg" href="/book.html" data-i18n="nav_cta">Book Your Free Consultation</a>
+        <p class="lead text-white-50 mb-4" data-i18n="hm_prod_lead">GABAN builds practical software for shops and field teams &mdash; not spreadsheets held together with tape.</p>
+        <a class="btn btn-warning btn-lg" href="https://software.gabansolutions.ca/" data-i18n="hm_cta_software">Explore Software</a>
       </div>
-      <div class="col-lg-7 reveal-right">
+      <div class="col-lg-7">
         <img src="./Images/portfolio/CoverGarageOS.jpg" class="img-fluid featured-project-img w-100" alt="GarageOS dashboard preview" loading="lazy" decoding="async">
       </div>
     </div>
@@ -107,7 +130,14 @@
 
 <section class="section bg-light py-4">
   <div class="container">
-    <div class="verticals-strip reveal-up">
+    <div class="verticals-strip" data-track-panel="digital">
+      <span class="verticals-label" data-i18n="hm_v_dig_tag">Built for businesses that need to be found online</span>
+      <span class="verticals-item" data-i18n="hm_vd1">E-commerce &amp; retail</span>
+      <span class="verticals-item" data-i18n="hm_vd2">Restaurants &amp; hospitality</span>
+      <span class="verticals-item" data-i18n="hm_vd3">Professional services</span>
+      <span class="verticals-item" data-i18n="hm_vd4">Local &amp; multilingual businesses</span>
+    </div>
+    <div class="verticals-strip d-none" data-track-panel="software">
       <span class="verticals-label" data-i18n="hm_verticals_tag">Built for the businesses that keep things running</span>
       <span class="verticals-item" data-i18n="hm_v1">Auto repair</span>
       <span class="verticals-item" data-i18n="hm_v2">Landscaping &amp; snow removal</span>
@@ -119,77 +149,57 @@
 
 <section class="section">
   <div class="container">
-    <div class="text-center mb-4 reveal-up">
-      <h2 class="fw-bold mb-2" data-i18n="hm_tabs_h2">Pick your track</h2>
-      <p class="text-muted mb-0" data-i18n="hm_tabs_sub">Same team, two different problems to solve.</p>
-    </div>
-
-    <div class="d-flex justify-content-center mb-5">
-      <ul class="nav track-toggle" id="homeTracks" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="tab-digital-btn" data-bs-toggle="pill" data-bs-target="#tab-digital" type="button" role="tab" aria-selected="true">
-            <i class="bi bi-window-sidebar me-2"></i><span data-i18n="hm_tab_dig">Digital</span>
-          </button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="tab-software-btn" data-bs-toggle="pill" data-bs-target="#tab-software" type="button" role="tab" aria-selected="false">
-            <i class="bi bi-grid-1x2 me-2"></i><span data-i18n="hm_tab_sw">Software</span>
-          </button>
-        </li>
-      </ul>
-    </div>
-
-    <div class="tab-content">
-      <div class="tab-pane fade show active" id="tab-digital" role="tabpanel">
-        <div class="row g-5 align-items-start">
-          <div class="col-lg-6">
-            <p class="text-muted mb-3" data-i18n="hm_panel_dig_kicker">For businesses that need to be found and look credible online.</p>
-            <ul class="list-unstyled mb-4">
-              <li class="mb-2" data-i18n="hm_panel_dig_b1">&mdash; Websites &amp; landing pages</li>
-              <li class="mb-2" data-i18n="hm_panel_dig_b2">&mdash; SEO &amp; Google Business optimization</li>
-              <li data-i18n="hm_panel_dig_b3">&mdash; Automations &amp; digital consulting</li>
-            </ul>
-            <a class="btn btn-dark" href="https://digital.gabansolutions.ca/" data-i18n="hm_cta_digital">Explore Digital</a>
-          </div>
-          <div class="col-lg-6">
-            <div class="text-uppercase small fw-semibold text-muted mb-3" data-i18n="hm_dig_featured_tag">Popular right now</div>
-            <div class="track-highlight-list">
-              <a class="track-highlight-item" href="/grow-package.html">
-                <div class="track-highlight-name">Grow Package <i class="bi bi-arrow-up-right"></i></div>
-                <div class="track-highlight-desc" data-i18n="hm_dig_grow_desc">Website, Google Business setup and a growth review, bundled together.</div>
-              </a>
-              <a class="track-highlight-item" href="/express.html">
-                <div class="track-highlight-name">Launch 72H <i class="bi bi-arrow-up-right"></i></div>
-                <div class="track-highlight-desc" data-i18n="hm_dig_express_desc">Need something live fast? A professional website in 72 hours.</div>
-              </a>
-            </div>
-          </div>
+    <div class="row g-5 align-items-start" data-track-panel="digital">
+      <div class="col-lg-6">
+        <p class="text-muted mb-3" data-i18n="hm_panel_dig_kicker">For businesses that need to be found and look credible online.</p>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2" data-i18n="hm_panel_dig_b1">&mdash; Websites &amp; landing pages</li>
+          <li class="mb-2" data-i18n="hm_panel_dig_b2">&mdash; E-commerce &amp; online stores</li>
+          <li class="mb-2" data-i18n="hm_panel_dig_b3">&mdash; SEO &amp; Google Business optimization</li>
+          <li data-i18n="hm_panel_dig_b4">&mdash; Automations &amp; digital consulting</li>
+        </ul>
+        <a class="btn btn-dark" href="https://digital.gabansolutions.ca/" data-i18n="hm_cta_digital">Explore Digital</a>
+      </div>
+      <div class="col-lg-6">
+        <div class="text-uppercase small fw-semibold text-muted mb-3" data-i18n="hm_dig_featured_tag">Popular right now</div>
+        <div class="track-highlight-list">
+          <a class="track-highlight-item" href="/ecommerce.html">
+            <div class="track-highlight-name">E-commerce <i class="bi bi-arrow-up-right"></i></div>
+            <div class="track-highlight-desc" data-i18n="hm_dig_ecom_desc">Custom online stores with catalog, checkout, payments and an admin panel &mdash; built and proven for real stores.</div>
+          </a>
+          <a class="track-highlight-item" href="/grow-package.html">
+            <div class="track-highlight-name">Grow Package <i class="bi bi-arrow-up-right"></i></div>
+            <div class="track-highlight-desc" data-i18n="hm_dig_grow_desc">Website, Google Business setup and a growth review, bundled together.</div>
+          </a>
+          <a class="track-highlight-item" href="/express.html">
+            <div class="track-highlight-name">Launch 72H <i class="bi bi-arrow-up-right"></i></div>
+            <div class="track-highlight-desc" data-i18n="hm_dig_express_desc">Need something live fast? A professional website in 72 hours.</div>
+          </a>
         </div>
       </div>
-      <div class="tab-pane fade" id="tab-software" role="tabpanel">
-        <div class="row g-5 align-items-start">
-          <div class="col-lg-6">
-            <p class="text-muted mb-3" data-i18n="hm_panel_sw_kicker">For businesses that need better day-to-day operations.</p>
-            <ul class="list-unstyled mb-4">
-              <li class="mb-2" data-i18n="hm_panel_sw_b1">&mdash; Quotes &amp; invoicing</li>
-              <li class="mb-2" data-i18n="hm_panel_sw_b2">&mdash; Scheduling &amp; appointments</li>
-              <li data-i18n="hm_panel_sw_b3">&mdash; Customer management &amp; history</li>
-            </ul>
-            <a class="btn btn-dark" href="https://software.gabansolutions.ca/" data-i18n="hm_cta_software">Explore Software</a>
-          </div>
-          <div class="col-lg-6">
-            <div class="text-uppercase small fw-semibold text-muted mb-3" data-i18n="hm_sw_featured_tag">Our products</div>
-            <div class="track-highlight-list">
-              <a class="track-highlight-item" href="/garageos.html">
-                <div class="track-highlight-name">GarageOS <i class="bi bi-arrow-up-right"></i></div>
-                <div class="track-highlight-desc" data-i18n="hm_sw_garageos_desc">Shop management for auto repair &mdash; invoicing, appointments, service history.</div>
-              </a>
-              <a class="track-highlight-item" href="/fieldos.html">
-                <div class="track-highlight-name">FieldOS <i class="bi bi-arrow-up-right"></i></div>
-                <div class="track-highlight-desc" data-i18n="hm_sw_fieldos_desc">Field service management &mdash; jobs, routes, recurring services, quotes.</div>
-              </a>
-            </div>
-          </div>
+    </div>
+
+    <div class="row g-5 align-items-start d-none" data-track-panel="software">
+      <div class="col-lg-6">
+        <p class="text-muted mb-3" data-i18n="hm_panel_sw_kicker">For businesses that need better day-to-day operations.</p>
+        <ul class="list-unstyled mb-4">
+          <li class="mb-2" data-i18n="hm_panel_sw_b1">&mdash; Quotes &amp; invoicing</li>
+          <li class="mb-2" data-i18n="hm_panel_sw_b2">&mdash; Scheduling &amp; appointments</li>
+          <li data-i18n="hm_panel_sw_b3">&mdash; Customer management &amp; history</li>
+        </ul>
+        <a class="btn btn-dark" href="https://software.gabansolutions.ca/" data-i18n="hm_cta_software">Explore Software</a>
+      </div>
+      <div class="col-lg-6">
+        <div class="text-uppercase small fw-semibold text-muted mb-3" data-i18n="hm_sw_featured_tag">Our products</div>
+        <div class="track-highlight-list">
+          <a class="track-highlight-item" href="/garageos.html">
+            <div class="track-highlight-name">GarageOS <i class="bi bi-arrow-up-right"></i></div>
+            <div class="track-highlight-desc" data-i18n="hm_sw_garageos_desc">Shop management for auto repair &mdash; invoicing, appointments, service history.</div>
+          </a>
+          <a class="track-highlight-item" href="/fieldos.html">
+            <div class="track-highlight-name">FieldOS <i class="bi bi-arrow-up-right"></i></div>
+            <div class="track-highlight-desc" data-i18n="hm_sw_fieldos_desc">Field service management &mdash; jobs, routes, recurring services, quotes.</div>
+          </a>
         </div>
       </div>
     </div>
@@ -222,21 +232,45 @@
 <script src="./js/i18n.js"></script>
 <script src="./js/scroll-reveal.js"></script>
 <script>
+  (function(){
+    var buttons = document.querySelectorAll('#homeTrackToggle .track-toggle-btn');
+    var panels = document.querySelectorAll('[data-track-panel]');
+    function setTrack(track){
+      buttons.forEach(function(b){
+        var active = b.dataset.track === track;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      panels.forEach(function(p){
+        p.classList.toggle('d-none', p.dataset.trackPanel !== track);
+      });
+    }
+    buttons.forEach(function(b){
+      b.addEventListener('click', function(){ setTrack(b.dataset.track); });
+    });
+  })();
+</script>
+<script>
   registerPageI18n("homepage", {
     en: {
+      hm_dig_tag: "Websites & e-commerce",
+      hm_dig_h1: "A real online store, not a template with a shopping cart bolted on.",
+      hm_dig_lead: "GABAN builds websites, online stores and local visibility systems small businesses actually use — not templates.",
       hm_prod_tag: "See it in action",
       hm_prod_h1: "This is what running a shop looks like with the right software.",
-      hm_prod_lead: "GABAN builds the websites and software small businesses actually use — not templates.",
+      hm_prod_lead: "GABAN builds practical software for shops and field teams — not spreadsheets held together with tape.",
+      hm_v_dig_tag: "Built for businesses that need to be found online",
+      hm_vd1: "E-commerce & retail", hm_vd2: "Restaurants & hospitality", hm_vd3: "Professional services", hm_vd4: "Local & multilingual businesses",
       hm_verticals_tag: "Built for the businesses that keep things running",
       hm_v1: "Auto repair", hm_v2: "Landscaping & snow removal", hm_v3: "HVAC & plumbing", hm_v4: "Local retail & services",
-      hm_tabs_h2: "Pick your track", hm_tabs_sub: "Same team, two different problems to solve.",
       hm_tab_dig: "Digital", hm_tab_sw: "Software",
       hm_panel_dig_kicker: "For businesses that need to be found and look credible online.",
-      hm_panel_dig_b1: "— Websites & landing pages", hm_panel_dig_b2: "— SEO & Google Business optimization", hm_panel_dig_b3: "— Automations & digital consulting",
+      hm_panel_dig_b1: "— Websites & landing pages", hm_panel_dig_b2: "— E-commerce & online stores", hm_panel_dig_b3: "— SEO & Google Business optimization", hm_panel_dig_b4: "— Automations & digital consulting",
       hm_panel_sw_kicker: "For businesses that need better day-to-day operations.",
       hm_panel_sw_b1: "— Quotes & invoicing", hm_panel_sw_b2: "— Scheduling & appointments", hm_panel_sw_b3: "— Customer management & history",
       hm_cta_digital: "Explore Digital", hm_cta_software: "Explore Software",
       hm_dig_featured_tag: "Popular right now",
+      hm_dig_ecom_desc: "Custom online stores with catalog, checkout, payments and an admin panel — built and proven for real stores.",
       hm_dig_grow_desc: "Website, Google Business setup and a growth review, bundled together.",
       hm_dig_express_desc: "Need something live fast? A professional website in 72 hours.",
       hm_sw_featured_tag: "Our products",
@@ -248,19 +282,24 @@
       hm_bottom_t: "Need a clearer digital setup for your business?", hm_bottom_p: "Tell us what you do and what is slowing you down. We will point you to the right next step."
     },
     fr: {
+      hm_dig_tag: "Sites web et commerce en ligne",
+      hm_dig_h1: "Une vraie boutique en ligne, pas un modèle avec un panier ajouté après coup.",
+      hm_dig_lead: "GABAN crée des sites web, boutiques en ligne et systèmes de visibilité locale que les petites entreprises utilisent vraiment — pas des modèles génériques.",
       hm_prod_tag: "En action",
       hm_prod_h1: "Voici à quoi ressemble la gestion d'un atelier avec le bon logiciel.",
-      hm_prod_lead: "GABAN crée les sites web et logiciels que les petites entreprises utilisent vraiment — pas des modèles génériques.",
+      hm_prod_lead: "GABAN crée des logiciels pratiques pour les ateliers et les équipes de terrain — pas des feuilles de calcul rafistolées.",
+      hm_v_dig_tag: "Conçu pour les entreprises qui veulent être trouvées en ligne",
+      hm_vd1: "Commerce en ligne et détail", hm_vd2: "Restaurants et hôtellerie", hm_vd3: "Services professionnels", hm_vd4: "Entreprises locales et multilingues",
       hm_verticals_tag: "Conçu pour les entreprises qui font tourner les choses",
       hm_v1: "Mécanique automobile", hm_v2: "Aménagement paysager et déneigement", hm_v3: "CVC et plomberie", hm_v4: "Commerce et services locaux",
-      hm_tabs_h2: "Choisissez votre voie", hm_tabs_sub: "La même équipe, deux problèmes différents à résoudre.",
       hm_tab_dig: "Digital", hm_tab_sw: "Logiciel",
       hm_panel_dig_kicker: "Pour les entreprises qui veulent être trouvées et paraître crédibles en ligne.",
-      hm_panel_dig_b1: "— Sites web et pages d'atterrissage", hm_panel_dig_b2: "— SEO et optimisation Google Business", hm_panel_dig_b3: "— Automatisations et conseil numérique",
+      hm_panel_dig_b1: "— Sites web et pages d'atterrissage", hm_panel_dig_b2: "— Commerce en ligne et boutiques", hm_panel_dig_b3: "— SEO et optimisation Google Business", hm_panel_dig_b4: "— Automatisations et conseil numérique",
       hm_panel_sw_kicker: "Pour les entreprises qui veulent de meilleures opérations au quotidien.",
       hm_panel_sw_b1: "— Devis et facturation", hm_panel_sw_b2: "— Planification et rendez-vous", hm_panel_sw_b3: "— Gestion des clients et historique",
       hm_cta_digital: "Explorer Digital", hm_cta_software: "Explorer Software",
       hm_dig_featured_tag: "Populaire en ce moment",
+      hm_dig_ecom_desc: "Boutiques en ligne sur mesure avec catalogue, paiement, transactions et panneau d'administration — conçues et éprouvées pour de vraies boutiques.",
       hm_dig_grow_desc: "Site web, configuration Google Business et bilan de croissance, regroupés.",
       hm_dig_express_desc: "Besoin d'aller vite ? Un site professionnel en 72 heures.",
       hm_sw_featured_tag: "Nos produits",
@@ -272,19 +311,24 @@
       hm_bottom_t: "Besoin d'une configuration numérique plus claire pour votre entreprise ?", hm_bottom_p: "Dites-nous ce que vous faites et ce qui vous ralentit. Nous vous orienterons vers la bonne prochaine étape."
     },
     es: {
+      hm_dig_tag: "Sitios web y comercio electrónico",
+      hm_dig_h1: "Una tienda en línea real, no una plantilla con un carrito pegado encima.",
+      hm_dig_lead: "GABAN construye sitios web, tiendas en línea y sistemas de visibilidad local que los negocios pequeños realmente usan — no plantillas.",
       hm_prod_tag: "En acción",
       hm_prod_h1: "Así se ve operar un taller con el software correcto.",
-      hm_prod_lead: "GABAN construye los sitios web y software que los negocios pequeños realmente usan — no plantillas.",
+      hm_prod_lead: "GABAN construye software práctico para talleres y equipos de campo — no hojas de cálculo improvisadas.",
+      hm_v_dig_tag: "Hecho para negocios que quieren ser encontrados en línea",
+      hm_vd1: "E-commerce y retail", hm_vd2: "Restaurantes y hospitalidad", hm_vd3: "Servicios profesionales", hm_vd4: "Negocios locales y multilingües",
       hm_verticals_tag: "Hecho para los negocios que mantienen todo funcionando",
       hm_v1: "Talleres mecánicos", hm_v2: "Jardinería y remoción de nieve", hm_v3: "HVAC y plomería", hm_v4: "Comercio y servicios locales",
-      hm_tabs_h2: "Elige tu camino", hm_tabs_sub: "El mismo equipo, dos problemas distintos que resolver.",
       hm_tab_dig: "Digital", hm_tab_sw: "Software",
       hm_panel_dig_kicker: "Para negocios que quieren ser encontrados y verse creíbles en línea.",
-      hm_panel_dig_b1: "— Sitios web y landing pages", hm_panel_dig_b2: "— SEO y optimización de Google Business", hm_panel_dig_b3: "— Automatizaciones y consultoría digital",
+      hm_panel_dig_b1: "— Sitios web y landing pages", hm_panel_dig_b2: "— E-commerce y tiendas en línea", hm_panel_dig_b3: "— SEO y optimización de Google Business", hm_panel_dig_b4: "— Automatizaciones y consultoría digital",
       hm_panel_sw_kicker: "Para negocios que quieren mejores operaciones del día a día.",
       hm_panel_sw_b1: "— Cotizaciones y facturación", hm_panel_sw_b2: "— Agenda y citas", hm_panel_sw_b3: "— Gestión de clientes e historial",
       hm_cta_digital: "Explorar Digital", hm_cta_software: "Explorar Software",
       hm_dig_featured_tag: "Popular ahora mismo",
+      hm_dig_ecom_desc: "Tiendas en línea a la medida con catálogo, pagos, checkout y panel de administración — construidas y probadas para tiendas reales.",
       hm_dig_grow_desc: "Sitio web, configuración de Google Business y una revisión de crecimiento, todo junto.",
       hm_dig_express_desc: "¿Necesitas algo rápido? Un sitio profesional en 72 horas.",
       hm_sw_featured_tag: "Nuestros productos",
