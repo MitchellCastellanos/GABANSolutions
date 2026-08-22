@@ -4,40 +4,39 @@ FONTS
 that appear after any other rule)
 =============================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Zilla+Slab:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Public+Sans:wght@400;500;600;700&display=swap');
 
 /* ===============================
 ROOT / GLOBAL
 
-Palette: "Terracotta & Ink" — warm ink brown-black + muted terracotta
-accent on a cream paper background. Approachable and human, built to
-read as a local trade business rather than a sterile SaaS template.
-All brand color lives here so future palette swaps only touch this
-block.
+Palette: "Field Utility Green" — deep forest charcoal-green + mustard
+accent on warm sand-white. Utilitarian, signage-inspired feel tied to
+the field-service vertical (landscaping, snow removal, HVAC). All
+brand color lives here so future palette swaps only touch this block.
 =============================== */
 
 :root{
-  --gaban-dark:#241a17;
-  --gaban-dark-2:#34241e;
-  --gaban-black:#150e0b;
-  --gaban-light:#faf3ea;
-  --gaban-accent:#b1502f;
-  --gaban-accent-2:#8f3f24;
-  --gaban-accent-50:#f7e6dc;
-  --gaban-accent-200:#e3b79f;
-  --gaban-accent-rgb:177,80,47;
-  --gaban-accent-glow:rgba(177,80,47,0.16);
-  --gaban-on-accent:#241a17;
-  --gaban-border:#ecdfd1;
-  --gaban-text:#271c18;
-  --gaban-muted:#847668;
+  --gaban-dark:#1a2420;
+  --gaban-dark-2:#26362f;
+  --gaban-black:#0d130f;
+  --gaban-light:#f4f5f0;
+  --gaban-accent:#c98a2e;
+  --gaban-accent-2:#a56f22;
+  --gaban-accent-50:#faf0dc;
+  --gaban-accent-200:#e8c98a;
+  --gaban-accent-rgb:201,138,46;
+  --gaban-accent-glow:rgba(201,138,46,0.16);
+  --gaban-on-accent:#1a2420;
+  --gaban-border:#dde3d8;
+  --gaban-text:#1c2620;
+  --gaban-muted:#6f7a6f;
   --gaban-shadow-sm:0 10px 25px rgba(0,0,0,0.08);
   --gaban-shadow-md:0 15px 35px rgba(0,0,0,0.12);
   --gaban-shadow-lg:0 20px 40px rgba(0,0,0,0.18);
   --gaban-radius-md:14px;
   --gaban-radius-lg:18px;
-  --gaban-font-heading:'Zilla Slab', Georgia, "Times New Roman", serif;
-  --gaban-font-body:'Work Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --gaban-font-heading:'Barlow Condensed', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --gaban-font-body:'Public Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* ===============================
@@ -63,11 +62,12 @@ h1, h2, h3, h4, h5, h6,
 
 h1, h2, h3,
 .display-1, .display-2, .display-3, .display-4{
-  font-weight:700;
+  font-weight:800;
+  letter-spacing:.005em;
 }
 
 h4, h5, h6{
-  font-weight:600;
+  font-weight:700;
 }
 
 img{
