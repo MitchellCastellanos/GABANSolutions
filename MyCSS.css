@@ -4,39 +4,39 @@ FONTS
 that appear after any other rule)
 =============================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Source+Sans+3:wght@400;500;600;700&display=swap');
 
 /* ===============================
 ROOT / GLOBAL
 
-Palette: "Atelier Industrial" — warm graphite + rust/safety-orange,
-inspired by workshops, tools and trade-vertical software (GarageOS,
-FieldOS). All brand color lives here so future palette swaps only
-touch this block.
+Palette: "Nordic Slate" — cool slate blue-gray + warm amber accent,
+a Nordic/editorial feel that nods to Quebec winters and the snow
+removal / field-service vertical. All brand color lives here so
+future palette swaps only touch this block.
 =============================== */
 
 :root{
-  --gaban-dark:#1c1917;
-  --gaban-dark-2:#2a2420;
-  --gaban-black:#100e0c;
-  --gaban-light:#f5f1ea;
-  --gaban-accent:#d9531f;
-  --gaban-accent-2:#b3401a;
-  --gaban-accent-50:#fdece3;
-  --gaban-accent-200:#f3c3a6;
-  --gaban-accent-rgb:217,83,31;
-  --gaban-accent-glow:rgba(217,83,31,0.16);
-  --gaban-on-accent:#1c1917;
-  --gaban-border:#e6ded3;
-  --gaban-text:#221e1a;
-  --gaban-muted:#7a7168;
+  --gaban-dark:#1b2733;
+  --gaban-dark-2:#26343f;
+  --gaban-black:#0d1520;
+  --gaban-light:#f4f6f8;
+  --gaban-accent:#d98a3d;
+  --gaban-accent-2:#b56f2a;
+  --gaban-accent-50:#fdf1e2;
+  --gaban-accent-200:#f0c896;
+  --gaban-accent-rgb:217,138,61;
+  --gaban-accent-glow:rgba(217,138,61,0.16);
+  --gaban-on-accent:#1b2733;
+  --gaban-border:#dde3e8;
+  --gaban-text:#1c2530;
+  --gaban-muted:#64707c;
   --gaban-shadow-sm:0 10px 25px rgba(0,0,0,0.08);
   --gaban-shadow-md:0 15px 35px rgba(0,0,0,0.12);
   --gaban-shadow-lg:0 20px 40px rgba(0,0,0,0.18);
   --gaban-radius-md:14px;
   --gaban-radius-lg:18px;
-  --gaban-font-heading:'Archivo', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --gaban-font-body:'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --gaban-font-heading:'Fraunces', Georgia, "Times New Roman", serif;
+  --gaban-font-body:'Source Sans 3', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* ===============================
@@ -62,12 +62,11 @@ h1, h2, h3, h4, h5, h6,
 
 h1, h2, h3,
 .display-1, .display-2, .display-3, .display-4{
-  font-weight:800;
-  letter-spacing:-.01em;
+  font-weight:700;
 }
 
 h4, h5, h6{
-  font-weight:700;
+  font-weight:600;
 }
 
 img{
