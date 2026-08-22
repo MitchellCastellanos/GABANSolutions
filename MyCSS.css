@@ -4,39 +4,40 @@ FONTS
 that appear after any other rule)
 =============================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&family=Source+Sans+3:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&family=Zilla+Slab:wght@600;700&display=swap');
 
 /* ===============================
 ROOT / GLOBAL
 
-Palette: "Nordic Slate" — cool slate blue-gray + warm amber accent,
-a Nordic/editorial feel that nods to Quebec winters and the snow
-removal / field-service vertical. All brand color lives here so
-future palette swaps only touch this block.
+Palette: "Terracotta & Ink" — warm ink brown-black + muted terracotta
+accent on a cream paper background. Approachable and human, built to
+read as a local trade business rather than a sterile SaaS template.
+All brand color lives here so future palette swaps only touch this
+block.
 =============================== */
 
 :root{
-  --gaban-dark:#1b2733;
-  --gaban-dark-2:#26343f;
-  --gaban-black:#0d1520;
-  --gaban-light:#f4f6f8;
-  --gaban-accent:#d98a3d;
-  --gaban-accent-2:#b56f2a;
-  --gaban-accent-50:#fdf1e2;
-  --gaban-accent-200:#f0c896;
-  --gaban-accent-rgb:217,138,61;
-  --gaban-accent-glow:rgba(217,138,61,0.16);
-  --gaban-on-accent:#1b2733;
-  --gaban-border:#dde3e8;
-  --gaban-text:#1c2530;
-  --gaban-muted:#64707c;
+  --gaban-dark:#241a17;
+  --gaban-dark-2:#34241e;
+  --gaban-black:#150e0b;
+  --gaban-light:#faf3ea;
+  --gaban-accent:#b1502f;
+  --gaban-accent-2:#8f3f24;
+  --gaban-accent-50:#f7e6dc;
+  --gaban-accent-200:#e3b79f;
+  --gaban-accent-rgb:177,80,47;
+  --gaban-accent-glow:rgba(177,80,47,0.16);
+  --gaban-on-accent:#241a17;
+  --gaban-border:#ecdfd1;
+  --gaban-text:#271c18;
+  --gaban-muted:#847668;
   --gaban-shadow-sm:0 10px 25px rgba(0,0,0,0.08);
   --gaban-shadow-md:0 15px 35px rgba(0,0,0,0.12);
   --gaban-shadow-lg:0 20px 40px rgba(0,0,0,0.18);
   --gaban-radius-md:14px;
   --gaban-radius-lg:18px;
-  --gaban-font-heading:'Fraunces', Georgia, "Times New Roman", serif;
-  --gaban-font-body:'Source Sans 3', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --gaban-font-heading:'Zilla Slab', Georgia, "Times New Roman", serif;
+  --gaban-font-body:'Work Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* ===============================
