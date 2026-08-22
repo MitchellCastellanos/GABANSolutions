@@ -1,20 +1,42 @@
 /* ===============================
+FONTS
+(@import must stay first in the file — CSS spec ignores @import rules
+that appear after any other rule)
+=============================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+/* ===============================
 ROOT / GLOBAL
+
+Palette: "Atelier Industrial" — warm graphite + rust/safety-orange,
+inspired by workshops, tools and trade-vertical software (GarageOS,
+FieldOS). All brand color lives here so future palette swaps only
+touch this block.
 =============================== */
 
 :root{
-  --gaban-dark:#111111;
-  --gaban-black:#000000;
-  --gaban-light:#f8f9fa;
-  --gaban-gold:#c9a227;
-  --gaban-border:#e9ecef;
-  --gaban-text:#212529;
-  --gaban-muted:#6c757d;
+  --gaban-dark:#1c1917;
+  --gaban-dark-2:#2a2420;
+  --gaban-black:#100e0c;
+  --gaban-light:#f5f1ea;
+  --gaban-accent:#d9531f;
+  --gaban-accent-2:#b3401a;
+  --gaban-accent-50:#fdece3;
+  --gaban-accent-200:#f3c3a6;
+  --gaban-accent-rgb:217,83,31;
+  --gaban-accent-glow:rgba(217,83,31,0.16);
+  --gaban-on-accent:#1c1917;
+  --gaban-border:#e6ded3;
+  --gaban-text:#221e1a;
+  --gaban-muted:#7a7168;
   --gaban-shadow-sm:0 10px 25px rgba(0,0,0,0.08);
   --gaban-shadow-md:0 15px 35px rgba(0,0,0,0.12);
   --gaban-shadow-lg:0 20px 40px rgba(0,0,0,0.18);
   --gaban-radius-md:14px;
   --gaban-radius-lg:18px;
+  --gaban-font-heading:'Archivo', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --gaban-font-body:'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 /* ===============================
@@ -28,6 +50,24 @@ html{
 body{
   color:var(--gaban-text);
   background:#ffffff;
+  font-family:var(--gaban-font-body);
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand,
+.display-1, .display-2, .display-3,
+.display-4, .display-5, .display-6{
+  font-family:var(--gaban-font-heading);
+}
+
+h1, h2, h3,
+.display-1, .display-2, .display-3, .display-4{
+  font-weight:800;
+  letter-spacing:-.01em;
+}
+
+h4, h5, h6{
+  font-weight:700;
 }
 
 img{
@@ -40,7 +80,16 @@ a{
 }
 
 .text-warning{
-  color:var(--gaban-gold) !important;
+  color:var(--gaban-accent) !important;
+}
+
+.text-bg-warning{
+  background:var(--gaban-accent) !important;
+  color:var(--gaban-on-accent) !important;
+}
+
+.bg-warning-subtle{
+  background:var(--gaban-accent-50) !important;
 }
 
 /* ===============================
@@ -57,7 +106,7 @@ GLOBAL SPACING
 
 .hero.bg-dark,
 .section.bg-dark{
-  background:linear-gradient(135deg,var(--gaban-dark) 0%, #1b1b1b 100%) !important;
+  background:linear-gradient(135deg,var(--gaban-dark) 0%, var(--gaban-dark-2) 100%) !important;
 }
 
 /* ===============================
@@ -186,14 +235,14 @@ FEATURED WORK / HERO IMAGES
 }
 
 .featured-work-tag{
-  color:var(--gaban-gold);
+  color:var(--gaban-accent);
   letter-spacing:1px;
 }
 
 .featured-divider{
   width:60px;
   height:3px;
-  background:var(--gaban-gold);
+  background:var(--gaban-accent);
   margin:10px 0 20px 0;
   border-radius:2px;
 }
@@ -284,16 +333,16 @@ BUTTONS
 }
 
 .btn-warning{
-  background:var(--gaban-gold);
-  border-color:var(--gaban-gold);
-  color:#111111;
+  background:var(--gaban-accent);
+  border-color:var(--gaban-accent);
+  color:var(--gaban-on-accent);
 }
 
 .btn-warning:hover,
 .btn-warning:focus{
-  background:#b6901f;
-  border-color:#b6901f;
-  color:#111111;
+  background:var(--gaban-accent-2);
+  border-color:var(--gaban-accent-2);
+  color:var(--gaban-on-accent);
   transform:translateY(-1px);
 }
 
@@ -360,6 +409,21 @@ textarea.form-control{
   border-radius:14px;
 }
 
+.accordion-button:not(.collapsed){
+  background:var(--gaban-accent-50);
+  color:var(--gaban-dark);
+  box-shadow:none;
+}
+
+.accordion-button:focus{
+  box-shadow:0 0 0 .2rem rgba(var(--gaban-accent-rgb),.15);
+}
+
+.accordion-button::after{
+  --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23221e1a'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+  --bs-accordion-btn-active-icon: var(--bs-accordion-btn-icon);
+}
+
 /* ===============================
 PRICING / PACKAGE BLOCKS
 =============================== */
@@ -382,7 +446,7 @@ EXPRESS PAGE
 =============================== */
 
 .hero-dark{
-  background:linear-gradient(135deg,var(--gaban-dark) 0%,#1c1c1c 100%);
+  background:linear-gradient(135deg,var(--gaban-dark) 0%,var(--gaban-dark-2) 100%);
 }
 
 /* ===============================
@@ -519,8 +583,8 @@ MI TARJETA PRO (Mexico division)
 
 .hero-mt{
   background:
-    radial-gradient(900px 400px at 80% 10%, rgba(201,162,39,0.15), transparent 60%),
-    linear-gradient(135deg, var(--gaban-dark) 0%, #1b1b1b 100%) !important;
+    radial-gradient(900px 400px at 80% 10%, var(--gaban-accent-glow), transparent 60%),
+    linear-gradient(135deg, var(--gaban-dark) 0%, var(--gaban-dark-2) 100%) !important;
 }
 
 .mt-qr-card{
@@ -596,8 +660,8 @@ MI TARJETA PRO (Mexico division)
 /* ----- Builder section ----- */
 .mt-builder-section{
   background:
-    radial-gradient(800px 400px at 20% 10%, rgba(201,162,39,0.12), transparent 60%),
-    linear-gradient(135deg, var(--gaban-dark) 0%, #1b1b1b 100%) !important;
+    radial-gradient(800px 400px at 20% 10%, var(--gaban-accent-glow), transparent 60%),
+    linear-gradient(135deg, var(--gaban-dark) 0%, var(--gaban-dark-2) 100%) !important;
 }
 
 .mt-url-group .input-group-text{
@@ -685,12 +749,12 @@ MI TARJETA PRO (Mexico division)
 }
 
 .mt-result-card{
-  --mt-accent:#d4b86a;
-  --mt-btn-bg:linear-gradient(180deg,#f0d98a,#d4b86a,#b8973f);
+  --mt-accent:var(--gaban-accent-200);
+  --mt-btn-bg:linear-gradient(180deg,var(--gaban-accent-200),var(--gaban-accent),var(--gaban-accent-2));
   --mt-text:#f3f1ea;
   width:100%;
   background:linear-gradient(160deg, #0a0a0a 0%, #181410 100%);
-  border:1px solid rgba(212,184,106,0.22);
+  border:1px solid rgba(var(--gaban-accent-rgb),0.22);
   border-radius:18px;
   padding:18px 16px 16px;
   text-align:center;
@@ -735,7 +799,7 @@ MI TARJETA PRO (Mexico division)
 
 .mt-btn-fake{
   background:rgba(255,255,255,0.04);
-  border:1px solid rgba(212,184,106,0.18);
+  border:1px solid rgba(var(--gaban-accent-rgb),0.18);
   border-radius:12px;
   padding:10px 12px;
   font-size:.82rem;
@@ -750,11 +814,11 @@ MI TARJETA PRO (Mexico division)
 .mt-btn-fake:nth-child(1){
   background:var(--mt-btn-bg);
   border:none;
-  color:#0c0a05;
+  color:var(--gaban-on-accent);
   font-weight:700;
-  box-shadow:0 8px 22px rgba(184,151,63,0.25);
+  box-shadow:0 8px 22px rgba(var(--gaban-accent-rgb),0.25);
 }
-.mt-btn-fake:nth-child(1) i{ color:#0c0a05; }
+.mt-btn-fake:nth-child(1) i{ color:var(--gaban-on-accent); }
 
 .mt-result-foot{
   margin-top:14px;
@@ -767,7 +831,7 @@ MI TARJETA PRO (Mexico division)
 .mt-result-credit{
   margin-top:4px;
   font-size:.65rem;
-  color:rgba(212,184,106,0.7);
+  color:rgba(var(--gaban-accent-rgb),0.7);
   letter-spacing:.04em;
 }
 
@@ -804,19 +868,19 @@ MI TARJETA PRO (Mexico division)
 /* ----- changes-card highlight ----- */
 .mt-changes-card{
   max-width:560px;
-  background:linear-gradient(135deg, #fff8e1 0%, #fff 100%);
-  border:1px solid #f0d98a;
+  background:linear-gradient(135deg, var(--gaban-accent-50) 0%, #fff 100%);
+  border:1px solid var(--gaban-accent-200);
 }
 
 /* ----- Premium websites upsell ----- */
 .mt-upsell-section{
-  background:linear-gradient(180deg, #ffffff 0%, #faf8f1 100%);
+  background:linear-gradient(180deg, #ffffff 0%, var(--gaban-light) 100%);
   border-top:1px solid var(--gaban-border);
 }
 
 .mt-upsell-card-cta{
-  background:linear-gradient(135deg, #fff8e1 0%, #ffffff 100%);
-  border:1px solid #f0d98a !important;
+  background:linear-gradient(135deg, var(--gaban-accent-50) 0%, #ffffff 100%);
+  border:1px solid var(--gaban-accent-200) !important;
 }
 
 /* ----- FAQ ----- */
@@ -999,8 +1063,8 @@ WEBSITE MOCKUP BUILDER (main business, /mockup.html)
 
 .wm-builder-section{
   background:
-    radial-gradient(800px 400px at 80% 10%, rgba(201,162,39,0.12), transparent 60%),
-    linear-gradient(135deg, var(--gaban-dark) 0%, #1b1b1b 100%) !important;
+    radial-gradient(800px 400px at 80% 10%, var(--gaban-accent-glow), transparent 60%),
+    linear-gradient(135deg, var(--gaban-dark) 0%, var(--gaban-dark-2) 100%) !important;
 }
 
 .wm-browser-wrap{
@@ -1086,7 +1150,7 @@ WEBSITE MOCKUP BUILDER (main business, /mockup.html)
 }
 
 .wm-site{
-  --wm-accent:#c9a227;
+  --wm-accent:var(--gaban-accent);
   color:#f3f3f3;
   padding:0 0 20px;
 }
@@ -1111,7 +1175,7 @@ WEBSITE MOCKUP BUILDER (main business, /mockup.html)
 
 .wm-nav-cta{
   background:var(--wm-accent);
-  color:#0c0a05;
+  color:var(--gaban-on-accent);
   font-weight:700;
   font-size:.75rem;
   padding:6px 14px;
@@ -1139,7 +1203,7 @@ WEBSITE MOCKUP BUILDER (main business, /mockup.html)
 .wm-site-hero-cta{
   display:inline-block;
   background:var(--wm-accent);
-  color:#0c0a05;
+  color:var(--gaban-on-accent);
   font-weight:700;
   font-size:.85rem;
   padding:10px 22px;
