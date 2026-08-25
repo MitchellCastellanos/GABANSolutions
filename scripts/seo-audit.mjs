@@ -11,7 +11,12 @@ const rootDir = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
 const SKIP = new Set(["404.html", "thank-you.html"]);
 
-const pages = readdirSync(rootDir)
+// Root pages, plus the /digital/ and /software/ division pages.
+const pages = [
+  ...readdirSync(rootDir).filter((f) => f.endsWith(".html")),
+  ...readdirSync(path.join(rootDir, "digital")).map((f) => `digital/${f}`),
+  ...readdirSync(path.join(rootDir, "software")).map((f) => `software/${f}`),
+]
   .filter((f) => f.endsWith(".html"))
   .filter((f) => !SKIP.has(f))
   .sort();

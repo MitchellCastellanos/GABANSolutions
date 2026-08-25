@@ -1069,9 +1069,9 @@ const pageI18n = {
       contact_loc_t: "Location",
 
       contact_bestfit_t: "Most common requests",
-      contact_bestfit_b1: "Grow Package — One Page",
-      contact_bestfit_b2: "Grow Package — Multi Page",
-      contact_bestfit_b3: "Launch 72H",
+      contact_bestfit_b1: "Grow Package — website + local SEO",
+      contact_bestfit_b2: "Launch 72H — website live in 72 hours",
+      contact_bestfit_b3: "GarageOS / FieldOS — business software",
       contact_bestfit_b4: "Not sure yet — need guidance",
 
       contact_help_t: "Prefer to skip the form?",
@@ -1092,8 +1092,8 @@ const pageI18n = {
       form_business: "Business name",
       form_package: "Interested in",
       form_package_opt0: "Select an option",
-      form_package_opt1: "Grow Package — One Page",
-      form_package_opt2: "Grow Package — Multi Page",
+      form_package_opt1: "Grow Package",
+      form_package_opt2: "GarageOS / FieldOS",
       form_package_opt3: "Launch 72H",
       form_package_opt4: "Not sure yet",
       form_timeline: "Timeline",
@@ -1106,22 +1106,8 @@ const pageI18n = {
       form_send: "Send Message",
       form_note: "We usually reply within 24 hours with a clear next step.",
 
-      contact_bottom_t: "Need help choosing the right package?",
-      contact_bottom_d: "No problem. Send us your business info and we’ll tell you whether Grow Package, Launch 72H or another option makes the most sense.",
-      contact_bottom_btn: "View Grow Package",
-
-      // Software-context variants (swapped in on software.gabansolutions.ca)
-      contact_sw_req1: "GarageOS — auto repair shop",
-      contact_sw_req2: "FieldOS — field service",
-      contact_sw_req3: "Custom platform — built for your workflow",
-      contact_sw_req4: "Not sure yet — need guidance",
-      contact_sw_opt1: "GarageOS",
-      contact_sw_opt2: "FieldOS",
-      contact_sw_opt3: "Custom platform",
-      contact_sw_opt4: "Not sure yet",
-      contact_sw_bottom_t: "Want to see a product in action?",
-      contact_sw_bottom_d: "Tell us how your business runs today and we’ll show you the platform that fits and book a demo.",
-      contact_sw_bottom_btn: "Explore Products"
+      contact_bottom_t: "Not sure what you need?",
+      contact_bottom_d: "Send us your business info above, or book a free call directly — we’ll point you to the right option, website or software.",
     },
 
     fr: {
@@ -1140,9 +1126,9 @@ const pageI18n = {
       contact_loc_t: "Emplacement",
 
       contact_bestfit_t: "Demandes les plus fréquentes",
-      contact_bestfit_b1: "Grow Package — Une page",
-      contact_bestfit_b2: "Grow Package — Multipage",
-      contact_bestfit_b3: "Launch 72H",
+      contact_bestfit_b1: "Grow Package — site web + SEO local",
+      contact_bestfit_b2: "Launch 72H — site en ligne en 72 heures",
+      contact_bestfit_b3: "GarageOS / FieldOS — logiciel d’entreprise",
       contact_bestfit_b4: "Pas certain — besoin d’accompagnement",
 
       contact_help_t: "Vous préférez éviter le formulaire ?",
@@ -1163,8 +1149,8 @@ const pageI18n = {
       form_business: "Nom de l’entreprise",
       form_package: "Intéressé par",
       form_package_opt0: "Choisissez une option",
-      form_package_opt1: "Grow Package — Une page",
-      form_package_opt2: "Grow Package — Multipage",
+      form_package_opt1: "Grow Package",
+      form_package_opt2: "GarageOS / FieldOS",
       form_package_opt3: "Launch 72H",
       form_package_opt4: "Pas certain pour l’instant",
       form_timeline: "Échéancier",
@@ -1177,22 +1163,8 @@ const pageI18n = {
       form_send: "Envoyer le message",
       form_note: "Nous répondons généralement dans les 24 heures avec une prochaine étape claire.",
 
-      contact_bottom_t: "Besoin d’aide pour choisir le bon forfait ?",
-      contact_bottom_d: "Aucun problème. Envoyez-nous les infos de votre entreprise et nous vous dirons si Grow Package, Launch 72H ou une autre option est la meilleure.",
-      contact_bottom_btn: "Voir le Grow Package",
-
-      // Variantes contexte logiciel (software.gabansolutions.ca)
-      contact_sw_req1: "GarageOS — atelier de réparation auto",
-      contact_sw_req2: "FieldOS — service sur le terrain",
-      contact_sw_req3: "Plateforme personnalisée — adaptée à votre flux de travail",
-      contact_sw_req4: "Pas certain — besoin d’accompagnement",
-      contact_sw_opt1: "GarageOS",
-      contact_sw_opt2: "FieldOS",
-      contact_sw_opt3: "Plateforme personnalisée",
-      contact_sw_opt4: "Pas certain pour l’instant",
-      contact_sw_bottom_t: "Vous voulez voir un produit en action ?",
-      contact_sw_bottom_d: "Dites-nous comment fonctionne votre entreprise aujourd’hui et nous vous montrerons la plateforme adaptée et planifierons une démo.",
-      contact_sw_bottom_btn: "Voir les produits"
+      contact_bottom_t: "Vous ne savez pas encore ce qu’il vous faut ?",
+      contact_bottom_d: "Envoyez-nous les infos de votre entreprise ci-dessus, ou réservez un appel gratuit directement — on vous oriente vers la bonne option, site ou logiciel.",
     },
 
     es: {
@@ -1211,9 +1183,9 @@ const pageI18n = {
       contact_loc_t: "Ubicación",
 
       contact_bestfit_t: "Solicitudes más comunes",
-      contact_bestfit_b1: "Grow Package — Una página",
-      contact_bestfit_b2: "Grow Package — Multipágina",
-      contact_bestfit_b3: "Launch 72H",
+      contact_bestfit_b1: "Grow Package — sitio web + SEO local",
+      contact_bestfit_b2: "Launch 72H — sitio listo en 72 horas",
+      contact_bestfit_b3: "GarageOS / FieldOS — software de negocio",
       contact_bestfit_b4: "Aún no sé — necesito guía",
 
       contact_help_t: "¿Prefieres saltarte el formulario?",
@@ -1234,8 +1206,8 @@ const pageI18n = {
       form_business: "Nombre del negocio",
       form_package: "Interesado en",
       form_package_opt0: "Selecciona una opción",
-      form_package_opt1: "Grow Package — Una página",
-      form_package_opt2: "Grow Package — Multipágina",
+      form_package_opt1: "Grow Package",
+      form_package_opt2: "GarageOS / FieldOS",
       form_package_opt3: "Launch 72H",
       form_package_opt4: "Aún no estoy seguro",
       form_timeline: "Momento",
@@ -1248,22 +1220,8 @@ const pageI18n = {
       form_send: "Enviar mensaje",
       form_note: "Normalmente respondemos dentro de 24 horas con un siguiente paso claro.",
 
-      contact_bottom_t: "¿Necesitas ayuda para elegir el paquete correcto?",
-      contact_bottom_d: "No pasa nada. Envíanos la información de tu negocio y te diremos si Grow Package, Launch 72H u otra opción tiene más sentido.",
-      contact_bottom_btn: "Ver Grow Package",
-
-      // Variantes de contexto Software (software.gabansolutions.ca)
-      contact_sw_req1: "GarageOS — taller mecánico",
-      contact_sw_req2: "FieldOS — servicio en campo",
-      contact_sw_req3: "Plataforma personalizada — hecha para tu flujo de trabajo",
-      contact_sw_req4: "Aún no sé — necesito guía",
-      contact_sw_opt1: "GarageOS",
-      contact_sw_opt2: "FieldOS",
-      contact_sw_opt3: "Plataforma personalizada",
-      contact_sw_opt4: "Aún no estoy seguro",
-      contact_sw_bottom_t: "¿Quieres ver un producto en acción?",
-      contact_sw_bottom_d: "Cuéntanos cómo opera tu negocio hoy y te mostramos la plataforma que encaja y agendamos una demo.",
-      contact_sw_bottom_btn: "Ver productos"
+      contact_bottom_t: "¿Aún no sabes qué necesitas?",
+      contact_bottom_d: "Envíanos la información de tu negocio arriba, o agenda una llamada gratis directamente — te orientamos hacia la opción correcta, sitio o software.",
     }
   },
 
@@ -1864,13 +1822,9 @@ const pageI18n = {
     en: {
       about_h1: "About",
       about_sub: "We help small businesses launch practical digital tools that actually improve operations.",
-      about_sub_digital: "We help local businesses get found online and turn visitors into clients with practical websites, SEO and automation.",
-      about_sub_software: "We build ready-to-use software platforms that help small businesses run better operations.",
-      about_p2_digital: "GABAN Digital focuses on simple, practical web and visibility work that helps businesses look professional online and attract more clients.",
-      about_p2_software: "GABAN Software focuses on ready-to-use platforms with optional setup, so businesses get better operations without a long custom project.",
       about_story_t: "Our approach",
       about_story_p1: "Many small businesses know they need a website or better digital tools, but they don’t want to spend months managing a complex project.",
-      about_story_p2: "GABAN Solutions Numériques focuses on simple, practical digital solutions that help businesses look professional online and operate more efficiently.",
+      about_story_p2: "GABAN Solutions focuses on simple, practical digital solutions that help businesses look professional online and operate more efficiently.",
       about_story_p3: "Our goal is not to sell complicated software — it’s to build tools that actually help businesses grow.",
       about_values_t: "What we focus on",
       about_val_1t: "Speed",
@@ -1886,13 +1840,9 @@ const pageI18n = {
     fr: {
       about_h1: "À propos",
       about_sub: "Nous aidons les petites entreprises à lancer des outils numériques pratiques qui améliorent réellement leurs opérations.",
-      about_sub_digital: "Nous aidons les entreprises locales à être trouvées en ligne et à transformer les visiteurs en clients grâce à des sites web, du SEO et de l’automatisation.",
-      about_sub_software: "Nous créons des plateformes logicielles prêtes à l’emploi qui aident les petites entreprises à mieux fonctionner.",
-      about_p2_digital: "GABAN Digital se concentre sur un travail web et de visibilité simple et pratique qui aide les entreprises à paraître professionnelles en ligne et à attirer plus de clients.",
-      about_p2_software: "GABAN Software se concentre sur des plateformes prêtes à l’emploi avec configuration optionnelle, pour de meilleures opérations sans long projet sur mesure.",
       about_story_t: "Notre approche",
       about_story_p1: "Beaucoup de petites entreprises savent qu’elles ont besoin d’un site web ou de meilleurs outils numériques, mais elles ne veulent pas passer des mois à gérer un projet complexe.",
-      about_story_p2: "GABAN Solutions Numériques se concentre sur des solutions numériques simples et pratiques qui aident les entreprises à paraître professionnelles en ligne et à fonctionner plus efficacement.",
+      about_story_p2: "GABAN Solutions se concentre sur des solutions numériques simples et pratiques qui aident les entreprises à paraître professionnelles en ligne et à fonctionner plus efficacement.",
       about_story_p3: "Notre objectif n’est pas de vendre des logiciels compliqués — c’est de construire des outils qui aident réellement les entreprises à croître.",
       about_values_t: "Ce sur quoi nous nous concentrons",
       about_val_1t: "Vitesse",
@@ -1908,13 +1858,9 @@ const pageI18n = {
     es: {
       about_h1: "Nosotros",
       about_sub: "Ayudamos a pequeños negocios a lanzar herramientas digitales prácticas que realmente mejoran sus operaciones.",
-      about_sub_digital: "Ayudamos a negocios locales a ser encontrados en línea y a convertir visitantes en clientes con sitios web, SEO y automatización prácticos.",
-      about_sub_software: "Creamos plataformas de software listas para usar que ayudan a pequeños negocios a operar mejor.",
-      about_p2_digital: "GABAN Digital se enfoca en trabajo web y de visibilidad simple y práctico que ayuda a los negocios a verse profesionales en línea y atraer más clientes.",
-      about_p2_software: "GABAN Software se enfoca en plataformas listas para usar con configuración opcional, para mejores operaciones sin un proyecto largo a medida.",
       about_story_t: "Nuestro enfoque",
       about_story_p1: "Muchos pequeños negocios saben que necesitan un sitio web o mejores herramientas digitales, pero no quieren pasar meses gestionando un proyecto complejo.",
-      about_story_p2: "GABAN Solutions Numériques se enfoca en soluciones digitales simples y prácticas que ayudan a los negocios a verse profesionales en línea y operar con más eficiencia.",
+      about_story_p2: "GABAN Solutions se enfoca en soluciones digitales simples y prácticas que ayudan a los negocios a verse profesionales en línea y operar con más eficiencia.",
       about_story_p3: "Nuestra meta no es vender software complicado — es construir herramientas que de verdad ayuden a los negocios a crecer.",
       about_values_t: "En qué nos enfocamos",
       about_val_1t: "Velocidad",

@@ -1,27 +1,6 @@
 {
+  "cleanUrls": true,
   "rewrites": [
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "header",
-          "key": "host",
-          "value": "digital.gabansolutions.ca"
-        }
-      ],
-      "destination": "/digital.html"
-    },
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "header",
-          "key": "host",
-          "value": "software.gabansolutions.ca"
-        }
-      ],
-      "destination": "/software.html"
-    },
     {
       "source": "/preview/:segments*",
       "destination": "/api/preview/:segments*"
@@ -64,6 +43,30 @@
       "source": "/leadgen-admin.html",
       "destination": "/admin/previews",
       "permanent": false
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "header",
+          "key": "host",
+          "value": "digital.gabansolutions.ca"
+        }
+      ],
+      "destination": "https://gabansolutions.ca/digital/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "header",
+          "key": "host",
+          "value": "software.gabansolutions.ca"
+        }
+      ],
+      "destination": "https://gabansolutions.ca/software/:path*",
+      "permanent": true
     }
   ],
   "headers": [
