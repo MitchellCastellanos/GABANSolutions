@@ -9,127 +9,127 @@
   </url>
 
   <url>
-    <loc>https://digital.gabansolutions.ca/</loc>
+    <loc>https://gabansolutions.ca/digital/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
 
   <url>
-    <loc>https://digital.gabansolutions.ca/websites.html</loc>
+    <loc>https://gabansolutions.ca/digital/websites</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://digital.gabansolutions.ca/seo.html</loc>
+    <loc>https://gabansolutions.ca/digital/seo</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://digital.gabansolutions.ca/landing-pages.html</loc>
+    <loc>https://gabansolutions.ca/digital/landing-pages</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://digital.gabansolutions.ca/automations.html</loc>
+    <loc>https://gabansolutions.ca/digital/automations</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://digital.gabansolutions.ca/ecommerce.html</loc>
+    <loc>https://gabansolutions.ca/digital/ecommerce</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://digital.gabansolutions.ca/digital-pricing.html</loc>
+    <loc>https://gabansolutions.ca/digital/pricing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://software.gabansolutions.ca/</loc>
+    <loc>https://gabansolutions.ca/software/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.95</priority>
   </url>
 
   <url>
-    <loc>https://software.gabansolutions.ca/garageos.html</loc>
+    <loc>https://gabansolutions.ca/software/garageos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://software.gabansolutions.ca/fieldos.html</loc>
+    <loc>https://gabansolutions.ca/software/fieldos</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://software.gabansolutions.ca/booking-system.html</loc>
+    <loc>https://gabansolutions.ca/software/booking-system</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://software.gabansolutions.ca/pricing.html</loc>
+    <loc>https://gabansolutions.ca/software/pricing</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/contact.html</loc>
+    <loc>https://gabansolutions.ca/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/book.html</loc>
+    <loc>https://gabansolutions.ca/book</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/grow-package.html</loc>
+    <loc>https://gabansolutions.ca/grow-package</loc>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/express.html</loc>
+    <loc>https://gabansolutions.ca/express</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/mockup.html</loc>
+    <loc>https://gabansolutions.ca/mockup</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/portfolio.html</loc>
+    <loc>https://gabansolutions.ca/portfolio</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/work.html</loc>
+    <loc>https://gabansolutions.ca/work</loc>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/about.html</loc>
+    <loc>https://gabansolutions.ca/about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/services.html</loc>
+    <loc>https://gabansolutions.ca/services</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -141,7 +141,7 @@
   </url>
 
   <url>
-    <loc>https://gabansolutions.ca/thank-you.html</loc>
+    <loc>https://gabansolutions.ca/thank-you</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

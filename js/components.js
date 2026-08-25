@@ -23,74 +23,57 @@ window.va = window.va || function () { (window.vaq = window.vaq || []).push(argu
 // =========================================================
 // SHARED LAYOUT (context-aware)
 // ---------------------------------------------------------
-// The same deployment is served under three hosts:
-//   gabansolutions.ca           -> "home"     (umbrella / agency)
-//   digital.gabansolutions.ca   -> "digital"  (GABAN Digital)
-//   software.gabansolutions.ca  -> "software" (GABAN Software)
-//
-// Inside Digital and Software the navbar/footer never reference
-// the umbrella or the other division: they behave like two
-// independent companies. Links inside a brand are relative, so the
-// visitor always stays on the same subdomain.
+// One site, one domain (gabansolutions.ca). "context" picks which
+// navbar/footer flavor to render: "home" (umbrella/company pages),
+// "digital" (pages under /digital/) or "software" (pages under
+// /software/). Each page under a division already passes its own
+// context explicitly to mountSharedLayout() below; shared company
+// pages (About, Contact, Book, Portfolio, Work, Mockup, 404,
+// Thank You) don't pass one and default to "home".
 // =========================================================
-
-const UMBRELLA_URL = "https://gabansolutions.ca/";
-const DIGITAL_URL = "https://digital.gabansolutions.ca/";
-const SOFTWARE_URL = "https://software.gabansolutions.ca/";
-
-function detectContext() {
-  const host = (typeof location !== "undefined" && location.hostname) || "";
-  if (host.startsWith("software.")) return "software";
-  if (host.startsWith("digital.")) return "digital";
-  return "home";
-}
 
 // Brand shown in the navbar + footer + copyright for each context.
 const BRANDS = {
   home: { label: 'GABAN <span class="fw-normal">Solutions</span>', name: "GABAN Solutions", href: "/" },
-  digital: { label: 'GABAN <span class="fw-normal">Digital</span>', name: "GABAN Digital", href: "/" },
-  software: { label: 'GABAN <span class="fw-normal">Software</span>', name: "GABAN Software", href: "/" }
+  digital: { label: 'GABAN <span class="fw-normal">Digital</span>', name: "GABAN Digital", href: "/digital/" },
+  software: { label: 'GABAN <span class="fw-normal">Software</span>', name: "GABAN Software", href: "/software/" }
 };
 
-// Navbar links per context. Within a brand most links are relative;
-// "umbrella" and the sibling-division link always point out to the
-// other subdomain so a visitor can travel between GABAN Solutions,
-// Digital and Software without hitting a dead end.
+// Navbar links per context. All links are internal paths on the
+// same domain now, so crossing divisions is a normal in-site link.
 const NAV_LINKS = {
   home: [
     { id: "home", href: "/", i18n: "nav_home", label: "Home" },
-    { id: "digital", href: DIGITAL_URL, i18n: "nav_digital", label: "Digital" },
-    { id: "software", href: SOFTWARE_URL, i18n: "nav_software", label: "Software" },
+    { id: "digital", href: "/digital/", i18n: "nav_digital", label: "Digital" },
+    { id: "software", href: "/software/", i18n: "nav_software", label: "Software" },
     { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
-    { id: "about", href: "/about.html", i18n: "nav_about", label: "About" },
-    { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" }
+    { id: "about", href: "/about", i18n: "nav_about", label: "About" },
+    { id: "contact", href: "/contact", i18n: "nav_contact", label: "Contact" }
   ],
   digital: [
     { id: "home", href: "/", i18n: "nav_home", label: "Home" },
-    { id: "services", href: "/#services", i18n: "nav_services", label: "Services" },
-    { id: "pricing", href: "/digital-pricing.html", i18n: "nav_pricing", label: "Pricing" },
-    { id: "work", href: "/work.html", i18n: "nav_work", label: "Work" },
+    { id: "services", href: "/digital/#services", i18n: "nav_services", label: "Services" },
+    { id: "pricing", href: "/digital/pricing", i18n: "nav_pricing", label: "Pricing" },
+    { id: "work", href: "/work", i18n: "nav_work", label: "Work" },
     { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
-    { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" },
-    { id: "software", href: SOFTWARE_URL, i18n: "nav_software", label: "Software" },
-    { id: "umbrella", href: UMBRELLA_URL, i18n: "nav_umbrella", label: "GABAN Solutions" }
+    { id: "contact", href: "/contact", i18n: "nav_contact", label: "Contact" },
+    { id: "software", href: "/software/", i18n: "nav_software", label: "Software" }
   ],
   software: [
     { id: "home", href: "/", i18n: "nav_home", label: "Home" },
-    { id: "products", href: "/#products", i18n: "nav_products", label: "Products" },
-    { id: "pricing", href: "/pricing.html", i18n: "nav_pricing", label: "Pricing" },
+    { id: "products", href: "/software/#products", i18n: "nav_products", label: "Products" },
+    { id: "pricing", href: "/software/pricing", i18n: "nav_pricing", label: "Pricing" },
     { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
-    { id: "contact", href: "/contact.html", i18n: "nav_contact", label: "Contact" },
-    { id: "digital", href: DIGITAL_URL, i18n: "nav_digital", label: "Digital" },
-    { id: "umbrella", href: UMBRELLA_URL, i18n: "nav_umbrella", label: "GABAN Solutions" }
+    { id: "contact", href: "/contact", i18n: "nav_contact", label: "Contact" },
+    { id: "digital", href: "/digital/", i18n: "nav_digital", label: "Digital" }
   ]
 };
 
 // Primary CTA per context.
 const NAV_CTA = {
-  home: { href: "/book.html", i18n: "nav_cta", label: "Book Your Free Consultation" },
-  digital: { href: "/book.html", i18n: "nav_cta", label: "Book Your Free Consultation" },
-  software: { href: "/book.html", i18n: "nav_cta", label: "Book Your Free Consultation" }
+  home: { href: "/book", i18n: "nav_cta", label: "Book Your Free Consultation" },
+  digital: { href: "/book", i18n: "nav_cta", label: "Book Your Free Consultation" },
+  software: { href: "/book", i18n: "nav_cta", label: "Book Your Free Consultation" }
 };
 
 function renderNavbar(activePage = "", context = "home") {
@@ -148,25 +131,25 @@ function footerHome() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_divisions">Divisions</h2>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="${DIGITAL_URL}" data-i18n="nav_digital">Digital</a></li>
-            <li><a class="text-decoration-none" href="${SOFTWARE_URL}" data-i18n="nav_software">Software</a></li>
+            <li><a class="text-decoration-none" href="/digital/" data-i18n="nav_digital">Digital</a></li>
+            <li><a class="text-decoration-none" href="/software/" data-i18n="nav_software">Software</a></li>
           </ul>
         </div>
 
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_company">Company</h2>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="/about.html" data-i18n="nav_about">About</a></li>
-            <li><a class="text-decoration-none" href="/work.html" data-i18n="nav_work">Work</a></li>
+            <li><a class="text-decoration-none" href="/about" data-i18n="nav_about">About</a></li>
+            <li><a class="text-decoration-none" href="/work" data-i18n="nav_work">Work</a></li>
             <li><a class="text-decoration-none" href="/blog" data-i18n="nav_blog">Blog</a></li>
-            <li><a class="text-decoration-none" href="/contact.html" data-i18n="nav_contact">Contact</a></li>
+            <li><a class="text-decoration-none" href="/contact" data-i18n="nav_contact">Contact</a></li>
           </ul>
         </div>
 
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_cta_title">Ready to talk?</h2>
           <p class="small text-muted" data-i18n="foot_cta_text">Start with a clear conversation about what your business needs next.</p>
-          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Book Your Free Consultation</a>
+          <a class="btn btn-dark btn-sm" href="/book" data-i18n="nav_cta">Book Your Free Consultation</a>
         </div>`;
 }
 
@@ -179,29 +162,29 @@ function footerDigital() {
           </h2>
           <p class="small text-muted mb-3" data-i18n="foot_tagline_digital">Websites, local SEO and automation for businesses that want to be found and trusted.</p>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="${SOFTWARE_URL}" data-i18n="nav_software">Software</a></li>
-            <li><a class="text-decoration-none" href="${UMBRELLA_URL}" data-i18n="nav_umbrella">GABAN Solutions</a></li>
+            <li><a class="text-decoration-none" href="/software/" data-i18n="nav_software">Software</a></li>
+            <li><a class="text-decoration-none" href="/" data-i18n="nav_umbrella">GABAN Solutions</a></li>
           </ul>
         </div>
 
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_services">Services</h2>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="/websites.html" data-i18n="foot_websites">Websites</a></li>
-            <li><a class="text-decoration-none" href="/seo.html" data-i18n="foot_seo">Local SEO</a></li>
-            <li><a class="text-decoration-none" href="/landing-pages.html" data-i18n="foot_landing">Landing pages</a></li>
-            <li><a class="text-decoration-none" href="/automations.html" data-i18n="foot_automations">Automations</a></li>
-            <li><a class="text-decoration-none" href="/ecommerce.html" data-i18n="foot_ecommerce">E-commerce</a></li>
+            <li><a class="text-decoration-none" href="/digital/websites" data-i18n="foot_websites">Websites</a></li>
+            <li><a class="text-decoration-none" href="/digital/seo" data-i18n="foot_seo">Local SEO</a></li>
+            <li><a class="text-decoration-none" href="/digital/landing-pages" data-i18n="foot_landing">Landing pages</a></li>
+            <li><a class="text-decoration-none" href="/digital/automations" data-i18n="foot_automations">Automations</a></li>
+            <li><a class="text-decoration-none" href="/digital/ecommerce" data-i18n="foot_ecommerce">E-commerce</a></li>
           </ul>
         </div>
 
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_packages">Packages</h2>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="/digital-pricing.html" data-i18n="nav_pricing">Pricing</a></li>
-            <li><a class="text-decoration-none" href="/express.html" data-i18n="nav_express">Launch 72H</a></li>
-            <li><a class="text-decoration-none" href="/grow-package.html" data-i18n="nav_grow">Grow Package</a></li>
-            <li><a class="text-decoration-none" href="/work.html" data-i18n="nav_work">Work</a></li>
+            <li><a class="text-decoration-none" href="/digital/pricing" data-i18n="nav_pricing">Pricing</a></li>
+            <li><a class="text-decoration-none" href="/express" data-i18n="nav_express">Launch 72H</a></li>
+            <li><a class="text-decoration-none" href="/grow-package" data-i18n="nav_grow">Grow Package</a></li>
+            <li><a class="text-decoration-none" href="/work" data-i18n="nav_work">Work</a></li>
             <li><a class="text-decoration-none" href="/blog" data-i18n="nav_blog">Blog</a></li>
           </ul>
         </div>
@@ -209,7 +192,7 @@ function footerDigital() {
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_cta_title">Ready to talk?</h2>
           <p class="small text-muted" data-i18n="foot_cta_text_digital">Tell us about your business and we will point you to the right next step.</p>
-          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Book Your Free Consultation</a>
+          <a class="btn btn-dark btn-sm" href="/book" data-i18n="nav_cta">Book Your Free Consultation</a>
         </div>`;
 }
 
@@ -222,33 +205,33 @@ function footerSoftware() {
           </h2>
           <p class="small text-muted mb-3" data-i18n="foot_tagline_software">Ready-to-use software platforms for small businesses that want better operations.</p>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="${DIGITAL_URL}" data-i18n="nav_digital">Digital</a></li>
-            <li><a class="text-decoration-none" href="${UMBRELLA_URL}" data-i18n="nav_umbrella">GABAN Solutions</a></li>
+            <li><a class="text-decoration-none" href="/digital/" data-i18n="nav_digital">Digital</a></li>
+            <li><a class="text-decoration-none" href="/" data-i18n="nav_umbrella">GABAN Solutions</a></li>
           </ul>
         </div>
 
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_products">Products</h2>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="/garageos.html">GarageOS</a></li>
-            <li><a class="text-decoration-none" href="/fieldos.html">FieldOS</a></li>
-            <li><a class="text-decoration-none" href="/booking-system.html" data-i18n="foot_booking">Booking System</a></li>
+            <li><a class="text-decoration-none" href="/software/garageos">GarageOS</a></li>
+            <li><a class="text-decoration-none" href="/software/fieldos">FieldOS</a></li>
+            <li><a class="text-decoration-none" href="/software/booking-system" data-i18n="foot_booking">Booking System</a></li>
           </ul>
         </div>
 
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_company">Company</h2>
           <ul class="list-unstyled small mb-0">
-            <li><a class="text-decoration-none" href="/pricing.html" data-i18n="nav_pricing">Pricing</a></li>
+            <li><a class="text-decoration-none" href="/software/pricing" data-i18n="nav_pricing">Pricing</a></li>
             <li><a class="text-decoration-none" href="/blog" data-i18n="nav_blog">Blog</a></li>
-            <li><a class="text-decoration-none" href="/contact.html" data-i18n="nav_contact">Contact</a></li>
+            <li><a class="text-decoration-none" href="/contact" data-i18n="nav_contact">Contact</a></li>
           </ul>
         </div>
 
         <div class="col-md-3">
           <h2 class="h6 fw-bold" data-i18n="foot_cta_title_demo">Want a demo?</h2>
           <p class="small text-muted" data-i18n="foot_cta_text_software">Tell us how your business runs today and we will show you the platform that fits.</p>
-          <a class="btn btn-dark btn-sm" href="/book.html" data-i18n="nav_cta">Book Your Free Consultation</a>
+          <a class="btn btn-dark btn-sm" href="/book" data-i18n="nav_cta">Book Your Free Consultation</a>
         </div>`;
 }
 
@@ -272,49 +255,15 @@ function renderFooter(context = "home") {
   `;
 }
 
-// Shared pages (contact, about) serve all three brands from one file.
-// Elements that carry a `data-i18n-digital` / `data-i18n-software` variant
-// get their `data-i18n` key swapped for the active brand BEFORE initI18n
-// runs, so the right copy is translated. A few brand-specific links/values
-// are adjusted directly.
-function applyContextOverrides(context) {
-  if (context === "digital" || context === "software") {
-    document.querySelectorAll(`[data-i18n-${context}]`).forEach(el => {
-      el.setAttribute("data-i18n", el.getAttribute(`data-i18n-${context}`));
-    });
-    document.querySelectorAll(`[data-href-${context}]`).forEach(el => {
-      el.setAttribute("href", el.getAttribute(`data-href-${context}`));
-    });
-    document.querySelectorAll(`[data-value-${context}]`).forEach(el => {
-      el.setAttribute("value", el.getAttribute(`data-value-${context}`));
-    });
-  }
-
-  // Brand-aware "website" reference: always point at the current brand.
-  const webLink = document.getElementById("brand-web-link");
-  if (webLink) {
-    const labels = {
-      home: "gabansolutions.ca",
-      digital: "digital.gabansolutions.ca",
-      software: "software.gabansolutions.ca"
-    };
-    webLink.textContent = labels[context] || labels.home;
-    webLink.setAttribute("href", "/");
-  }
-}
-
-function mountSharedLayout(activePage = "", context) {
-  const ctx = context || detectContext();
+function mountSharedLayout(activePage = "", context = "home") {
   const navbarHost = document.getElementById("site-navbar");
   const footerHost = document.getElementById("site-footer");
 
-  if (navbarHost) navbarHost.innerHTML = renderNavbar(activePage, ctx);
+  if (navbarHost) navbarHost.innerHTML = renderNavbar(activePage, context);
 
   if (footerHost) {
-    footerHost.innerHTML = renderFooter(ctx);
+    footerHost.innerHTML = renderFooter(context);
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
-
-  applyContextOverrides(ctx);
 }
