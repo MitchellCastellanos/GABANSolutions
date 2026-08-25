@@ -66,8 +66,8 @@ export function validateBlogPost(post) {
     if (/href="#"/i.test(post.bodyHtml)) {
       errors.push('bodyHtml contains a dead link (href="#")');
     }
-    if (!/gabansolutions\.ca\/(contact|book)\.html/i.test(post.bodyHtml)) {
-      warnings.push("no internal link to /contact.html or /book.html — posts should point readers to a next step");
+    if (!/gabansolutions\.ca\/(contact|book)(\.html)?\/?(["'?#]|$)/i.test(post.bodyHtml)) {
+      warnings.push("no internal link to /contact or /book — posts should point readers to a next step");
     }
   }
 
@@ -103,7 +103,7 @@ export function qualityScore(post) {
   if (post?.metaDescription && post.metaDescription.length >= 70 && post.metaDescription.length <= 160) score += 1;
   if (post?.coverImageUrl) score += 1;
   if (post?.h1) score += 1;
-  if (/gabansolutions\.ca\/(contact|book)\.html/i.test(post?.bodyHtml || "")) score += 1;
+  if (/gabansolutions\.ca\/(contact|book)(\.html)?\/?(["'?#]|$)/i.test(post?.bodyHtml || "")) score += 1;
   if (post?.categoryKey && post?.city) score += 1;
   return score;
 }
