@@ -286,6 +286,7 @@ CARDS / PANELS
 }
 
 .project-card{
+  position:relative;
   border-radius:16px;
   overflow:hidden;
   transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
