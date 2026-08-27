@@ -33,17 +33,34 @@
     tr:last-child td { border-bottom: none; }
     td.num { text-align: right; font-variant-numeric: tabular-nums; }
     .empty { color: #888; font-size: 0.85rem; padding: 1rem; text-align: center; }
-    .chart-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin: 1rem 0; }
+    .chart-card { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 1rem; margin: 1rem 0; position: relative; }
     .chart-legend { display: flex; gap: 1rem; font-size: 0.75rem; color: #666; margin-bottom: 0.5rem; }
     .chart-legend .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.3rem; }
     .chart-legend .dot.pv { background: #111; }
     .chart-legend .dot.vs { background: #0b3d63; }
-    .chart-svg { width: 100%; height: auto; display: block; }
+    .chart-svg { width: 100%; height: auto; display: block; touch-action: pan-y; }
     .chart-area { fill: rgba(17, 17, 17, 0.06); stroke: none; }
     .chart-line { fill: none; stroke-width: 2; }
     .chart-line.pv { stroke: #111; }
     .chart-line.vs { stroke: #0b3d63; }
     .chart-axis { display: flex; justify-content: space-between; font-size: 0.7rem; color: #999; margin-top: 0.4rem; }
+    .chart-guide { stroke: #ccc; stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; opacity: 0; }
+    .chart-guide.active { opacity: 1; }
+    .chart-dot { transition: r 0.1s ease; }
+    .chart-dot.active { r: 4.5; }
+    .chart-hit { fill: transparent; cursor: pointer; }
+    .chart-tooltip {
+      position: absolute; top: 0; left: 0; transform: translate(-50%, calc(-100% - 10px));
+      background: #111; color: #fff; font-size: 0.75rem; line-height: 1.4; padding: 0.5rem 0.65rem;
+      border-radius: 8px; pointer-events: none; white-space: nowrap; z-index: 5;
+      opacity: 0; transition: opacity 0.1s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+    .chart-tooltip.show { opacity: 1; }
+    .chart-tooltip .tt-date { font-weight: 700; margin-bottom: 0.25rem; }
+    .chart-tooltip .tt-row { display: flex; align-items: center; gap: 0.35rem; }
+    .chart-tooltip .tt-row .dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; }
+    .chart-tooltip .tt-row .dot.pv { background: #fff; }
+    .chart-tooltip .tt-row .dot.vs { background: #6ea8d8; }
     .setup-notice {
       padding: 1.25rem; border-radius: 10px; background: #fff8ea; border: 1px solid #e0a72e; font-size: 0.88rem;
     }
@@ -98,15 +115,21 @@
         </table>`;
     }
 
+    // Populated by buildEvolutionChart, read by the delegated tap/click
+    // handler below (chart is re-rendered as an HTML string on every
+    // range change, so we can't close over local vars for the handler).
+    let chartPoints = [];
+
     function buildEvolutionChart(rows) {
       if (!rows || rows.length < 2) {
+        chartPoints = [];
         return `<div class="empty">Not enough data yet to chart.</div>`;
       }
       const sorted = [...rows].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
       const w = 640, h = 220, padL = 12, padR = 12, padT = 16, padB = 12;
       const innerW = w - padL - padR, innerH = h - padT - padB;
       const maxVal = Math.max(1, ...sorted.map((r) => Math.max(r.pageviews || 0, r.visitors || 0)));
-      const stepX = innerW / (sorted.length - 1);
+      const stepX = sorted.length > 1 ? innerW / (sorted.length - 1) : 0;
       const x = (i) => padL + i * stepX;
       const y = (v) => padT + innerH - (v / maxVal) * innerH;
 
@@ -114,7 +137,18 @@
       const areaPath = (key) => `${linePath(key)} L${x(sorted.length - 1).toFixed(1)},${(padT + innerH).toFixed(1)} L${x(0).toFixed(1)},${(padT + innerH).toFixed(1)} Z`;
 
       const fmt = (ts) => new Date(ts).toLocaleDateString(undefined, { month: "short", day: "numeric" });
-      const dots = (key, color) => sorted.map((r, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(r[key] || 0).toFixed(1)}" r="2.5" fill="${color}"><title>${escapeHtml(fmt(r.timestamp))}: ${escapeHtml(r[key] ?? 0)} ${escapeHtml(key)}</title></circle>`).join("");
+
+      chartPoints = sorted.map((r, i) => ({
+        i, x: x(i), yPv: y(r.pageviews || 0), yVs: y(r.visitors || 0),
+        date: fmt(r.timestamp), pageviews: r.pageviews ?? 0, visitors: r.visitors ?? 0
+      }));
+
+      const dots = (key, color) => sorted.map((r, i) => `<circle class="chart-dot" data-i="${i}" data-series="${key}" cx="${x(i).toFixed(1)}" cy="${y(r[key] || 0).toFixed(1)}" r="2.5" fill="${color}"></circle>`).join("");
+
+      const hitW = Math.max(stepX, 12);
+      const hitTargets = sorted.map((r, i) => `<rect class="chart-hit" data-i="${i}" x="${(x(i) - hitW / 2).toFixed(1)}" y="${padT}" width="${hitW.toFixed(1)}" height="${innerH}"></rect>`).join("");
+
+      const guides = sorted.map((r, i) => `<line class="chart-guide" data-i="${i}" x1="${x(i).toFixed(1)}" y1="${padT}" x2="${x(i).toFixed(1)}" y2="${(padT + innerH).toFixed(1)}"></line>`).join("");
 
       return `
         <div class="chart-card">
@@ -122,19 +156,72 @@
             <span><i class="dot pv"></i>Pageviews</span>
             <span><i class="dot vs"></i>Visitors</span>
           </div>
-          <svg viewBox="0 0 ${w} ${h}" class="chart-svg">
+          <svg viewBox="0 0 ${w} ${h}" class="chart-svg" id="chartSvg">
             <path d="${areaPath("pageviews")}" class="chart-area"></path>
             <path d="${linePath("pageviews")}" class="chart-line pv"></path>
             <path d="${linePath("visitors")}" class="chart-line vs"></path>
+            ${guides}
             ${dots("pageviews", "#111")}
             ${dots("visitors", "#0b3d63")}
+            ${hitTargets}
           </svg>
           <div class="chart-axis">
             <span>${escapeHtml(fmt(sorted[0].timestamp))}</span>
             <span>${escapeHtml(fmt(sorted[sorted.length - 1].timestamp))}</span>
           </div>
+          <div class="chart-tooltip" id="chartTooltip"></div>
         </div>`;
     }
+
+    function selectChartPoint(index) {
+      const point = chartPoints[index];
+      const card = document.querySelector(".chart-card");
+      const tooltip = $("chartTooltip");
+      if (!point || !card || !tooltip) return;
+
+      card.querySelectorAll(".chart-dot.active").forEach((el) => el.classList.remove("active"));
+      card.querySelectorAll(`.chart-dot[data-i="${index}"]`).forEach((el) => el.classList.add("active"));
+      card.querySelectorAll(".chart-guide.active").forEach((el) => el.classList.remove("active"));
+      const guide = card.querySelector(`.chart-guide[data-i="${index}"]`);
+      if (guide) guide.classList.add("active");
+
+      tooltip.innerHTML = `
+        <div class="tt-date">${escapeHtml(point.date)}</div>
+        <div class="tt-row"><i class="dot pv"></i>${escapeHtml(point.pageviews)} pageviews</div>
+        <div class="tt-row"><i class="dot vs"></i>${escapeHtml(point.visitors)} visitors</div>`;
+
+      const svg = $("chartSvg");
+      const svgRect = svg.getBoundingClientRect();
+      const cardRect = card.getBoundingClientRect();
+      const scale = svgRect.width / 640;
+      const rawLeft = svgRect.left - cardRect.left + point.x * scale;
+      const top = svgRect.top - cardRect.top + Math.min(point.yPv, point.yVs) * scale;
+      const halfWidth = tooltip.getBoundingClientRect().width / 2;
+      const left = Math.min(Math.max(rawLeft, halfWidth + 4), cardRect.width - halfWidth - 4);
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${top}px`;
+      tooltip.classList.add("show");
+    }
+
+    function hideChartTooltip() {
+      const tooltip = $("chartTooltip");
+      if (tooltip) tooltip.classList.remove("show");
+      document.querySelectorAll(".chart-dot.active").forEach((el) => el.classList.remove("active"));
+      document.querySelectorAll(".chart-guide.active").forEach((el) => el.classList.remove("active"));
+    }
+
+    // Delegated on #content (which persists across re-renders) so taps
+    // keep working after each range switch replaces the chart markup.
+    $("content").addEventListener("click", (event) => {
+      const hit = event.target.closest(".chart-hit");
+      if (hit) {
+        event.stopPropagation();
+        selectChartPoint(Number(hit.dataset.i));
+      }
+    });
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".chart-card")) hideChartTooltip();
+    });
 
     function renderDashboard(data) {
       const totals = data.totals || {};
