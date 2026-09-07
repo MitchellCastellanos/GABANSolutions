@@ -44,6 +44,23 @@
       "destination": "/admin/previews",
       "permanent": false
     },
+
+    { "source": "/", "has": [{ "type": "header", "key": "host", "value": "digital.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/digital/", "permanent": true },
+    { "source": "/index.html", "has": [{ "type": "header", "key": "host", "value": "digital.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/digital/", "permanent": true },
+    { "source": "/:page(websites|seo|landing-pages|automations|ecommerce|pricing)", "has": [{ "type": "header", "key": "host", "value": "digital.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/digital/:page", "permanent": true },
+    { "source": "/:page(websites|seo|landing-pages|automations|ecommerce|pricing).html", "has": [{ "type": "header", "key": "host", "value": "digital.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/digital/:page", "permanent": true },
+    { "source": "/:page(contact|book|grow-package|express|mockup|portfolio|work|about|services|thank-you|blog)", "has": [{ "type": "header", "key": "host", "value": "digital.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/:page", "permanent": true },
+    { "source": "/:page(contact|book|grow-package|express|mockup|portfolio|work|about|services|thank-you|blog).html", "has": [{ "type": "header", "key": "host", "value": "digital.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/:page", "permanent": true },
+    { "source": "/:path*", "has": [{ "type": "header", "key": "host", "value": "digital.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/", "permanent": true },
+
+    { "source": "/", "has": [{ "type": "header", "key": "host", "value": "software.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/software/", "permanent": true },
+    { "source": "/index.html", "has": [{ "type": "header", "key": "host", "value": "software.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/software/", "permanent": true },
+    { "source": "/:page(garageos|fieldos|booking-system|pricing)", "has": [{ "type": "header", "key": "host", "value": "software.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/software/:page", "permanent": true },
+    { "source": "/:page(garageos|fieldos|booking-system|pricing).html", "has": [{ "type": "header", "key": "host", "value": "software.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/software/:page", "permanent": true },
+    { "source": "/:page(contact|book|grow-package|express|mockup|portfolio|work|about|services|thank-you|blog)", "has": [{ "type": "header", "key": "host", "value": "software.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/:page", "permanent": true },
+    { "source": "/:page(contact|book|grow-package|express|mockup|portfolio|work|about|services|thank-you|blog).html", "has": [{ "type": "header", "key": "host", "value": "software.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/:page", "permanent": true },
+    { "source": "/:path*", "has": [{ "type": "header", "key": "host", "value": "software.gabansolutions.ca" }], "destination": "https://gabansolutions.ca/", "permanent": true },
+
     { "source": "/index.html", "destination": "/", "permanent": true },
     { "source": "/about.html", "destination": "/about", "permanent": true },
     { "source": "/book.html", "destination": "/book", "permanent": true },
@@ -67,28 +84,11 @@
     { "source": "/software/pricing.html", "destination": "/software/pricing", "permanent": true },
     { "source": "/thank-you.html", "destination": "/thank-you", "permanent": true },
     { "source": "/work.html", "destination": "/work", "permanent": true },
+
     {
       "source": "/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "host",
-          "value": "digital.gabansolutions.ca"
-        }
-      ],
-      "destination": "https://gabansolutions.ca/digital/:path*",
-      "permanent": true
-    },
-    {
-      "source": "/:path*",
-      "has": [
-        {
-          "type": "header",
-          "key": "host",
-          "value": "software.gabansolutions.ca"
-        }
-      ],
-      "destination": "https://gabansolutions.ca/software/:path*",
+      "has": [{ "type": "header", "key": "host", "value": "www.gabansolutions.ca" }],
+      "destination": "https://gabansolutions.ca/:path*",
       "permanent": true
     }
   ],
