@@ -311,6 +311,11 @@ CARDS / PANELS
   z-index:2;
 }
 
+.project-card .btn{
+  position:relative;
+  z-index:2;
+}
+
 .project-card .img-fluid{
   transition:transform .4s ease;
 }
