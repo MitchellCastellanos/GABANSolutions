@@ -320,6 +320,7 @@
       panels.forEach(function(p){
         p.classList.toggle('d-none', p.dataset.trackPanel !== track);
       });
+      refreshNavbarLinks("home", track, "home", "homepage");
     }
     buttons.forEach(function(b){
       b.addEventListener('click', function(){ setTrack(b.dataset.track); });
@@ -446,7 +447,7 @@
       hm_bottom_t: "¿Necesitas una configuración digital más clara para tu negocio?", hm_bottom_p: "Cuéntanos qué haces y qué te está frenando. Te dirigiremos al siguiente paso correcto."
     }
   });
-  mountSharedLayout("home", "home");
+  mountSharedLayout("home", "digital", { brandContext: "home", footerContext: "home" });
   initI18n("homepage");
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
