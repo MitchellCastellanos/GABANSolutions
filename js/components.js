@@ -56,6 +56,7 @@ const NAV_LINKS = {
     { id: "pricing", href: "/digital/pricing", i18n: "nav_pricing", label: "Pricing" },
     { id: "work", href: "/work", i18n: "nav_work", label: "Work" },
     { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
+    { id: "about", href: "/about", i18n: "nav_about", label: "About" },
     { id: "contact", href: "/contact", i18n: "nav_contact", label: "Contact" },
     { id: "software", href: "/software/", i18n: "nav_software", label: "Software" }
   ],
@@ -64,6 +65,7 @@ const NAV_LINKS = {
     { id: "products", href: "/software/#products", i18n: "nav_products", label: "Products" },
     { id: "pricing", href: "/software/pricing", i18n: "nav_pricing", label: "Pricing" },
     { id: "blog", href: "/blog", i18n: "nav_blog", label: "Blog" },
+    { id: "about", href: "/about", i18n: "nav_about", label: "About" },
     { id: "contact", href: "/contact", i18n: "nav_contact", label: "Contact" },
     { id: "digital", href: "/digital/", i18n: "nav_digital", label: "Digital" }
   ]
@@ -76,8 +78,8 @@ const NAV_CTA = {
   software: { href: "/book", i18n: "nav_cta", label: "Book Your Free Consultation" }
 };
 
-function renderNavbar(activePage = "", context = "home") {
-  const brand = BRANDS[context] || BRANDS.home;
+function renderNavbar(activePage = "", context = "home", brandContext = context) {
+  const brand = BRANDS[brandContext] || BRANDS.home;
   const links = NAV_LINKS[context] || NAV_LINKS.home;
   const cta = NAV_CTA[context] || NAV_CTA.home;
 
@@ -255,15 +257,33 @@ function renderFooter(context = "home") {
   `;
 }
 
-function mountSharedLayout(activePage = "", context = "home") {
+function mountSharedLayout(activePage = "", context = "home", opts = {}) {
+  const { brandContext = context, footerContext = context } = opts;
   const navbarHost = document.getElementById("site-navbar");
   const footerHost = document.getElementById("site-footer");
 
-  if (navbarHost) navbarHost.innerHTML = renderNavbar(activePage, context);
+  if (navbarHost) navbarHost.innerHTML = renderNavbar(activePage, context, brandContext);
 
   if (footerHost) {
-    footerHost.innerHTML = renderFooter(context);
+    footerHost.innerHTML = renderFooter(footerContext);
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
   }
+}
+
+// Re-renders just the navbar (keeps brand + footer untouched) so pages like
+// the homepage's Digital/Software toggle can swap nav links without a full
+// mountSharedLayout() re-mount. Re-binds the language buttons and re-applies
+// the current language since the old nav DOM (and its listeners) is replaced.
+function refreshNavbarLinks(activePage, context, brandContext, i18nPage) {
+  const navbarHost = document.getElementById("site-navbar");
+  if (!navbarHost) return;
+
+  navbarHost.innerHTML = renderNavbar(activePage, context, brandContext);
+
+  const lang = localStorage.getItem("siteLang") || detectDefaultLang();
+  applyTranslations(lang, i18nPage);
+  document.getElementById("btnEN")?.addEventListener("click", () => applyTranslations("en", i18nPage));
+  document.getElementById("btnFR")?.addEventListener("click", () => applyTranslations("fr", i18nPage));
+  document.getElementById("btnES")?.addEventListener("click", () => applyTranslations("es", i18nPage));
 }
