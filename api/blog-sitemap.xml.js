@@ -15,7 +15,7 @@
 // Required env vars: AIRTABLE_API_KEY, AIRTABLE_BASE_ID.
 // ============================================================
 
-import { listRecords } from "../blog/lib/airtable.mjs";
+import { readPublished, cachePublicResponse } from "../blog/lib/published.mjs";
 import { F, POST_STATUS } from "../blog/lib/fields.mjs";
 
 const SITE_URL = "https://gabansolutions.ca";
@@ -35,14 +35,8 @@ export default async function handler(req, res) {
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
   res.setHeader("X-Robots-Tag", "index, follow");
 
-  let records = [];
-  try {
-    records = await listRecords({ filterByFormula: `{${F.STATUS}} = "${POST_STATUS.PUBLISHED}"` });
-  } catch {
-    // Best-effort: an empty (but valid) sitemap beats a 500 that could
-    // make crawlers drop the whole index entry.
-    records = [];
-  }
+  const { records } = await readPublished();
+  cachePublicResponse(res);
 
   const urls = records
     .filter((r) => r.fields[F.SLUG])
