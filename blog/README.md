@@ -1,5 +1,34 @@
 # Blog — Content Engine
 
+## Availability and Airtable quota (September 2026)
+
+Public listing, published articles and sitemap share a reader with a one-hour
+in-memory refresh interval (including failed requests), concurrent-request
+coalescing and one-hour CDN caching. Each cold function instance may still
+make an Airtable read. Public page views no longer write counters to Airtable.
+Admin reads and writes remain live and still require available Airtable quota.
+
+When Airtable fails, the reader serves its last successful result or the
+committed `blog/data/published.json` snapshot. The initial snapshot contains
+12 published articles recovered from the Airtable UI on September 15, 2026.
+It contains no draft records, record IDs or visitor counters.
+A successful refresh replaces the full list, so unpublished posts disappear.
+During an outage, content may remain at the last snapshot version. An urgent
+removal must also be removed from the snapshot and redeployed. Unknown URLs
+return 503 during an outage rather than falsely declaring an article deleted.
+
+After publishing, changing or removing content, refresh the disaster-recovery
+snapshot with `node blog/scripts/snapshot.mjs` using the normal Airtable env vars,
+then commit and deploy the updated JSON. Failed exports retain the previous
+file. Cached content can take up to two hours to reflect live changes across
+function and CDN caches. Draft review pages are not publicly cached.
+
+Regression checks: `node --test blog/tests/availability.test.mjs`.
+
+The older architecture notes below describe the original per-request design;
+the shared reader above now handles public published content.
+
+
 GABAN's inbound content marketing pillar: SEO-oriented blog posts. Two
 angles, both driven by `leadgen/config/targets.json`'s 9 business
 categories:

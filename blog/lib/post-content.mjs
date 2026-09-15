@@ -19,7 +19,7 @@ import { categoryDisplayLabel } from "./topics.mjs";
 
 const SITE_URL = "https://gabansolutions.ca";
 
-function toPost(record) {
+export function toPost(record) {
   const f = record.fields;
   const categoryKey = f[F.CATEGORY_KEY] || "";
   return {

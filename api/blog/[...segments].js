@@ -24,19 +24,17 @@
 // write a static .html file that would show up on the live site.
 // Posts live in Airtable and are rendered on every request instead.
 //
-// Records a best-effort view (Views / Last Viewed) on every real
-// (non-bot) post visit — never blocks the response on that write.
+// Public reads use a cached published snapshot; views do not write to Airtable.
 //
 // Required env vars: AIRTABLE_API_KEY, AIRTABLE_BASE_ID.
 // ============================================================
 
-import { listRecords, findByField, updateRecord } from "../../blog/lib/airtable.mjs";
+import { readPublished, cachePublicResponse } from "../../blog/lib/published.mjs";
 import { F, POST_STATUS } from "../../blog/lib/fields.mjs";
-import { getPostContent } from "../../blog/lib/post-content.mjs";
+import { getPostContent, toPost } from "../../blog/lib/post-content.mjs";
 import { renderBlogIndex, renderBlogPost } from "../../blog/lib/post-render.mjs";
 import { categoryDisplayLabel } from "../../blog/lib/topics.mjs";
 
-const BOT_UA_PATTERNS = /bot|crawler|spider|facebookexternalhit|slackbot|whatsapp|telegrambot|discordbot|preview/i;
 
 // Same Vercel quirk documented in api/preview/[...segments].js: the
 // rewrite -> catch-all binding puts the captured path under the
@@ -59,16 +57,9 @@ function renderNotFound(res) {
 </body></html>`);
 }
 
-async function recordView(record) {
-  const currentViews = typeof record.fields[F.VIEWS] === "number" ? record.fields[F.VIEWS] : 0;
-  return updateRecord(record.id, {
-    [F.VIEWS]: currentViews + 1,
-    [F.LAST_VIEWED]: new Date().toISOString()
-  });
-}
 
 export async function handleIndex(req, res) {
-  const records = await listRecords({ filterByFormula: `{${F.STATUS}} = "${POST_STATUS.PUBLISHED}"` });
+  const { records } = await readPublished();
   const posts = records
     .map((r) => {
       const f = r.fields;
@@ -88,21 +79,30 @@ export async function handleIndex(req, res) {
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
   res.setHeader("X-Robots-Tag", "index, follow");
+  cachePublicResponse(res);
   return res.status(200).end(renderBlogIndex(posts));
 }
 
 async function handlePost(req, res, slug) {
+  const { records, stale } = await readPublished();
+  const record = records.find(r => r.fields[F.SLUG] === slug);
   let post;
-  try {
-    post = await getPostContent(slug);
-  } catch {
-    return renderNotFound(res);
-  }
-
-  const userAgent = req.headers["user-agent"] || "";
-  const isBot = BOT_UA_PATTERNS.test(userAgent);
-  if (!isBot) {
-    findByField(F.SLUG, slug).then((record) => record && recordView(record)).catch(() => {});
+  if (record) {
+    post = toPost(record);
+    cachePublicResponse(res);
+  } else {
+    if (stale) {
+      res.setHeader("Cache-Control", "no-store");
+      res.setHeader("Retry-After", "3600");
+      return res.status(503).end("This article is temporarily unavailable. Please try again later.");
+    }
+    // Preserve the existing admin review links, but never cache drafts.
+    res.setHeader("Cache-Control", "no-store");
+    try {
+      post = await getPostContent(slug);
+    } catch {
+      return renderNotFound(res);
+    }
   }
 
   res.setHeader("Content-Type", "text/html; charset=utf-8");
