@@ -125,6 +125,7 @@ export default async function handler(req, res) {
     }
     return await handlePost(req, res, slug);
   } catch (err) {
+    console.error("[blog] Request failed:", err);
     res.status(500).setHeader("Content-Type", "text/plain; charset=utf-8");
     return res.end("Something went wrong loading the blog.");
   }

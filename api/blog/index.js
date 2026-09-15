@@ -32,6 +32,7 @@ export default async function handler(req, res) {
   try {
     return await handleIndex(req, res);
   } catch (err) {
+    console.error("[blog] Request failed:", err);
     res.status(500).setHeader("Content-Type", "text/plain; charset=utf-8");
     return res.end("Something went wrong loading the blog.");
   }
