@@ -9,7 +9,7 @@
 // ============================================================
 
 const hits = new Map(); // key -> number[] (timestamps, ms)
-let daily = { day: "", count: 0 };
+const dailyByKey = new Map(); // key -> { day, count }
 
 export function clean(value, max = 500) {
   const s = typeof value === "string" ? value : "";
@@ -39,11 +39,12 @@ export function rateLimit(key, { limit, windowMs, now = Date.now() }) {
 }
 
 // Global spend guard: max AI calls per UTC day on this instance.
-export function takeDailyBudget(cap = Number(process.env.AI_DAILY_CAP) || 150, now = new Date()) {
+export function takeDailyBudget(cap = Number(process.env.AI_DAILY_CAP) || 150, now = new Date(), key = "ai") {
   const day = now.toISOString().slice(0, 10);
-  if (daily.day !== day) daily = { day, count: 0 };
-  if (daily.count >= cap) return false;
-  daily.count += 1;
+  let d = dailyByKey.get(key);
+  if (!d || d.day !== day) { d = { day, count: 0 }; dailyByKey.set(key, d); }
+  if (d.count >= cap) return false;
+  d.count += 1;
   return true;
 }
 
@@ -61,5 +62,5 @@ export function escapeHtml(value) {
 
 export function _resetForTests() {
   hits.clear();
-  daily = { day: "", count: 0 };
+  dailyByKey.clear();
 }

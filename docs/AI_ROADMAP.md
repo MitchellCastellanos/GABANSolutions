@@ -29,7 +29,7 @@ copiar-y-pegar. Todo lo de abajo se apoya en una capa compartida nueva: `ai/lib/
 |---|-------|---------|-----------|--------|
 | 1 | Capa de IA compartida: cliente Claude, rate limit, tope diario, sanitizado (`ai/lib/`) | Muy alto (habilita todo) | Baja | ✅ Hecho |
 | 2 | Asistente de descubrimiento + pre-cotización (EN/FR/ES) con brief para el equipo | Muy alto | Media | ✅ Hecho (en `/contact`) |
-| 3 | Auditoría exprés de sitio (URL → diagnóstico) con protección SSRF | Alto | Media-alta | ⏳ Siguiente |
+| 3 | Auditoría exprés de sitio (URL → diagnóstico) con protección SSRF | Alto | Media-alta | ✅ Hecho (en `/contact`) |
 | 4 | Brief a Airtable (pipeline de leads) + auto-respuesta al cliente con su estimado | Alto | Baja | ⏳ |
 | 5 | Borradores de blog vía API (reemplaza copiar-pegar de `blog/lib/prompt.mjs`) usando la capa compartida | Medio-alto | Baja | ⏳ |
 | 6 | Leadgen: redactar emails/previews personalizados con IA + validación (`leadgen/`) | Medio | Media | ⏳ |
@@ -54,13 +54,13 @@ copiar-y-pegar. Todo lo de abajo se apoya en una capa compartida nueva: `ai/lib/
 - Cliente recibe estimado orientativo y siguientes pasos; equipo recibe brief
   limpio con bandera de cumplimiento de idioma (Ley 96) cuando aplica.
 
-### 3. Auditoría exprés (siguiente)
+### 3. Auditoría exprés (hecho)
 - Pegan su URL; checks deterministas (título, meta, viewport, h1, `lang`,
   hreflang, alt, https) + resumen de IA + CTA a `/book`.
 - **SSRF**: solo http/https, puertos 80/443, resolver DNS y rechazar IPs
   privadas/loopback/link-local/metadata (`169.254.169.254`), revalidar en cada
   redirect (máx. 3), tope de bytes y tiempo, sin cabeceras del visitante.
-- Mismos límites por IP/día que el punto 2, más más estrictos (5/hora).
+- Límites: 3/hora por IP y `AUDIT_DAILY_CAP` (default 100/día). Toda falla o bloqueo devuelve el mismo error genérico (no sirve para sondear la red interna). Código: `ai/lib/ssrf.mjs` (+ `audit.mjs`), tests en `ai/tests/ssrf.test.mjs`.
 
 ### 4–8
 Ver tabla; cada uno reutiliza `ai/lib/` sin cambios de arquitectura.
@@ -71,4 +71,5 @@ Ver tabla; cada uno reutiliza `ai/lib/` sin cambios de arquitectura.
 | `ANTHROPIC_API_KEY` | Habilita la redacción con IA (sin ella: plantilla) |
 | `AI_MODEL` | Modelo (default `claude-haiku-5-5`) |
 | `AI_DAILY_CAP` | Tope diario de llamadas a IA |
+| `AUDIT_DAILY_CAP` | Tope diario de auditorías (default 100) |
 | `LEAD_NOTIFY_EMAIL` | Destino de briefs (default `hello@gabansolutions.ca`) |
