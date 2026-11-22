@@ -18,7 +18,7 @@
       langs: { en: "English", fr: "Français", es: "Español" }, langsHint: "Pick all that apply (Québec customers usually need French).",
       time: { asap: "As soon as possible", month: "Within a month", flexible: "No rush" },
       name: "Your name", contact: "Email or phone", sending: "Sending…",
-      done: "Your orientative estimate", steps: "Suggested next steps", book: "Book a free call", err: "Something went wrong. Please try the contact form below.", limit: "Too many attempts — please try later or use the form below."
+      done: "Your orientative estimate", mailed: "We also sent a copy to your email.", steps: "Suggested next steps", book: "Book a free call", err: "Something went wrong. Please try the contact form below.", limit: "Too many attempts — please try later or use the form below."
     },
     fr: {
       title: "Trouvez la bonne option en 2 minutes", sub: "Six questions rapides → une estimation indicative et les prochaines étapes. Sans appel.",
@@ -33,7 +33,7 @@
       langs: { en: "English", fr: "Français", es: "Español" }, langsHint: "Choisissez tout ce qui s'applique (la clientèle québécoise exige généralement le français).",
       time: { asap: "Le plus vite possible", month: "D'ici un mois", flexible: "Pas pressé" },
       name: "Votre nom", contact: "Courriel ou téléphone", sending: "Envoi…",
-      done: "Votre estimation indicative", steps: "Prochaines étapes suggérées", book: "Réserver un appel gratuit", err: "Une erreur est survenue. Essayez le formulaire ci-dessous.", limit: "Trop de tentatives — réessayez plus tard ou utilisez le formulaire ci-dessous."
+      done: "Votre estimation indicative", mailed: "Nous vous en avons aussi envoyé une copie par courriel.", steps: "Prochaines étapes suggérées", book: "Réserver un appel gratuit", err: "Une erreur est survenue. Essayez le formulaire ci-dessous.", limit: "Trop de tentatives — réessayez plus tard ou utilisez le formulaire ci-dessous."
     },
     es: {
       title: "Encuentra la opción correcta en 2 minutos", sub: "Seis preguntas rápidas → un estimado orientativo y siguientes pasos. Sin llamada.",
@@ -48,7 +48,7 @@
       langs: { en: "English", fr: "Français", es: "Español" }, langsHint: "Elige todos los que apliquen (clientes en Québec normalmente requieren francés).",
       time: { asap: "Lo antes posible", month: "En un mes", flexible: "Sin prisa" },
       name: "Tu nombre", contact: "Correo o teléfono", sending: "Enviando…",
-      done: "Tu estimado orientativo", steps: "Siguientes pasos sugeridos", book: "Agendar llamada gratis", err: "Algo salió mal. Prueba el formulario de abajo.", limit: "Demasiados intentos — intenta más tarde o usa el formulario de abajo."
+      done: "Tu estimado orientativo", mailed: "También te enviamos una copia a tu correo.", steps: "Siguientes pasos sugeridos", book: "Agendar llamada gratis", err: "Algo salió mal. Prueba el formulario de abajo.", limit: "Demasiados intentos — intenta más tarde o usa el formulario de abajo."
     }
   };
 
@@ -162,6 +162,7 @@
     body.appendChild(el("h3", "h6 fw-bold", t.steps));
     const ol = el("ol", "mb-3"); result.estimate.steps.forEach(s => ol.appendChild(el("li", "", s))); body.appendChild(ol);
     const a = el("a", "btn btn-dark", t.book); a.href = "/book"; body.appendChild(a);
+    if (result.emailed) body.appendChild(el("p", "small text-muted mt-3 mb-0", t.mailed));
   }
 
   let result = null;

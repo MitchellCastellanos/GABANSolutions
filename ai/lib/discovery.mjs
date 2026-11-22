@@ -175,3 +175,29 @@ export function briefEmailHtml(a, lead, est, brief, meta = {}) {
     <h3>Risks</h3>${li(brief.risks)}
     <h3>Ask on the call</h3>${li(brief.questions)}`;
 }
+
+// ---- Auto-reply to the prospect (their language, no AI-invented numbers) ----
+
+const MAIL = {
+  en: { subject: "Your GABAN Solutions estimate", hi: n => `Hi ${n},`, intro: "Thanks for telling us about your project. Here's your orientative estimate and what happens next.", est: "Estimate", steps: "Next steps", cta: "Book your free call", foot: "This is an orientative estimate, not a final quote. You received it because you asked for it on gabansolutions.ca." },
+  fr: { subject: "Votre estimation GABAN Solutions", hi: n => `Bonjour ${n},`, intro: "Merci de nous avoir parlé de votre projet. Voici votre estimation indicative et la suite.", est: "Estimation", steps: "Prochaines étapes", cta: "Réserver votre appel gratuit", foot: "Ceci est une estimation indicative, non une soumission finale. Vous la recevez parce que vous l'avez demandée sur gabansolutions.ca." },
+  es: { subject: "Tu estimado de GABAN Solutions", hi: n => `Hola ${n},`, intro: "Gracias por contarnos tu proyecto. Aquí tienes tu estimado orientativo y lo que sigue.", est: "Estimado", steps: "Siguientes pasos", cta: "Agenda tu llamada gratis", foot: "Es un estimado orientativo, no una cotización final. Lo recibes porque lo pediste en gabansolutions.ca." }
+};
+
+export function clientEmail(lead, est, brief, lang = "en") {
+  const m = MAIL[MAIL[lang] ? lang : "en"];
+  const list = (tag, items) => `<${tag}>${items.map(i => `<li>${escapeHtml(i)}</li>`).join("")}</${tag}>`;
+  return {
+    subject: m.subject,
+    html: `
+      <p>${escapeHtml(m.hi(lead.name.split(" ")[0]))}</p>
+      <p>${escapeHtml(m.intro)}</p>
+      ${brief.client_summary ? `<p>${escapeHtml(brief.client_summary)}</p>` : ""}
+      <h3>${m.est}</h3>${list("ul", est.lines)}
+      ${est.law96 ? `<p><em>${escapeHtml(est.law96)}</em></p>` : ""}
+      <h3>${m.steps}</h3>${list("ol", est.steps)}
+      <p><a href="https://gabansolutions.ca/book">${m.cta}</a></p>
+      <hr style="margin:2rem 0;border:none;border-top:1px solid #e5e5e5;">
+      <p style="font-size:0.8rem;color:#888;">GABAN Solutions — Montreal, QC, Canada · hello@gabansolutions.ca<br>${escapeHtml(m.foot)}</p>`
+  };
+}

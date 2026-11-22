@@ -4,9 +4,10 @@
 
 import { clean, getClientIp, rateLimit, takeDailyBudget, parseBody } from "../../ai/lib/guards.mjs";
 import { isAiConfigured } from "../../ai/lib/claude.mjs";
-import { normalizeAnswers, validateLead, buildEstimate, buildBrief, briefEmailHtml, LANGS } from "../../ai/lib/discovery.mjs";
+import { normalizeAnswers, validateLead, buildEstimate, buildBrief, briefEmailHtml, clientEmail, LANGS } from "../../ai/lib/discovery.mjs";
 import { safeFetchHtml } from "../../ai/lib/ssrf.mjs";
 import { extractFacts, scoreFacts, buildAuditSummary, auditText } from "../../ai/lib/audit.mjs";
+import { saveLead, leadFields } from "../../ai/lib/lead-store.mjs";
 import { sendEmail } from "../../leadgen/lib/email.mjs";
 
 function extractPath(query) {
@@ -48,21 +49,19 @@ async function handleDiscover(req, res) {
     ? await buildBrief(answers, lead, estimate, lang)
     : await buildBrief(answers, lead, estimate, lang, { call: async () => { throw new Error("budget"); } });
 
-  // Deliver to the team. Never fail the visitor's result on delivery trouble
-  // unless nothing at all could be delivered.
+  // Deliver: team email and Airtable pipeline in parallel. The visitor's
+  // result only fails if NOTHING (email, Airtable, Formspree) took the lead.
   const to = process.env.LEAD_NOTIFY_EMAIL || "hello@gabansolutions.ca";
-  let delivered = false;
-  try {
-    await sendEmail({
+  const [emailed, stored] = await Promise.all([
+    sendEmail({
       to,
       subject: `Discovery brief — ${lead.name} (${answers.need}, fit: ${brief.fit})`,
       html: briefEmailHtml(answers, lead, estimate, brief, { lang }),
       replyTo: lead.isEmail ? lead.contact : undefined
-    });
-    delivered = true;
-  } catch {
-    // fall through to Formspree
-  }
+    }).then(() => true, () => false),
+    saveLead(leadFields(answers, lead, estimate, brief, { lang }))
+  ]);
+  let delivered = emailed || stored;
   if (!delivered) {
     try {
       const fs = await fetch(process.env.FORMSPREE_ENDPOINT || "https://formspree.io/f/mwvrpnnk", {
@@ -86,8 +85,22 @@ async function handleDiscover(req, res) {
   }
   if (!delivered) return res.status(502).json({ ok: false, error: "Could not deliver your request. Please use the contact form." });
 
+  // Auto-reply with the estimate. Only to email contacts, at most one per
+  // address per day — otherwise the form could be used to mail strangers.
+  let replied = false;
+  if (lead.isEmail && rateLimit(`reply:${lead.contact.toLowerCase()}`, { limit: 1, windowMs: 86_400_000 }).ok) {
+    try {
+      const mail = clientEmail(lead, estimate, brief, lang);
+      await sendEmail({ to: lead.contact, subject: mail.subject, html: mail.html, replyTo: to });
+      replied = true;
+    } catch {
+      replied = false;
+    }
+  }
+
   return res.status(200).json({
     ok: true,
+    emailed: replied,
     summary: brief.client_summary,
     estimate: { lines: estimate.lines, steps: estimate.steps, notice: estimate.law96 }
   });

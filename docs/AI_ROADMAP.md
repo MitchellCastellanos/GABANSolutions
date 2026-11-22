@@ -30,7 +30,7 @@ copiar-y-pegar. Todo lo de abajo se apoya en una capa compartida nueva: `ai/lib/
 | 1 | Capa de IA compartida: cliente Claude, rate limit, tope diario, sanitizado (`ai/lib/`) | Muy alto (habilita todo) | Baja | ✅ Hecho |
 | 2 | Asistente de descubrimiento + pre-cotización (EN/FR/ES) con brief para el equipo | Muy alto | Media | ✅ Hecho (en `/contact`) |
 | 3 | Auditoría exprés de sitio (URL → diagnóstico) con protección SSRF | Alto | Media-alta | ✅ Hecho (en `/contact`) |
-| 4 | Brief a Airtable (pipeline de leads) + auto-respuesta al cliente con su estimado | Alto | Baja | ⏳ |
+| 4 | Brief a Airtable (pipeline de leads) + auto-respuesta al cliente con su estimado | Alto | Baja | ✅ Hecho |
 | 5 | Borradores de blog vía API (reemplaza copiar-pegar de `blog/lib/prompt.mjs`) usando la capa compartida | Medio-alto | Baja | ⏳ |
 | 6 | Leadgen: redactar emails/previews personalizados con IA + validación (`leadgen/`) | Medio | Media | ⏳ |
 | 7 | Rate limit persistente (Upstash/Vercel KV) en vez de memoria por instancia | Medio | Media | ⏳ |
@@ -62,7 +62,19 @@ copiar-y-pegar. Todo lo de abajo se apoya en una capa compartida nueva: `ai/lib/
   redirect (máx. 3), tope de bytes y tiempo, sin cabeceras del visitante.
 - Límites: 3/hora por IP y `AUDIT_DAILY_CAP` (default 100/día). Toda falla o bloqueo devuelve el mismo error genérico (no sirve para sondear la red interna). Código: `ai/lib/ssrf.mjs` (+ `audit.mjs`), tests en `ai/tests/ssrf.test.mjs`.
 
-### 4–8
+### 4. Pipeline en Airtable + auto-respuesta (hecho)
+- Cada brief se guarda en la tabla **Leads** (`ai/lib/lead-store.mjs`), en paralelo al email al equipo.
+  Éxito para el visitante si *cualquiera* (email, Airtable o Formspree) recibió el lead.
+- Auto-respuesta al cliente (solo si dio email) en su idioma con estimado y pasos (`clientEmail`).
+  Máx. 1 por dirección por día para que el formulario no sirva para enviar correo a terceros.
+- **Tabla `Leads` (crearla en la base existente):** Name, Contact, Business Type, Need, Assets,
+  Languages, Timeline, Suggested Package, Fit, UI Lang, Source, Status (texto o single select) ·
+  Description, Team Summary, Risks, Questions (texto largo) · Bill 96 Flag (checkbox) ·
+  Submitted At (fecha/hora). Se envía con `typecast`; un campo inexistente hace fallar el guardado
+  (el email sigue funcionando), así que los nombres deben coincidir.
+- Env: `AIRTABLE_LEADS_TABLE` (default `Leads`); reutiliza `AIRTABLE_API_KEY` / `AIRTABLE_BASE_ID`.
+
+### 5–8
 Ver tabla; cada uno reutiliza `ai/lib/` sin cambios de arquitectura.
 
 ## Variables de entorno nuevas
@@ -72,4 +84,5 @@ Ver tabla; cada uno reutiliza `ai/lib/` sin cambios de arquitectura.
 | `AI_MODEL` | Modelo (default `claude-haiku-5-5`) |
 | `AI_DAILY_CAP` | Tope diario de llamadas a IA |
 | `AUDIT_DAILY_CAP` | Tope diario de auditorías (default 100) |
+| `AIRTABLE_LEADS_TABLE` | Tabla de leads (default `Leads`) |
 | `LEAD_NOTIFY_EMAIL` | Destino de briefs (default `hello@gabansolutions.ca`) |
