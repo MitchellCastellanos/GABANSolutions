@@ -31,7 +31,7 @@ copiar-y-pegar. Todo lo de abajo se apoya en una capa compartida nueva: `ai/lib/
 | 2 | Asistente de descubrimiento + pre-cotización (EN/FR/ES) con brief para el equipo | Muy alto | Media | ✅ Hecho (en `/contact`) |
 | 3 | Auditoría exprés de sitio (URL → diagnóstico) con protección SSRF | Alto | Media-alta | ✅ Hecho (en `/contact`) |
 | 4 | Brief a Airtable (pipeline de leads) + auto-respuesta al cliente con su estimado | Alto | Baja | ✅ Hecho |
-| 5 | Borradores de blog vía API (reemplaza copiar-pegar de `blog/lib/prompt.mjs`) usando la capa compartida | Medio-alto | Baja | ⏳ |
+| 5 | Borradores de blog vía API (reemplaza copiar-pegar de `blog/lib/prompt.mjs`) usando la capa compartida | Medio-alto | Baja | ✅ Hecho |
 | 6 | Leadgen: redactar emails/previews personalizados con IA + validación (`leadgen/`) | Medio | Media | ⏳ |
 | 7 | Rate limit persistente (Upstash/Vercel KV) en vez de memoria por instancia | Medio | Media | ⏳ |
 | 8 | Panel `/admin` para ver briefs, costo/uso de IA y conversión | Medio | Media | ⏳ |
@@ -74,7 +74,17 @@ copiar-y-pegar. Todo lo de abajo se apoya en una capa compartida nueva: `ai/lib/
   (el email sigue funcionando), así que los nombres deben coincidir.
 - Env: `AIRTABLE_LEADS_TABLE` (default `Leads`); reutiliza `AIRTABLE_API_KEY` / `AIRTABLE_BASE_ID`.
 
-### 5–8
+### 5. Borradores de blog por API (hecho)
+- `/admin/blog` tiene el botón **Generate draft with AI** → `POST /api/admin/blog/generate`.
+  Lee Topic/Category/City del post, escribe el artículo (`ai/lib/blog-draft.mjs`), lo guarda
+  **solo como borrador** con el mismo `updatePostContent` del flujo manual y devuelve el
+  resultado del validador. Nunca publica y se niega a sobrescribir un post ya publicado.
+- Las reglas del prompt siguen en un solo lugar (`blog/lib/prompt.mjs`, ahora dividido en
+  `buildBlogInstructions` + formato de copiar/pegar). El HTML pasa por una lista blanca de tags
+  (h2, h3, p, ul, ol, li, strong, em, a con https) antes de llegar a Airtable.
+- Sin `ANTHROPIC_API_KEY` responde 501 y el flujo manual sigue igual. Tope: `BLOG_AI_DAILY_CAP` (30/día).
+
+### 6–8
 Ver tabla; cada uno reutiliza `ai/lib/` sin cambios de arquitectura.
 
 ## Variables de entorno nuevas
@@ -85,4 +95,5 @@ Ver tabla; cada uno reutiliza `ai/lib/` sin cambios de arquitectura.
 | `AI_DAILY_CAP` | Tope diario de llamadas a IA |
 | `AUDIT_DAILY_CAP` | Tope diario de auditorías (default 100) |
 | `AIRTABLE_LEADS_TABLE` | Tabla de leads (default `Leads`) |
+| `BLOG_AI_DAILY_CAP` | Tope diario de borradores de blog con IA (default 30) |
 | `LEAD_NOTIFY_EMAIL` | Destino de briefs (default `hello@gabansolutions.ca`) |

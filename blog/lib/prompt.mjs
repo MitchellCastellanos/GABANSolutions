@@ -9,7 +9,7 @@
 
 import { categoryDisplayLabel, cityShort } from "./topics.mjs";
 
-export function buildBlogPrompt({ topic, categoryKey, city }) {
+export function buildBlogInstructions({ topic, categoryKey, city }) {
   const audience = categoryKey && city
     ? `owners of ${categoryDisplayLabel(categoryKey).toLowerCase()} in ${cityShort(city)}, QC`
     : categoryKey
@@ -30,7 +30,11 @@ Rules — follow exactly:
 - Do NOT invent facts about any specific business other than GABAN Solutions itself.
 - Write for a business owner who is busy and skeptical — be concrete and actionable, not generic.
 
-Structure: a short introduction, 3-5 H2 sections with practical, actionable advice, at least one bulleted or numbered list, and a short conclusion. Once, naturally, near the end, suggest a free consultation with GABAN Solutions and link to https://gabansolutions.ca/contact or https://gabansolutions.ca/book — one clear sentence, not salesy.
+Structure: a short introduction, 3-5 H2 sections with practical, actionable advice, at least one bulleted or numbered list, and a short conclusion. Once, naturally, near the end, suggest a free consultation with GABAN Solutions and link to https://gabansolutions.ca/contact or https://gabansolutions.ca/book — one clear sentence, not salesy.`;
+}
+
+export function buildBlogPrompt(args) {
+  return `${buildBlogInstructions(args)}
 
 Respond ONLY in this exact format, nothing before or after, no markdown code fences:
 

@@ -91,6 +91,10 @@ npm run blog:new -- --pick=&lt;n&gt;</pre>
   <label for="canonicalUrl">Canonical URL override (optional — leave blank unless this content is republished from elsewhere)</label>
   <input id="canonicalUrl" type="text" placeholder="https://gabansolutions.ca/blog/...">
 
+  <button class="btn-primary" id="generateBtn" type="button">Generate draft with AI</button>
+  <p class="hint">Writes the article from the post's saved topic, saves it as a draft and validates it — nothing is published. Needs ANTHROPIC_API_KEY; otherwise use the copy-paste flow above.</p>
+  <div class="output" id="generateOutput"></div>
+
   <button class="btn-primary" id="saveBtn">Save draft</button>
   <div class="output" id="saveOutput"></div>
 
@@ -336,6 +340,25 @@ BODY:
         showOutput("saveOutput", escapeHtml(err.message), true);
       } finally {
         $("saveBtn").disabled = false;
+      }
+    });
+
+    $("generateBtn").addEventListener("click", async () => {
+      const slug = slugEl.value.trim();
+      if (!slug) { showOutput("generateOutput", "Enter a slug first.", true); return; }
+      $("generateBtn").disabled = true;
+      showOutput("generateOutput", "Writing the article — this can take up to a minute...", false);
+      try {
+        const data = await callJson("/api/admin/blog/generate", { method: "POST", body: { slug } });
+        if (!data.ok) { showOutput("generateOutput", `Error: ${escapeHtml(data.error)}`, true); return; }
+        const v = data.result.validation;
+        showOutput("generateOutput",
+          `<strong>Draft saved</strong> — Score ${v.score}/10, ${v.errors.length} error(s), ${v.warnings.length} warning(s). ` +
+          `Click "Load existing content" to review it, then Validate &amp; publish.`, !v.valid);
+      } catch (err) {
+        showOutput("generateOutput", escapeHtml(err.message), true);
+      } finally {
+        $("generateBtn").disabled = false;
       }
     });
 

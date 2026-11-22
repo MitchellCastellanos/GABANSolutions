@@ -13,6 +13,7 @@ import { handleBookingsAdd } from "../../admin/lib/handlers/bookings-add.mjs";
 import { handleBlogList } from "../../admin/lib/handlers/blog-list.mjs";
 import { handleBlogContent } from "../../admin/lib/handlers/blog-content.mjs";
 import { handleBlogSave } from "../../admin/lib/handlers/blog-save.mjs";
+import { handleBlogGenerate } from "../../admin/lib/handlers/blog-generate.mjs";
 import { handleBlogValidate } from "../../admin/lib/handlers/blog-validate.mjs";
 import { handleAnalytics } from "../../admin/lib/handlers/analytics.mjs";
 
@@ -47,6 +48,9 @@ export default async function handler(req, res) {
   }
   if (route === "blog/save") {
     return handleBlogSave(req, res);
+  }
+  if (route === "blog/generate") {
+    return handleBlogGenerate(req, res);
   }
   if (route === "blog/validate") {
     return handleBlogValidate(req, res);
